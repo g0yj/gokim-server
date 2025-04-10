@@ -1,0 +1,25 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/lms?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&connectTimeout=1000&validConnectionTimeout=10&socketTimeout=60000&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+logging:
+  level:
+    reactor.netty.http.client: DEBUG
+lms:
+  file:
+    host: http://localhost:8081
+    upload-dir: C:\Temp\
+
+#encryption:
+#  key-url: https://englishchannel.co.kr/consul/v1/kv/config/application/encryption.key

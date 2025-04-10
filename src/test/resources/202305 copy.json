@@ -1,0 +1,3928 @@
+{
+  "schedules": [
+    {
+      "date": "2023-05-01",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-02",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 5,
+          "attendanceRate": "62.50"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 13,
+          "attendanceRate": "81.25"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 15,
+          "attendanceRate": "93.75"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 10,
+          "attendanceRate": "62.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-03",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 13,
+          "attendanceRate": "81.25"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 10,
+          "attendanceRate": "62.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 12,
+          "attendanceRate": "150.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "71.88"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-04",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 9,
+          "attendanceRate": "56.25"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "67.50"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 9,
+          "attendanceRate": "56.25"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "62.50"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-05",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-06",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "78.57"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "75.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-07",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-08",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "81.25"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-09",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "78.57"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "75.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-10",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 2,
+          "attendanceRate": "25.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 13,
+          "attendanceRate": "81.25"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 15,
+          "attendanceRate": "187.50"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 10,
+          "attendanceRate": "62.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "93.75"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-11",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "83.33"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "87.50"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-12",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "83.33"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 10,
+          "attendanceRate": "62.50"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-13",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "83.33"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "81.25"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-14",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-15",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 16,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "83.33"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 8,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "81.25"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-16",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "87.50"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-17",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-18",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-19",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-20",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-21",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-22",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-23",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-24",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-25",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-25",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-26",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-27",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-28",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-29",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-30",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    },
+    {
+      "date": "2023-05-31",
+      "attendances": [
+        {
+          "name": "한가영",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "서안나",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "김나래",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "임정은",
+          "reservationCount": 8,
+          "attendanceCount": 6,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "최태연",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "김선영",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "정지은",
+          "reservationCount": 8,
+          "attendanceCount": 4,
+          "attendanceRate": "50.00"
+        },
+        {
+          "name": "박제은",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "HT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "80.36"
+        },
+        {
+          "name": "Olivia",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Alex",
+          "reservationCount": 16,
+          "attendanceCount": 14,
+          "attendanceRate": "87.50"
+        },
+        {
+          "name": "Adam",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "Sadie",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Airin",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "Steven",
+          "reservationCount": 16,
+          "attendanceCount": 12,
+          "attendanceRate": "75.00"
+        },
+        {
+          "name": "J",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Austin",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "0.00"
+        },
+        {
+          "name": "Daniel",
+          "reservationCount": 8,
+          "attendanceCount": 8,
+          "attendanceRate": "100.00"
+        },
+        {
+          "name": "LT Avg.",
+          "reservationCount": 0,
+          "attendanceCount": 0,
+          "attendanceRate": "84.38"
+        }
+      ]
+    }
+  ],
+  "totalAttendances": [
+    {
+      "name": "한가영",
+      "reservationCount": 176,
+      "attendanceCount": 144,
+      "attendanceRate": "81.82"
+    },
+    {
+      "name": "서안나",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "김나래",
+      "reservationCount": 320,
+      "attendanceCount": 247,
+      "attendanceRate": "77.19"
+    },
+    {
+      "name": "임정은",
+      "reservationCount": 160,
+      "attendanceCount": 100,
+      "attendanceRate": "62.50"
+    },
+    {
+      "name": "최태연",
+      "reservationCount": 368,
+      "attendanceCount": 285,
+      "attendanceRate": "77.45"
+    },
+    {
+      "name": "김선영",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "정지은",
+      "reservationCount": 96,
+      "attendanceCount": 46,
+      "attendanceRate": "47.92"
+    },
+    {
+      "name": "박제은",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "HT Avg.",
+      "reservationCount": 1120,
+      "attendanceCount": 822,
+      "attendanceRate": "73.39"
+    },
+    {
+      "name": "Olivia",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "Alex",
+      "reservationCount": 352,
+      "attendanceCount": 274,
+      "attendanceRate": "77.84"
+    },
+    {
+      "name": "Adam",
+      "reservationCount": 256,
+      "attendanceCount": 179,
+      "attendanceRate": "69.92"
+    },
+    {
+      "name": "Sadie",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "Airin",
+      "reservationCount": 176,
+      "attendanceCount": 174,
+      "attendanceRate": "98.86"
+    },
+    {
+      "name": "Steven",
+      "reservationCount": 368,
+      "attendanceCount": 248,
+      "attendanceRate": "67.39"
+    },
+    {
+      "name": "J",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "Austin",
+      "reservationCount": 0,
+      "attendanceCount": 0,
+      "attendanceRate": "0.00"
+    },
+    {
+      "name": "Daniel",
+      "reservationCount": 160,
+      "attendanceCount": 140,
+      "attendanceRate": "87.50"
+    },
+    {
+      "name": "LT Avg.",
+      "reservationCount": 1312,
+      "attendanceCount": 1015,
+      "attendanceRate": "77.36"
+    }
+  ]
+}

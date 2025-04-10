@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: go-api
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+lms:
+  file:
+    max-file-size: 2MB
+
+
+#encryption:
+#  key-url: http://localhost:8500/v1/kv/config/application/encryption.key
