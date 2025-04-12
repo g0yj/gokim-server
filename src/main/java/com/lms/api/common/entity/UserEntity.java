@@ -1,14 +1,16 @@
 package com.lms.api.common.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.lms.api.common.entity.project.ProjectEntity;
+import com.lms.api.common.entity.project.ProjectMemberEntity;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.FieldDefaults;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_")
@@ -21,5 +23,21 @@ public class UserEntity extends BaseEntity {
   @Id
   @Column(updatable = false)
   String id;
+  String password;
+  String name;
+
+  String email;
+  String phone;
+
+  String file;
+  String originalFile;
+
+  @ToString.Exclude
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<ProjectEntity> projectEntities = new ArrayList<>();
+
+  @ToString.Exclude
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<ProjectMemberEntity> projectMemberEntities = new ArrayList<>();
 
 }

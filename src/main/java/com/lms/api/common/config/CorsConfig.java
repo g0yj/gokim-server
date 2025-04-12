@@ -20,7 +20,7 @@ public class CorsConfig {
         config.setAllowCredentials(true); // ✅ 인증 정보(쿠키, 헤더 등) 포함 허용
         config.addAllowedHeader("*"); // ✅ 모든 헤더 허용
         config.addAllowedMethod("*"); // ✅ 모든 HTTP 메서드 허용
-        config.setAllowedOriginPatterns(List.of("http://localhost:8085")); // ✅ 특정 Origin 허용
+        config.setAllowedOriginPatterns(List.of("http://localhost:8081")); // ✅ 특정 Origin 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

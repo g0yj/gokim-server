@@ -4,7 +4,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create # 초기 개발 중이면 update, DB완성돼 있고, 스키마 변경을 원하지 않으면 validate
 #    properties:
 #      hibernate:
 #        dialect: org.hibernate.dialect.MySQLDialect
@@ -17,6 +17,9 @@ lms:
   file:
     max-file-size: 2MB
 
+server:
+  servlet:
+    context-path: /api
 
 #encryption:
 #  key-url: http://localhost:8500/v1/kv/config/application/encryption.key

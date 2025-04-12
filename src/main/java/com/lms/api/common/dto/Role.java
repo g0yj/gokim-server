@@ -8,10 +8,9 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public enum UserType {
-  A("상담원"), // 상담원
-  S("수강생"), // 수강생
-  T("강사") // 강사
+public enum Role {
+  OWNER("소유자"),
+  MEMBER ("팀원"),
   ;
 
   String label;

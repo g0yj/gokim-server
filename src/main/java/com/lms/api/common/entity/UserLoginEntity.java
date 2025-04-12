@@ -26,10 +26,7 @@ public class UserLoginEntity extends BaseEntity {
   @Column(updatable = false)
   String token;
 
-  @Enumerated(EnumType.STRING)
-  LoginType loginType;
-
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "userId", nullable = false)
+  @JoinColumn(name = "login_id", nullable = false)
   UserEntity userEntity;
 }
