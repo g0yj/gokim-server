@@ -1,6 +1,6 @@
 package com.lms.api.common.controller.dto;
 
-import com.lms.api.common.dto.UserType;
+import com.lms.api.common.dto.Role;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginRequest {
 
-  UserType type;
+  Role type;
 
   @NotEmpty
   String id;

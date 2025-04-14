@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/admin/v1")
 @RequiredArgsConstructor
 @Slf4j
-public class AdminController {
+public class LoginController {
 
   private final LoginService loginService;
-  private final AdminControllerMapper adminControllerMapper;
+  private final LoginControllerMapper adminControllerMapper;
 
 
 }

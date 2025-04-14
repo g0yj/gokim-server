@@ -1,9 +1,9 @@
 package com.lms.api.common.service;
 
-import static com.lms.api.common.exception.LmsErrorCode.FILE_SIZE_EXCEEDED;
-import static com.lms.api.common.exception.LmsErrorCode.FILE_UPLOAD_ERROR;
+import static com.lms.api.common.exception.ApiErrorCode.FILE_SIZE_EXCEEDED;
+import static com.lms.api.common.exception.ApiErrorCode.FILE_UPLOAD_ERROR;
 
-import com.lms.api.common.exception.LmsException;
+import com.lms.api.common.exception.ApiException;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -40,7 +40,7 @@ public class FileService {
         .forEach(file -> {
           // 파일 크기 체크
           if (file.getSize() > getMaxFileSize()) {
-            throw new LmsException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
+            throw new ApiException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
           }
 
           String fileName = upload(file);
@@ -58,7 +58,7 @@ public class FileService {
 
     // 파일 크기 체크
     if (file.getSize() > getMaxFileSize()) {
-      throw new LmsException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
+      throw new ApiException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
     }
 
     String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
@@ -67,7 +67,7 @@ public class FileService {
     File dir = new File(uploadDir);
     if (!dir.exists()) {
       if (!dir.mkdirs()) {  // 디렉토리 생성 실패 시 예외 발생
-        throw new LmsException(FILE_UPLOAD_ERROR, "Failed to create upload directory");
+        throw new ApiException(FILE_UPLOAD_ERROR, "Failed to create upload directory");
       }
     }
 
@@ -76,7 +76,7 @@ public class FileService {
 
       return fileName;
     } catch (IOException e) {
-      throw new LmsException(FILE_UPLOAD_ERROR, e);
+      throw new ApiException(FILE_UPLOAD_ERROR, e);
     }
   }
 

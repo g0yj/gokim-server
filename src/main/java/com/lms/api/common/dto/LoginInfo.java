@@ -15,5 +15,5 @@ public class LoginInfo {
   String id;
   String name;
   String token;
-  UserType type;
+  Role type;
 }

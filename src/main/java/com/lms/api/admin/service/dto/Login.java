@@ -1,6 +1,6 @@
 package com.lms.api.admin.service.dto;
 
-import com.lms.api.common.dto.UserType;
+import com.lms.api.common.dto.Role;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,9 +12,7 @@ import lombok.experimental.FieldDefaults;
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Login {
-
-  // param
-  UserType type;
+  
   String loginId;
   String password;
 
