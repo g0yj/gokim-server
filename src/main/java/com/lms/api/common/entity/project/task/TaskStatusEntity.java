@@ -4,11 +4,12 @@ import com.lms.api.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Setter@Getter
 @ToString
-@NoArgsConstructor
+@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "task_status")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskStatusEntity extends BaseEntity {

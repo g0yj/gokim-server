@@ -5,6 +5,7 @@ import com.lms.api.common.entity.project.ProjectMemberEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 @Table(name = "user_")
 @Getter
 @Setter
-@Builder@NoArgsConstructor@AllArgsConstructor
+@SuperBuilder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity extends BaseEntity {
@@ -31,10 +33,12 @@ public class UserEntity extends BaseEntity {
   String originalFile;
 
   @ToString.Exclude
+  @Builder.Default
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<ProjectEntity> projectEntities = new ArrayList<>();
 
   @ToString.Exclude
+  @Builder.Default
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<ProjectMemberEntity> projectMemberEntities = new ArrayList<>();
 

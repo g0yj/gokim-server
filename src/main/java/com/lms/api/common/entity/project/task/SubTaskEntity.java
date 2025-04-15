@@ -5,12 +5,13 @@ import com.lms.api.common.entity.project.ProjectMemberEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Setter@Getter
 @ToString
 @Table(name = "sub_task")
-@NoArgsConstructor
+@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SubTaskEntity extends BaseEntity {
 

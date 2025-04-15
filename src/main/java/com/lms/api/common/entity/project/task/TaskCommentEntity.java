@@ -2,15 +2,13 @@ package com.lms.api.common.entity.project.task;
 
 import com.lms.api.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Setter@Getter
-@ToString
+@ToString@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "task_comment")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskCommentEntity extends BaseEntity {

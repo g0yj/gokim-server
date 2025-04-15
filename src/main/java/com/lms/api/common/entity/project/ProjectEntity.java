@@ -6,13 +6,14 @@ import com.lms.api.common.entity.project.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name= "project")
-@Getter@Setter@Builder@NoArgsConstructor@AllArgsConstructor
+@Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectEntity extends BaseEntity {

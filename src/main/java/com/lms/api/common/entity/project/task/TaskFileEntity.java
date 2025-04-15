@@ -2,16 +2,14 @@ package com.lms.api.common.entity.project.task;
 
 import com.lms.api.common.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name= "task_file")
 @Getter@Setter
-@ToString(callSuper = true)
+@ToString(callSuper = true)@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskFileEntity extends BaseEntity {
 

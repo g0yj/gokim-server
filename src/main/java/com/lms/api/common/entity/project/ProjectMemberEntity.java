@@ -6,14 +6,12 @@ import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.id.ProjectMemberId;
 import com.lms.api.common.entity.project.ProjectEntity;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Setter@Getter@ToString
+@Setter@Getter@ToString@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "project_member")
 @IdClass(ProjectMemberId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
