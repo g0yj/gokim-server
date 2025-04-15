@@ -4,10 +4,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create # 초기 개발 중이면 update, DB완성돼 있고, 스키마 변경을 원하지 않으면 validate
-#    properties:
-#      hibernate:
-#        dialect: org.hibernate.dialect.MySQLDialect
+      ddl-auto: create # 초기 개발 중이면 update, DB 완성 돼 있고, 스키마 변경을 원하지 않으면 validate
 
   servlet:
     multipart:
@@ -21,5 +18,19 @@ server:
   servlet:
     context-path: /api
 
-#encryption:
-#  key-url: http://localhost:8500/v1/kv/config/application/encryption.key
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html # Swagger UI 경로를 강제 지정
+  enable-spring-security: false # Spring Security가 있어도 Swagger는 무인증 상태로 접근 가능
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,metrics,loggers,env,beans,mappings"
+  endpoint:
+    health:
+      show-details: always

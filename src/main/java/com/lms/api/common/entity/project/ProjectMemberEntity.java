@@ -25,7 +25,7 @@ public class ProjectMemberEntity extends BaseEntity {
 
     @Id
     @Column(name = "project_id", updatable = false)
-    Long projectId;
+    String projectId;
 
     @Enumerated(EnumType.STRING)
     Role role;

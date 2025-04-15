@@ -18,5 +18,5 @@ import java.io.Serializable;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectMemberId implements Serializable {
     String projectMemberId;
-    Long projectId;
+    String projectId;
 }
