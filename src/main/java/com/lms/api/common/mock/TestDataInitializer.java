@@ -1,4 +1,4 @@
-package com.lms.api.common;
+package com.lms.api.common.mock;
 
 import com.lms.api.common.dto.Role;
 import com.lms.api.common.entity.UserEntity;
@@ -64,12 +64,13 @@ public class TestDataInitializer implements CommandLineRunner {
 
 
     private void addProjectMember(ProjectEntity project, UserEntity user, Role role) {
-        ProjectMemberEntity member = new ProjectMemberEntity();
-        member.setProjectId(project.getId());
-        member.setProjectMemberId(user.getId());
-        member.setRole(role);
-        member.setProjectEntity(project);
-        member.setUserEntity(user);
+        ProjectMemberEntity member = ProjectMemberEntity.builder()
+                        .projectId(project.getId())
+                        .projectMemberId(user.getId())
+                        .role(role)
+                        .projectEntity(project)
+                        .userEntity(user)
+                        .build();
         projectMemberRepository.save(member);
     }
 
