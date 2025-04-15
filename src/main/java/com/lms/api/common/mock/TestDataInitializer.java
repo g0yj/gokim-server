@@ -35,6 +35,7 @@ public class TestDataInitializer implements CommandLineRunner {
                 .id("P1234")
                 .projectName("샘플 프로젝트")
                 .userEntity(owner)
+                .createdBy(owner.getId())
                 .build();
         projectRepository.save(project);
 
