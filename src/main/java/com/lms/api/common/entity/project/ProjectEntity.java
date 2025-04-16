@@ -30,5 +30,9 @@ public class ProjectEntity extends BaseEntity {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "projectEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProjectMemberEntity> projectMemberEntities = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "projectEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     List<TaskEntity> taskEntities = new ArrayList<>();
 }

@@ -4,10 +4,12 @@ import com.lms.api.admin.controller.dto.project.CreateProjectRequest;
 import com.lms.api.admin.service.dto.project.Project;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.Role;
+import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectEntity;
+import com.lms.api.common.entity.project.QProjectMemberEntity;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -58,12 +60,16 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public List<Project> listProject(String userId) {
-        QProjectEntity project = QProjectEntity.projectEntity;
-
+        QProjectEntity qProjectEntity = QProjectEntity.projectEntity;
+        QProjectMemberEntity qProjectMemberEntity  = QProjectMemberEntity.projectMemberEntity;
+        QUserEntity qUserEntity = QUserEntity.userEntity;
         List<ProjectEntity> projectEntities = jpaConfig.queryFactory()
-                .selectFrom(project)
-                .join(project.userEntity).fetchJoin() // 🔥 핵심!
-                .where(project.userEntity.id.eq(userId))
+                .selectFrom(qProjectEntity)
+                .join(qProjectEntity.userEntity).fetchJoin()
+                .leftJoin(qProjectEntity.projectMemberEntities, qProjectMemberEntity).fetchJoin()
+                .leftJoin(qProjectMemberEntity.userEntity, qUserEntity).fetchJoin()
+                .where(qProjectEntity.userEntity.id.eq(userId))
+                .distinct()
                 .fetch();
 
         return projectEntities.stream()

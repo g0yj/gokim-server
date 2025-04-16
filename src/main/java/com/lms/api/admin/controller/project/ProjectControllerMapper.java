@@ -14,7 +14,7 @@ import java.util.List;
 public interface ProjectControllerMapper {
 
     List<ListProjectResponse> toListProjectResponse(List<Project> projects);
-
+    @Mapping(target = "projectMembers" , source = "project.projectMembers")
     ListProjectResponse toListProjectResponse(Project project);
 
 
