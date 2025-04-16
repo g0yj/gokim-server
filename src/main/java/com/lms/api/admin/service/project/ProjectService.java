@@ -113,6 +113,17 @@ public class ProjectService {
 
         projectRepository.save(projectEntity);
     }
+
+    @Transactional
+    public void deleteProject(String userId, String projectId){
+        ProjectEntity projectEntity = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+
+        ProjectMemberEntity projectMemberEntity = projectMemberRepository.findByProjectEntity_IdAndUserEntity_IdAndRole(projectId, userId, Role.OWNER)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.ACCESS_DENIED));
+
+        projectRepository.delete(projectEntity);
+    }
 }
 
 

@@ -52,7 +52,7 @@ public class TestDataInitializer implements CommandLineRunner {
         // 프로젝트 할일 등록
         TaskStatusEntity taskStatus = TaskStatusEntity.builder()
                         .taskStatusId("NOT_STARTED")
-                        .projectEntity(project)
+                        .name("시작전")
                         .build();
         taskStatusRepository.save(taskStatus);
 
