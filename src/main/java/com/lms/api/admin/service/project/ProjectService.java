@@ -1,6 +1,7 @@
 package com.lms.api.admin.service.project;
 
 import com.lms.api.admin.controller.dto.project.CreateProjectRequest;
+import com.lms.api.admin.service.dto.project.Function;
 import com.lms.api.admin.service.dto.project.Project;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.Role;
@@ -10,8 +11,10 @@ import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectEntity;
 import com.lms.api.common.entity.project.QProjectMemberEntity;
+import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
+import com.lms.api.common.repository.project.task.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -29,6 +32,7 @@ public class ProjectService {
     private final JpaConfig jpaConfig;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final TaskRepository taskRepository;
     private final ProjectServiceMapper projectServiceMapper;
 
 
@@ -77,6 +81,24 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 템플릿을 추가할 때 마다 수정이 필요함
+     * @param id : 프로젝트 식별키
+     * @return taskId: task 관련 기능 목록
+     */
+    @Transactional
+    public Function getProject(String id){
+        // '보드' 관련 기능으로 할일에 관련한 기능이 들어간 곳에서 사용
+        List<TaskEntity> taskEntities = taskRepository.findByProjectEntity_Id(id);
+        List<String> taskIds = taskEntities.stream()
+                .map(TaskEntity::getId)
+                .toList();
+
+        return Function.builder()
+                .projectId(id)
+                .taskId(taskIds)
+                .build();
+    }
 }
 
 

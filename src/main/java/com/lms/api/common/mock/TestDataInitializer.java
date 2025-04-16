@@ -4,9 +4,13 @@ import com.lms.api.common.dto.Role;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
+import com.lms.api.common.entity.project.task.TaskEntity;
+import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
+import com.lms.api.common.repository.project.task.TaskRepository;
+import com.lms.api.common.repository.project.task.TaskStatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +24,8 @@ public class TestDataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final TaskRepository taskRepository;
+    private final TaskStatusRepository taskStatusRepository;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -38,10 +44,21 @@ public class TestDataInitializer implements CommandLineRunner {
                 .createdBy(owner.getId())
                 .build();
         projectRepository.save(project);
-
+        // 프로젝트 초대
         addProjectMember(project, owner, Role.OWNER);
         addProjectMember(project, member1, Role.MEMBER);
         addProjectMember(project, member2, Role.MEMBER);
+
+        // 프로젝트 할일 등록
+        TaskStatusEntity taskStatus = TaskStatusEntity.builder()
+                        .taskStatusId("NOT_STARTED")
+                        .projectEntity(project)
+                        .build();
+        taskStatusRepository.save(taskStatus);
+
+        addTask("T1111","테이블 설계","테이블 설계에 관련된 내용입니다. 추후 에디터 사용",1,project,owner,taskStatus);
+        addTask("T2222","프로젝트 관련 API 생성","CRUD에 대한 API 설명을 추가해주세요",2,project,owner,taskStatus);
+        addTask("T3333","보드 관련 API 생성","멤버가 등록한 TODO입니다",3,project,member1,taskStatus);
 
         log.debug("샘플 데이터 삽입 완료");
     }
@@ -74,5 +91,19 @@ public class TestDataInitializer implements CommandLineRunner {
                         .build();
         projectMemberRepository.save(member);
     }
+
+    private void addTask(String id, String title, String content, int sortOrder, ProjectEntity projectId , UserEntity userEntity,TaskStatusEntity taskStatus ) {
+        TaskEntity task = TaskEntity.builder()
+                .id(id)
+                .title(title)
+                .content(content)
+                .sortOrder(sortOrder)
+                .projectEntity(projectId)
+                .taskStatusEntity(taskStatus)
+                .createdBy(userEntity.getId())
+                .build();
+        taskRepository.save(task);
+    }
+
 
 }

@@ -1,6 +1,7 @@
 package com.lms.api.common.entity.project.task;
 
 import com.lms.api.common.entity.BaseEntity;
+import com.lms.api.common.entity.project.ProjectEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,6 @@ public class TaskStatusEntity extends BaseEntity {
     String taskStatusId; // 예: NOT_STARTED, IN_PROGRESS, COMPLETED
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_id", nullable = false)
-    TaskEntity taskEntity;
+    @JoinColumn(name = "project_id", nullable = false)
+    ProjectEntity projectEntity;
 }

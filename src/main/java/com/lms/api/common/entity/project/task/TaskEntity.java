@@ -18,9 +18,8 @@ import java.util.List;
 public class TaskEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
-    Long id;
+    String id;
 
     String title;
 
@@ -28,7 +27,7 @@ public class TaskEntity extends BaseEntity {
     String content;
 
     @Column(nullable = false)
-    Integer sortOrder;
+    int sortOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)

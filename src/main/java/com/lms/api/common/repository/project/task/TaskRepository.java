@@ -5,8 +5,13 @@ import com.lms.api.common.entity.project.task.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 
-public interface TaskRepository extends JpaRepository<TaskEntity, Long>,
+import java.util.List;
+
+public interface TaskRepository extends JpaRepository<TaskEntity, String>,
     QuerydslPredicateExecutor<TaskEntity> {
+
+    List<TaskEntity> findByProjectEntity_Id(String projectId);
+
 
 
 }
