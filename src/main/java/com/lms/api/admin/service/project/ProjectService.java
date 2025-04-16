@@ -1,6 +1,7 @@
 package com.lms.api.admin.service.project;
 
 import com.lms.api.admin.controller.dto.project.CreateProjectRequest;
+import com.lms.api.admin.controller.dto.project.UpdateProjectRequest;
 import com.lms.api.admin.service.dto.project.Function;
 import com.lms.api.admin.service.dto.project.Project;
 import com.lms.api.common.config.JpaConfig;
@@ -12,6 +13,8 @@ import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectEntity;
 import com.lms.api.common.entity.project.QProjectMemberEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
+import com.lms.api.common.exception.ApiErrorCode;
+import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
@@ -98,6 +101,17 @@ public class ProjectService {
                 .projectId(id)
                 .taskId(taskIds)
                 .build();
+    }
+
+    @Transactional
+    public void updateProject(String modifiedBy,String id, UpdateProjectRequest updateProjectRequest){
+        ProjectEntity projectEntity = projectRepository.findById(id)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+
+        projectEntity.setModifiedBy(modifiedBy);
+        projectEntity.setProjectName(updateProjectRequest.getProjectName());
+
+        projectRepository.save(projectEntity);
     }
 }
 

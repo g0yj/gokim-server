@@ -1,9 +1,6 @@
 package com.lms.api.admin.controller.project;
 
-import com.lms.api.admin.controller.dto.project.CreateProjectRequest;
-import com.lms.api.admin.controller.dto.project.CreateProjectResponse;
-import com.lms.api.admin.controller.dto.project.GetProjectResponse;
-import com.lms.api.admin.controller.dto.project.ListProjectResponse;
+import com.lms.api.admin.controller.dto.project.*;
 import com.lms.api.admin.service.dto.project.Function;
 import com.lms.api.admin.service.dto.project.Project;
 import com.lms.api.admin.service.project.ProjectService;
@@ -30,7 +27,7 @@ public class ProjectController {
 
     @PostMapping
     @Operation(summary = "프로젝트 생성", description = "새로운 프로젝트를 생성합니다.")
-    public ResponseEntity<CreateProjectResponse> createProject(@LoginUser UserEntity user, @RequestBody @Valid CreateProjectRequest createProjectRequest){
+    public ResponseEntity<CreateProjectResponse> createProject(@LoginUser UserEntity user, @Valid CreateProjectRequest createProjectRequest){
         String projectId = projectService.createProject(user, createProjectRequest);
         return ResponseEntity.ok(new CreateProjectResponse(projectId));
     }
@@ -48,6 +45,12 @@ public class ProjectController {
         return projectControllerMapper.toGetProjectResponse(project);
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "프로젝트 수정" , description = "프로젝트 변경 시 사용합니다.")
+    public ResponseEntity<?> updateProject(@LoginUser UserEntity user, @PathVariable String id, @Valid @RequestBody UpdateProjectRequest updateProjectRequest){
+        projectService.updateProject(user.getId(), id, updateProjectRequest);
+        return ResponseEntity.ok().build();
+    }
 
 
 

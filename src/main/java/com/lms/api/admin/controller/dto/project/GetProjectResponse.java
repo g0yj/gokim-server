@@ -2,6 +2,7 @@ package com.lms.api.admin.controller.dto.project;
 
 
 import com.lms.api.common.dto.Role;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,7 +17,10 @@ public class GetProjectResponse {
     @Schema(description = "프로젝트 식별키")
     String projectId;
 
-    @Schema(description = "todo 관련 기능으로, '보드' 카테고리에 사용됩니다")
+    @ArraySchema(
+            schema = @Schema(description = "할일 식별키"),
+            arraySchema = @Schema(description = "todo 관련 기능으로, '보드' 카테고리에 사용됩니다")
+    )
     List<String> taskId;
 
 }
