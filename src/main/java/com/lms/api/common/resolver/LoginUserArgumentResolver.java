@@ -18,7 +18,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 @Component
 @RequiredArgsConstructor
-@Profile("local")
+@Profile({"local","dev"})
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
     private final UserRepository userRepository;
 
