@@ -3,6 +3,7 @@ package com.lms.api.admin.controller.project.task;
 
 import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
 import com.lms.api.admin.service.project.task.TaskService;
+import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.LoginUser;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,10 +11,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/task")
@@ -27,4 +25,10 @@ public class TaskController {
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){
         return ResponseEntity.ok(taskService.createTask(user, createTaskRequest));
     }
-}
+
+  /*  @GetMapping
+    @Operation(summary = "todo 목록" , description = "상태에 따라 그룹핑했습니다")
+    public List<ListTaskResponse> listTask (@LoginUser UserEntity user){
+        List<Task> tasks = taskService.listTask()*/
+    }
+
