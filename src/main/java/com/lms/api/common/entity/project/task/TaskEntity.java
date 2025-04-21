@@ -24,18 +24,17 @@ public class TaskEntity extends BaseEntity {
     String title;
 
     @Column(columnDefinition = "TEXT")
-    String content;
+    String description;
 
     @Column(nullable = false)
     int sortOrder;
 
+    String assignedMember;
+    Long taskStatusId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id", nullable = false)
     ProjectEntity projectEntity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "task_status_id", nullable = false)
-    TaskStatusEntity taskStatusEntity;
 
     // 하위
     @ToString.Exclude

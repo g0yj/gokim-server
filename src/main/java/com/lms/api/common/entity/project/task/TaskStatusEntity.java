@@ -16,8 +16,9 @@ import lombok.experimental.SuperBuilder;
 public class TaskStatusEntity extends BaseEntity {
 
     @Id
-    @Column(updatable = false, nullable = false, unique = true, length = 50)
-    String taskStatusId; // 예: NOT_STARTED, IN_PROGRESS, COMPLETED
+    @Column(updatable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
     String name;
 

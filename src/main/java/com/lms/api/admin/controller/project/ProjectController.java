@@ -27,7 +27,7 @@ public class ProjectController {
 
     @PostMapping
     @Operation(summary = "프로젝트 생성", description = "새로운 프로젝트를 생성합니다.")
-    public ResponseEntity<CreateProjectResponse> createProject(@LoginUser UserEntity user, @Valid CreateProjectRequest createProjectRequest){
+    public ResponseEntity<CreateProjectResponse> createProject(@LoginUser UserEntity user, @Valid @RequestBody CreateProjectRequest createProjectRequest){
         String projectId = projectService.createProject(user, createProjectRequest);
         return ResponseEntity.ok(new CreateProjectResponse(projectId));
     }

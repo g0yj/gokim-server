@@ -51,7 +51,6 @@ public class TestDataInitializer implements CommandLineRunner {
 
         // 프로젝트 할일 등록
         TaskStatusEntity taskStatus = TaskStatusEntity.builder()
-                        .taskStatusId("NOT_STARTED")
                         .name("시작전")
                         .build();
         taskStatusRepository.save(taskStatus);
@@ -96,10 +95,10 @@ public class TestDataInitializer implements CommandLineRunner {
         TaskEntity task = TaskEntity.builder()
                 .id(id)
                 .title(title)
-                .content(content)
+                .description(content)
                 .sortOrder(sortOrder)
                 .projectEntity(projectId)
-                .taskStatusEntity(taskStatus)
+                .taskStatusId(taskStatus.getId())
                 .createdBy(userEntity.getId())
                 .build();
         taskRepository.save(task);

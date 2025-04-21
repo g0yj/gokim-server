@@ -12,6 +12,8 @@ public interface TaskRepository extends JpaRepository<TaskEntity, String>,
 
     List<TaskEntity> findByProjectEntity_Id(String projectId);
 
+    int countByProjectEntity_Id(String projectId);
+
 
 
 }
