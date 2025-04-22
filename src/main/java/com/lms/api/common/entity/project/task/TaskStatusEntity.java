@@ -22,5 +22,7 @@ public class TaskStatusEntity extends BaseEntity {
 
     String name;
 
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
+    ProjectEntity projectEntity;
 }

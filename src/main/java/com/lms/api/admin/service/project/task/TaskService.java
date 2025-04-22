@@ -65,22 +65,22 @@ public class TaskService {
     }
 
     @Transactional
-    public List<ListTask> listTask(ListTaskRequest listTaskRequest){
-/*
+    public List<ListTask> listTask(ListTaskRequest listTaskRequest) {
+
         QTaskEntity qTaskEntity = QTaskEntity.taskEntity;
         QSubTaskEntity qSubTaskEntity = QSubTaskEntity.subTaskEntity;
         QProjectMemberEntity qProjectMemberEntity = QProjectMemberEntity.projectMemberEntity;
         QUserEntity qUserEntity = QUserEntity.userEntity;
 
-        ProjectEntity ProjectEntity = projectRepository.findById(listTaskRequest.getProjectId())
-                .orElseThrow(()-> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+        ProjectEntity projectEntity = projectRepository.findById(listTaskRequest.getProjectId())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
 
         List<TaskEntity> taskEntities = jpaConfig.queryFactory()
                 .selectFrom(qTaskEntity)
-                .leftJoin(qTaskEntity.subTaskEntities,qSubTaskEntity).fetchJoin() // SubTaskEntity를 즉시 로딩
-                .leftJoin(qTaskEntity.projectEntity.projectMemberEntities,qProjectMemberEntity).fetchJoin()
+                .leftJoin(qTaskEntity.subTaskEntities, qSubTaskEntity).fetchJoin() // SubTaskEntity를 즉시 로딩
+                .leftJoin(qTaskEntity.projectEntity.projectMemberEntities, qProjectMemberEntity).fetchJoin()
                 .leftJoin(qTaskEntity.taskStatusEntity, qTaskEntity.taskStatusEntity).fetchJoin()
-                .leftJoin(qProjectMemberEntity.userEntity,qUserEntity).fetchJoin()
+                .leftJoin(qProjectMemberEntity.userEntity, qUserEntity).fetchJoin()
                 .where(qTaskEntity.projectEntity.id.eq(listTaskRequest.getProjectId()),
                         qTaskEntity.title.contains(listTaskRequest.getSearch()),
                         qTaskEntity.assignedMember.eq(listTaskRequest.getProjectMemberId()))
@@ -90,13 +90,13 @@ public class TaskService {
 
         List<ListTask> taskInfoList = taskEntities.stream()
                 .map(task -> {
-                    List<ListTask.TaskStatus> taskStatuses = Collections.singletonList(
-                            ListTask.TaskStatus.builder()
-                                    .id(task.getTaskStatusEntity().getId())
-                                    .name(task.getTaskStatusEntity().getName())
-                                    .build()
-                    );
+                    // taskStatus를 단일 객체로 설정
+                    ListTask.TaskStatus taskStatus = ListTask.TaskStatus.builder()
+                            .id(task.getTaskStatusEntity().getId())
+                            .name(task.getTaskStatusEntity().getName())
+                            .build();
 
+                    // ProjectMember 리스트 생성
                     List<ListTask.ProjectMember> projectMembers = task.getProjectEntity().getProjectMemberEntities().stream()
                             .map(member -> ListTask.ProjectMember.builder()
                                     .projectMemberId(member.getUserEntity().getId())
@@ -106,19 +106,34 @@ public class TaskService {
                                     .build())
                             .collect(Collectors.toList());
 
+                    // SubTask 리스트 생성
                     List<ListTask.SubTask> subTasks = task.getSubTaskEntities().stream()
-                            .map(subTask -> {
-                                ListTask.SubTask.builder()
-                                        .subTaskId(subTask.getId())
-                                        .taskStatus(ListTask.TaskStatus.builder()
-                                                .id(subTask.getTaskStatusEntity().getId())
-                                                .name(subTask.getTaskStatusEntity().getName())
-                                                .build())
-                                        .build()
-                            })
+                            .map(subTask -> ListTask.SubTask.builder()
+                                    .subTaskId(subTask.getId())
+                                    .taskStatus(ListTask.TaskStatus.builder()
+                                            .id(subTask.getTaskStatusEntity().getId())
+                                            .name(subTask.getTaskStatusEntity().getName())
+                                            .build())
+                                    .build())
+                            .collect(Collectors.toList()); // subTasks를 리스트로 변환
 
-                })*/
-        return null;
+                    return ListTask.builder()
+                            .id(task.getId())
+                            .title(task.getTitle())
+                            .sortOrder(task.getSortOrder())
+                            .taskStatus(taskStatus)
+                            .totalSubTask(task.getSubTaskEntities().size())
+                            .completedSubTaskCount((int) task.getSubTaskEntities().stream()
+                                    .filter(sub -> sub.getTaskStatusEntity().getId().equals(listTaskRequest.getProjectMemberId())) // 완료된 하위 작업 수
+                                    .count())
+                            .subTasks(subTasks)  // subTasks 설정
+                            .projectId(task.getProjectEntity().getId())
+                            .projectMember(projectMembers)  // projectMembers 설정
+                            .build();
+                })
+                .collect(Collectors.toList());  // ListTask로 변환된 리스트 반환
+
+        return taskInfoList;
     }
 }
 

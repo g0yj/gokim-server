@@ -40,7 +40,7 @@ public class ListTask {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class SubTask {
-        String subTaskId;
+        Long subTaskId;
         TaskStatus taskStatus;
     }
 
