@@ -25,7 +25,7 @@ public class CreateTaskRequest {
 
     @Schema(description = "이슈 만들기 제목")
     @NotNull(message = "status식별키로, 검토중, 완료와 같은 상태의 식별키 필수")
-    long taskStatusId;
+    Long taskStatusId;
 
 
 }

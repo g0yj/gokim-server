@@ -2,6 +2,10 @@ package com.lms.api.admin.controller.project.task;
 
 
 import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
+import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
+import com.lms.api.admin.controller.dto.project.task.ListTaskResponse;
+import com.lms.api.admin.service.dto.project.task.ListTask;
+import com.lms.api.admin.service.dto.project.task.Task;
 import com.lms.api.admin.service.project.task.TaskService;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.LoginUser;
@@ -13,22 +17,28 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
 @Slf4j
 public class TaskController {
     private final TaskService taskService;
+    private final TaskControllerMapper taskControllerMapper;
 
     @PostMapping
-    @Operation(summary = "이슈 만들기", description = "todo를 추가할 때 사용합니다.")
+    @Operation(summary = "이슈 만들기", description = "task를 추가할 때 사용합니다.")
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){
         return ResponseEntity.ok(taskService.createTask(user, createTaskRequest));
     }
 
-  /*  @GetMapping
-    @Operation(summary = "todo 목록" , description = "상태에 따라 그룹핑했습니다")
-    public List<ListTaskResponse> listTask (@LoginUser UserEntity user){
-        List<Task> tasks = taskService.listTask()*/
+   @GetMapping
+   @Operation(summary = "Task 목록" , description = "상태에 따라 그룹핑했습니다")
+   public List<ListTaskResponse> listTask (@RequestBody ListTaskRequest listTaskRequest){
+        List<ListTask> tasks = taskService.listTask(listTaskRequest);
+        return taskControllerMapper.toListTaskResponse(tasks);
+
+       }
     }
 

@@ -91,14 +91,14 @@ public class TestDataInitializer implements CommandLineRunner {
         projectMemberRepository.save(member);
     }
 
-    private void addTask(String id, String title, String content, int sortOrder, ProjectEntity projectId , UserEntity userEntity,TaskStatusEntity taskStatus ) {
+    private void addTask(String id, String title, String content, int sortOrder, ProjectEntity projectId , UserEntity userEntity,TaskStatusEntity taskStatusEntity ) {
         TaskEntity task = TaskEntity.builder()
                 .id(id)
                 .title(title)
                 .description(content)
                 .sortOrder(sortOrder)
                 .projectEntity(projectId)
-                .taskStatusId(taskStatus.getId())
+                .taskStatusEntity(taskStatusEntity)
                 .createdBy(userEntity.getId())
                 .build();
         taskRepository.save(task);

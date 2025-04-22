@@ -22,4 +22,5 @@ public class TaskStatusEntity extends BaseEntity {
 
     String name;
 
+
 }
