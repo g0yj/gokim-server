@@ -13,16 +13,19 @@ import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectEntity;
 import com.lms.api.common.entity.project.QProjectMemberEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
+import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
+import com.lms.api.common.repository.project.task.TaskStatusRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,6 +39,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final TaskRepository taskRepository;
+    private final TaskStatusRepository taskStatusRepository;
     private final ProjectServiceMapper projectServiceMapper;
 
 
@@ -61,6 +65,15 @@ public class ProjectService {
                 .build();
 
         projectMemberRepository.save(owner);
+
+        List<String> statusNames = Arrays.asList("Idea", "Todo", "InProgress", "Done");
+
+        statusNames.stream()
+                .map(name -> TaskStatusEntity.builder()
+                        .projectEntity(project)
+                        .name(name)
+                        .build())
+                .forEach(taskStatusRepository::save);
 
         return projectId;
     }
