@@ -21,9 +21,9 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins(
                         "http://localhost:5173",
                         "http://localhost:8081",
-                        "http://localhost:8084"
+                        "http://localhost:8084",
+                        "https://0aa8-58-228-2-217.ngrok-free.app"
                 )
-                .allowedOriginPatterns("https://*.ngrok-free.app") // ngrok 주소 와일드카드
                 .allowedMethods("*")       // GET, POST, PUT, DELETE 등 모두 허용
                 .allowedHeaders("*")       // 모든 헤더 허용
                 .allowCredentials(true);   // 쿠키/세션 포함 허용
