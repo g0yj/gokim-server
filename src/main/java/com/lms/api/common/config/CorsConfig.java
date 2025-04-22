@@ -1,12 +1,14 @@
 package com.lms.api.common.config;
 
+import jakarta.servlet.Filter;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
 
 import java.util.List;
 
@@ -14,7 +16,27 @@ import java.util.List;
  * Spring Security를 사용 중이라면 SecurityFilterChain에 .cors()를 추가하여 CORS 설정을 활성화해야함
  */
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class CorsConfig {
+    @Bean
+    @Order(Ordered.HIGHEST_PRECEDENCE) // 필터 체인에서 가장 먼저 실행
+    public Filter corsFilter() {
+        System.out.println("✅✅✅ CorsFilter 등록됨");
+
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(List.of("http://localhost:5173",
+                "http://localhost:8081",
+                "http://localhost:8084",
+                "https://0aa8-58-228-2-217.ngrok-free.app"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return new CorsFilter(source);
+    }
+/*
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**") // or "/**" 전체 경로 허용도 가능
@@ -28,6 +50,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")       // 모든 헤더 허용
                 .allowCredentials(true);   // 쿠키/세션 포함 허용
     }
+*/
 
 /*
     @Bean

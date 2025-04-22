@@ -16,6 +16,7 @@ spring:
 logging:
   level:
     reactor.netty.http.client: DEBUG
+    org.springframework.web.filter.CorsFilter: DEBUG
 lms:
   file:
     host: http://localhost:8081

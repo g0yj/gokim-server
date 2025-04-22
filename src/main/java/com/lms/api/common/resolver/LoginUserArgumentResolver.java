@@ -34,16 +34,24 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) {
 
-        String resolvedUserId;
-        try {
-            resolvedUserId = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        } catch (Exception e) {
-            resolvedUserId = "SampleOwner"; // fallback
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // 인증이 없거나 anonymousUser일 경우 테스트 유저로 대체
+        if (authentication == null ||
+                !authentication.isAuthenticated() ||
+                authentication.getPrincipal().equals("anonymousUser")) {
+
+            // 테스트 유저 ID로 대체 (DB에 있는 값이어야 함)
+            final String testUserId = "SampleOwner";
+
+            return userRepository.findById(testUserId)
+                    .orElseThrow(() -> new RuntimeException("테스트 유저가 없습니다: " + testUserId));
         }
 
-        final String userId = resolvedUserId;
+        String userId = (String) authentication.getPrincipal();
 
         return userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("유저를 찾을 수 없습니다: " + userId));
     }
+
 }
