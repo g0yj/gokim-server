@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -12,8 +14,22 @@ import java.util.List;
  * Spring Security를 사용 중이라면 SecurityFilterChain에 .cors()를 추가하여 CORS 설정을 활성화해야함
  */
 @Configuration
-public class CorsConfig {
+public class CorsConfig implements WebMvcConfigurer {
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**") // or "/**" 전체 경로 허용도 가능
+                .allowedOrigins(
+                        "http://localhost:5173",
+                        "http://localhost:8081",
+                        "http://localhost:8084"
+                )
+                .allowedOriginPatterns("https://*.ngrok-free.app") // ngrok 주소 와일드카드
+                .allowedMethods("*")       // GET, POST, PUT, DELETE 등 모두 허용
+                .allowedHeaders("*")       // 모든 헤더 허용
+                .allowCredentials(true);   // 쿠키/세션 포함 허용
+    }
 
+/*
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
@@ -30,4 +46,6 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+*/
+
 }
