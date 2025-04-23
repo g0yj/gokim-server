@@ -5,12 +5,14 @@ import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.task.SubTaskEntity;
+import com.lms.api.common.entity.project.task.TaskCommentEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.SubTaskRepository;
+import com.lms.api.common.repository.project.task.TaskCommentRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
 import com.lms.api.common.repository.project.task.TaskStatusRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +34,7 @@ public class TestDataInitializer implements CommandLineRunner {
     private final TaskRepository taskRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final SubTaskRepository subTaskRepository;
+    private final TaskCommentRepository taskCommentRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -79,6 +82,9 @@ public class TestDataInitializer implements CommandLineRunner {
 
         addSubTask("첫번째 하위 항목입니다." ,task, idea, assignee);
         addSubTask("두번째 하위 항목입니다." ,task, done, assignee);
+
+        addTaskComment("첫번째 댓글!!",task, member2.getId());
+        addTaskComment("두번째 댓글!!",task, owner.getId());
 
         log.debug("샘플 데이터 삽입 완료");
     }
@@ -141,6 +147,15 @@ public class TestDataInitializer implements CommandLineRunner {
                 .assignee(assignee)
                 .build();
         subTaskRepository.save(subTask);
+    }
+
+    private void addTaskComment(String content, TaskEntity taskEntity , String userEntity){
+        TaskCommentEntity taskComment = TaskCommentEntity.builder()
+                .content(content)
+                .taskEntity(taskEntity)
+                .createdBy(userEntity)
+                .build();
+        taskCommentRepository.save(taskComment);
     }
 
 }

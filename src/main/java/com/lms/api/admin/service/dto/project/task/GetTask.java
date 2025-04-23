@@ -1,4 +1,4 @@
-package com.lms.api.admin.controller.dto.project.task;
+package com.lms.api.admin.service.dto.project.task;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,25 +11,20 @@ import java.util.List;
 @AllArgsConstructor@NoArgsConstructor@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(description = "Task 상세 조회")
-public class GetTaskResponse {
+public class GetTask {
 
     @Schema(description = "Task 식별키")
     String id;
     @Schema(description = "제목")
     String title;
-    @Schema(description = "담당자 식별키")
-    String assignedMemberId;
-    @Schema(description = "담당자명")
-    String assignedName;
+    @Schema(description = "담당자")
+    ProjectMember assignedMember;
     @Schema(description = "설명")
     String description;
     @Schema(description = "보고자")
     String writer;
-    @Schema(description = "task 상태 식별키")
-    long taskStatusId;
-    @Schema(description = "task 상태명")
-    String taskStatusName;
-
+    @Schema(description = "task 상태")
+    TaskStatus taskStatus;
 
     @Schema(description = "총 하위 항목 갯수")
     int totalSubTask;
@@ -61,31 +56,37 @@ public class GetTaskResponse {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class SubTask {
-        @Schema(description = "하위 항목 식별키")
-        long subTaskId;
-        @Schema(description = "하위 항목 내용")
+        long id;
         String content;
-        @Schema(description = "하위 항목 담당자 식별키")
         String subTaskAssignedMemberId;
-        @Schema(description = "하위 항목 담당자 이름")
         String subTaskAssignedMemberName;
-        @Schema(description = "하위 항목 처리 상태 식별키")
-        long subTaskStatusId;
-        @Schema(description = "하위 항목 처리 상태 이름")
-        String subStatusName;
+        TaskStatus subTaskStatus;
 
     }
 
+    @Getter
+    @Builder@AllArgsConstructor@NoArgsConstructor
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class TaskStatus {
+        long id;
+        String name;
+
+    }
 
     @Getter
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class TaskComment {
-        @Schema(description = "댓글 식별키")
-        long taskCommentId;
-        @Schema(description = "댓글 내용")
-        String taskCommentContent;
+        long id;
+        String content;
     }
 
+    @Getter@AllArgsConstructor
+    @Builder
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class ProjectMember {
+        String projectMemberId;
+        String projectMemberName;
+    }
 
 }

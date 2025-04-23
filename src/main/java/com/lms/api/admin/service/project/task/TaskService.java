@@ -2,7 +2,7 @@ package com.lms.api.admin.service.project.task;
 
 
 import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
-import com.lms.api.admin.controller.dto.project.task.GetTaskResponse;
+import com.lms.api.admin.service.dto.project.task.GetTask;
 import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
 import com.lms.api.admin.service.dto.project.task.ListTask;
 import com.lms.api.common.config.JpaConfig;
@@ -21,7 +21,6 @@ import com.lms.api.common.repository.project.task.*;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.sl.draw.geom.GuideIf;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -186,7 +185,7 @@ public class TaskService {
     }
 
     @Transactional
-    public GetTaskResponse getTask(String id) {
+    public GetTask getTask(String id) {
         TaskEntity taskEntity = taskRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
@@ -196,19 +195,19 @@ public class TaskService {
 
         // subtask
         String taskId = taskEntity.getId();
-        List<GetTaskResponse.SubTask> subTasks = subTaskRepository.findAll().stream()
+        List<GetTask.SubTask> subTasks = subTaskRepository.findAll().stream()
                 .filter(sub -> sub.getTaskEntity().getId().equals(taskId))
                 .map(subTaskEntity -> {
                     UserEntity assigneeUser = userRepository.findById(subTaskEntity.getAssignee().getProjectMemberId())
                             .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
                     // SubTask 매핑
-                    return GetTaskResponse.SubTask.builder()
+                    return GetTask.SubTask.builder()
                             .id(subTaskEntity.getId())
                             .content(subTaskEntity.getContent())
                             .subTaskAssignedMemberName(assigneeUser.getName())
                             .subTaskAssignedMemberId(assigneeUser.getId())
-                            .subTaskStatus(GetTaskResponse.TaskStatus.builder()
+                            .subTaskStatus(GetTask.TaskStatus.builder()
                                     .id(subTaskEntity.getTaskStatusEntity().getId())
                                     .name(subTaskEntity.getTaskStatusEntity().getName())
                                     .build())
@@ -232,18 +231,18 @@ public class TaskService {
                 .collect(Collectors.toList());
 
         // task response 생성
-        return GetTaskResponse.builder()
+        return GetTask.builder()
                 .id(id)
                 .title(taskEntity.getTitle())
                 .assignedMember(
-                        GetTaskResponse.ProjectMember.builder()
+                        GetTask.ProjectMember.builder()
                                 .projectMemberId(assignedMember.get().getId())
                                 .projectMemberName(assignedMember.get().getName())
                                 .build()
                 )
                 .description(taskEntity.getDescription())
                 .writer(writer.get().getName())
-                .taskStatus(GetTaskResponse.TaskStatus.builder()
+                .taskStatus(GetTask.TaskStatus.builder()
                         .id(taskEntity.getTaskStatusEntity().getId())
                         .name(taskEntity.getTaskStatusEntity().getName())
                         .build())
