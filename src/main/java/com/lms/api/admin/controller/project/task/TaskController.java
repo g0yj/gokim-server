@@ -5,12 +5,11 @@ import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
 import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
 import com.lms.api.admin.controller.dto.project.task.ListTaskResponse;
 import com.lms.api.admin.service.dto.project.task.ListTask;
-import com.lms.api.admin.service.dto.project.task.Task;
 import com.lms.api.admin.service.project.task.TaskService;
-import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.LoginUser;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/task")
+@Tag(name = "Task API", description = "Task 관련 API입니다")
 @RequiredArgsConstructor
 @Slf4j
 public class TaskController {

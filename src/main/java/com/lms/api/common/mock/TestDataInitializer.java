@@ -4,11 +4,13 @@ import com.lms.api.common.dto.Role;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
+import com.lms.api.common.entity.project.task.SubTaskEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
+import com.lms.api.common.repository.project.task.SubTaskRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
 import com.lms.api.common.repository.project.task.TaskStatusRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class TestDataInitializer implements CommandLineRunner {
     private final ProjectMemberRepository projectMemberRepository;
     private final TaskRepository taskRepository;
     private final TaskStatusRepository taskStatusRepository;
+    private final SubTaskRepository subTaskRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -50,7 +53,7 @@ public class TestDataInitializer implements CommandLineRunner {
         projectRepository.save(project);
 
         // 프로젝트 초대
-        addProjectMember(project, owner, Role.OWNER);
+        ProjectMemberEntity assignee = addProjectMember(project, owner, Role.OWNER);
         addProjectMember(project, member1, Role.MEMBER);
         addProjectMember(project, member2, Role.MEMBER);
 
@@ -69,10 +72,13 @@ public class TestDataInitializer implements CommandLineRunner {
         TaskStatusEntity inProgress = taskStatusRepository.findByNameAndProjectEntity_Id("InProgress", project.getId());
         TaskStatusEntity done = taskStatusRepository.findByNameAndProjectEntity_Id("Done", project.getId());
 
-        addTask("T1111", "테이블 설계", "테이블 설계에 관련된 내용입니다. 추후 에디터 사용", 1, project, owner, idea);
+        TaskEntity task = addTask("T1111", "테이블 설계", "테이블 설계에 관련된 내용입니다. 추후 에디터 사용", 1, project, owner, idea);
         addTask("T2222", "프로젝트 관련 API 생성", "CRUD에 대한 API 설명을 추가해주세요", 2, project, owner, todo);
         addTask("T3333", "보드 관련 API 생성", "멤버가 등록한 TODO입니다", 3, project, member1, inProgress);
         addTask("T4444", "수정 사항 확인", "수정된 내용 체크했으면 문자로 알려주세요", 4, project, member1, done);
+
+        addSubTask("첫번째 하위 항목입니다." ,task, idea, assignee);
+        addSubTask("두번째 하위 항목입니다." ,task, done, assignee);
 
         log.debug("샘플 데이터 삽입 완료");
     }
@@ -97,7 +103,7 @@ public class TestDataInitializer implements CommandLineRunner {
     /**
      * 프로젝트 멤버를 추가하는 메서드
      */
-    private void addProjectMember(ProjectEntity project, UserEntity user, Role role) {
+    private ProjectMemberEntity addProjectMember(ProjectEntity project, UserEntity user, Role role) {
         ProjectMemberEntity member = ProjectMemberEntity.builder()
                 .projectId(project.getId())
                 .projectMemberId(user.getId())
@@ -106,21 +112,35 @@ public class TestDataInitializer implements CommandLineRunner {
                 .userEntity(user)
                 .build();
         projectMemberRepository.save(member);
+        return member;
     }
 
     /**
      * Task를 추가하는 메서드
      */
-    private void addTask(String id, String title, String content, int sortOrder, ProjectEntity projectId , UserEntity userEntity, TaskStatusEntity taskStatusEntity ) {
+    private TaskEntity addTask(String id, String title, String content, int sortOrder, ProjectEntity projectId , UserEntity userEntity, TaskStatusEntity taskStatusEntity ) {
         TaskEntity task = TaskEntity.builder()
                 .id(id)
                 .title(title)
                 .description(content)
                 .sortOrder(sortOrder)
+                .assignedMember(userEntity.getId())
                 .projectEntity(projectId)
                 .taskStatusEntity(taskStatusEntity)
                 .createdBy(userEntity.getId())
                 .build();
         taskRepository.save(task);
+        return task;
     }
+
+    private void addSubTask(String content, TaskEntity taskEntity, TaskStatusEntity taskStatusEntity, ProjectMemberEntity assignee  ) {
+        SubTaskEntity subTask = SubTaskEntity.builder()
+                .content(content)
+                .taskEntity(taskEntity)
+                .taskStatusEntity(taskStatusEntity)
+                .assignee(assignee)
+                .build();
+        subTaskRepository.save(subTask);
+    }
+
 }

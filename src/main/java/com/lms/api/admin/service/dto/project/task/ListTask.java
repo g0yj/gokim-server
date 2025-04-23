@@ -13,18 +13,27 @@ import java.util.List;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ListTask {
-    String id;
-    String title;
-    int sortOrder;
+
     TaskStatus taskStatus;
+    List<TaskItem> tasks;
 
-    int totalSubTask;
-    int completedSubTaskCount;
 
-    List<ProjectMember> projectMember;
-    List<SubTask> subTasks;
+    @Getter@Setter
+    @Builder
+    @FieldDefaults(level = AccessLevel.PRIVATE)
+    public static class TaskItem {
+        String id;
+        String title;
+        int sortOrder;
+        TaskStatus taskStatus;
 
-    String projectId;
+        ProjectMember assignedMember;
+
+        List<SubTask> subTasks;
+        int totalSubTask;
+        int completedSubTaskCount;
+    }
+
 
     @Getter
     @Builder
