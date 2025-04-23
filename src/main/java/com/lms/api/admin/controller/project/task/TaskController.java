@@ -2,6 +2,7 @@ package com.lms.api.admin.controller.project.task;
 
 
 import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
+import com.lms.api.admin.controller.dto.project.task.GetTaskResponse;
 import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
 import com.lms.api.admin.controller.dto.project.task.ListTaskResponse;
 import com.lms.api.admin.service.dto.project.task.ListTask;
@@ -28,7 +29,7 @@ public class TaskController {
     private final TaskControllerMapper taskControllerMapper;
 
     @PostMapping
-    @Operation(summary = "이슈 만들기", description = "task를 추가할 때 사용합니다.")
+    @Operation(summary = "Task 만들기", description = "task를 추가할 때 사용합니다.")
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){
         return ResponseEntity.ok(taskService.createTask(user, createTaskRequest));
     }
@@ -38,7 +39,13 @@ public class TaskController {
    public List<ListTaskResponse> listTask (@RequestBody ListTaskRequest listTaskRequest){
         List<ListTask> tasks = taskService.listTask(listTaskRequest);
         return taskControllerMapper.toListTaskResponse(tasks);
+   }
 
-       }
-    }
+   @GetMapping("/{id}")
+   @Operation(summary = "Task 상세조회", description = "task 목록 중 하나 클릭 시 식별키(id)를 사용해 상세 페이지로 이동합니다")
+    public GetTaskResponse getTask (@PathVariable String id) {
+        return taskService.getTask(id);
+   }
+
+}
 

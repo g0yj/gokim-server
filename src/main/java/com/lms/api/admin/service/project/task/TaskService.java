@@ -2,6 +2,7 @@ package com.lms.api.admin.service.project.task;
 
 
 import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
+import com.lms.api.admin.controller.dto.project.task.GetTaskResponse;
 import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
 import com.lms.api.admin.service.dto.project.task.ListTask;
 import com.lms.api.common.config.JpaConfig;
@@ -13,12 +14,14 @@ import com.lms.api.common.entity.project.QProjectMemberEntity;
 import com.lms.api.common.entity.project.task.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
+import com.lms.api.common.repository.UserRepository;
+import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
-import com.lms.api.common.repository.project.task.TaskRepository;
-import com.lms.api.common.repository.project.task.TaskStatusRepository;
+import com.lms.api.common.repository.project.task.*;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.sl.draw.geom.GuideIf;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,11 +39,16 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TaskStatusRepository taskStatusRepository;
+    private final UserRepository userRepository;
+    private final ProjectMemberRepository projectMemberRepository;
+    private final SubTaskRepository subTaskRepository;
+    private final TaskCommentRepository taskCommentRepository;
+    private final TaskFileRepository taskFileRepository;
+    private final TaskServiceMapper taskServiceMapper;
 
     @Transactional
     public String createTask(UserEntity user , CreateTaskRequest createTaskRequest){
 
-        // 현재 반환타입이 Long으로 Optional임. orElseThrow로 예외 처리 필수
         TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(createTaskRequest.getTaskStatusId())
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
 
@@ -177,7 +185,75 @@ public class TaskService {
                 .toList();
     }
 
+    @Transactional
+    public GetTaskResponse getTask(String id) {
+        TaskEntity taskEntity = taskRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
+        // task
+        Optional<UserEntity> assignedMember = userRepository.findById(taskEntity.getAssignedMember());
+        Optional<UserEntity> writer = userRepository.findById(taskEntity.getCreatedBy());
+
+        // subtask
+        String taskId = taskEntity.getId();
+        List<GetTaskResponse.SubTask> subTasks = subTaskRepository.findAll().stream()
+                .filter(sub -> sub.getTaskEntity().getId().equals(taskId))
+                .map(subTaskEntity -> {
+                    UserEntity assigneeUser = userRepository.findById(subTaskEntity.getAssignee().getProjectMemberId())
+                            .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+                    // SubTask 매핑
+                    return GetTaskResponse.SubTask.builder()
+                            .id(subTaskEntity.getId())
+                            .content(subTaskEntity.getContent())
+                            .subTaskAssignedMemberName(assigneeUser.getName())
+                            .subTaskAssignedMemberId(assigneeUser.getId())
+                            .subTaskStatus(GetTaskResponse.TaskStatus.builder()
+                                    .id(subTaskEntity.getTaskStatusEntity().getId())
+                                    .name(subTaskEntity.getTaskStatusEntity().getName())
+                                    .build())
+                            .build();
+                })
+                .collect(Collectors.toList());
+
+        // 완료된 하위 작업 갯수
+        long completedCount = subTasks.stream()
+                .filter(sub -> sub.getSubTaskStatus() != null && sub.getSubTaskStatus().getId() == 4)
+                .count();
+
+        // comment
+        List<TaskCommentEntity> taskComments = taskCommentRepository.findAll().stream()
+                .filter(comment -> comment.getTaskEntity().getId().equals(taskId))
+                .collect(Collectors.toList());
+
+        // file
+        List<TaskFileEntity> taskFiles = taskFileRepository.findAll().stream()
+                .filter(file -> file.getTaskEntity().getId().equals(taskId))
+                .collect(Collectors.toList());
+
+        // task response 생성
+        return GetTaskResponse.builder()
+                .id(id)
+                .title(taskEntity.getTitle())
+                .assignedMember(
+                        GetTaskResponse.ProjectMember.builder()
+                                .projectMemberId(assignedMember.get().getId())
+                                .projectMemberName(assignedMember.get().getName())
+                                .build()
+                )
+                .description(taskEntity.getDescription())
+                .writer(writer.get().getName())
+                .taskStatus(GetTaskResponse.TaskStatus.builder()
+                        .id(taskEntity.getTaskStatusEntity().getId())
+                        .name(taskEntity.getTaskStatusEntity().getName())
+                        .build())
+                .totalSubTask(subTasks.size())
+                .completedSubTaskCount((int) completedCount)
+                .subTasks(subTasks)
+                .taskComments(taskServiceMapper.toTaskComment(taskComments))
+                .files(taskServiceMapper.toFile(taskFiles))
+                .build();
+    }
 }
 
 

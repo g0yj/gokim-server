@@ -42,7 +42,8 @@ public enum ApiErrorCode implements ApiError {
   PROJECT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0200", "찾을 수 없는 프로젝트입니다."),
 
   //task error
-  TASK_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST,"0300", "찾을 수 없는 상태입니다.")
+  TASK_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST,"0300", "찾을 수 없는 상태입니다."),
+  TASK_NOT_FOUND(HttpStatus.BAD_REQUEST,"0301", "찾을 수 없는 task입니다.")
 
   ;
   HttpStatusCode httpStatusCode;
