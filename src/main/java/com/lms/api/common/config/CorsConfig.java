@@ -27,7 +27,7 @@ public class CorsConfig {
         config.setAllowedOrigins(List.of("http://localhost:5173",
                 "http://localhost:8081",
                 "http://localhost:8084",
-                "https://0aa8-58-228-2-217.ngrok-free.app"));
+                "https://e28e-58-228-2-217.ngrok-free.app"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowedMethods(List.of("*"));
 
