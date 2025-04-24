@@ -20,7 +20,7 @@ logging:
 lms:
   file:
     host: http://localhost:8081
-    upload-dir: C:\Temp\
+    upload-dir: C:\Users\k\Desktop\gokim-server\file\
 
 #encryption:
 #  key-url: https://englishchannel.co.kr/consul/v1/kv/config/application/encryption.key

@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name= "task_file")
-@Getter@Setter
+@Getter@Setter@AllArgsConstructor
 @ToString(callSuper = true)@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskFileEntity extends BaseEntity {

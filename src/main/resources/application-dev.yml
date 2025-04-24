@@ -8,5 +8,5 @@ spring:
     password: 1234
 lms:
   file:
-    host: http://englishchannel.co.kr:8080
-    upload-dir: /Users/neptune/Downloads
+    host: http://localhost:8084
+    upload-dir: C:\Users\k\Desktop\file\

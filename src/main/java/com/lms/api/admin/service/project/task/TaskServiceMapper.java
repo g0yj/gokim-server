@@ -2,12 +2,16 @@ package com.lms.api.admin.service.project.task;
 
 
 import com.lms.api.admin.service.dto.project.task.GetTask;
+import com.lms.api.admin.service.dto.project.task.UpdateTask;
 import com.lms.api.common.entity.project.task.SubTaskEntity;
 import com.lms.api.common.entity.project.task.TaskCommentEntity;
+import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.entity.project.task.TaskFileEntity;
 import com.lms.api.common.mapper.ServiceMapper;
 import com.lms.api.common.mapper.ServiceMapperConfig;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -27,4 +31,7 @@ public interface TaskServiceMapper {
     GetTask.File toFile(TaskFileEntity taskFileEntity);
 
     List<GetTask.File> toFile(List<TaskFileEntity> taskFileEntities);
+
+    @Mapping(target = "id", ignore = true)
+    void mapTaskEntity (UpdateTask updateTask, @MappingTarget TaskEntity taskEntity);
 }

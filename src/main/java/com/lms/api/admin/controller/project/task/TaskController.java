@@ -1,11 +1,10 @@
 package com.lms.api.admin.controller.project.task;
 
 
-import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
-import com.lms.api.admin.controller.dto.project.task.GetTaskResponse;
-import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
-import com.lms.api.admin.controller.dto.project.task.ListTaskResponse;
+import com.lms.api.admin.controller.dto.project.task.*;
+import com.lms.api.admin.service.dto.project.task.GetTask;
 import com.lms.api.admin.service.dto.project.task.ListTask;
+import com.lms.api.admin.service.dto.project.task.UpdateTask;
 import com.lms.api.admin.service.project.task.TaskService;
 import com.lms.api.common.dto.LoginUser;
 import com.lms.api.common.entity.UserEntity;
@@ -44,8 +43,16 @@ public class TaskController {
    @GetMapping("/{id}")
    @Operation(summary = "Task 상세조회", description = "task 목록 중 하나 클릭 시 식별키(id)를 사용해 상세 페이지로 이동합니다")
     public GetTaskResponse getTask (@PathVariable String id) {
-        return taskService.getTask(id);
+        GetTask task = taskService.getTask(id);
+        return taskControllerMapper.toGetTaskResponse(task);
    }
 
+   @PutMapping("/{id}")
+   @Operation(summary = "Task 수정", description = " 상세 조회에서 수정 시 사용 , 목록 조회에서 순서 변경 시 사용")
+    public ResponseEntity<?> updateTask (@LoginUser UserEntity user, @PathVariable String id, UpdateTaskRequest updateTaskRequest){
+       UpdateTask updateTask = taskControllerMapper.toUpdateTask(user.getId(), id, updateTaskRequest);
+       taskService.updateTask(updateTask);
+        return ResponseEntity.ok().build();
+   }
 }
 

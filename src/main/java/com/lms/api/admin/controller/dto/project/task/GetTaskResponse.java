@@ -29,6 +29,8 @@ public class GetTaskResponse {
     long taskStatusId;
     @Schema(description = "task 상태명")
     String taskStatusName;
+    @Schema(description = "첨부된 파일 (변수명이 추후에 변경될 수 있습니다)")
+    List<File> files;
 
 
     @Schema(description = "총 하위 항목 갯수")
@@ -36,8 +38,6 @@ public class GetTaskResponse {
     @Schema(description = "하위 항목의 상태가 '완료' 인 갯수")
     int completedSubTaskCount;
 
-    @Schema(description = "첨부된 파일 (변수명이 추후에 변경될 수 있습니다)")
-    List<File> files;
 
     @Schema(description = "하위 업무")
     List<SubTask> subTasks;
@@ -51,10 +51,12 @@ public class GetTaskResponse {
     public static class File {
         @Schema(description = "이미지 식별키")
         long id;
-        @Schema(description = "이미지 링크. src에 넣어야 할 주소")
+        @Schema(description = "서버에 저장된 파일명")
         String file;
         @Schema(description = "이미지 파일명")
         String originalFile;
+        @Schema(description = "이미지 링크. src에 넣어야 할 주소")
+        String fileUrl;
     }
 
     @Getter

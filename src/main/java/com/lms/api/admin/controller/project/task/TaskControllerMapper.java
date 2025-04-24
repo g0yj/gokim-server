@@ -2,8 +2,10 @@ package com.lms.api.admin.controller.project.task;
 
 import com.lms.api.admin.controller.dto.project.task.GetTaskResponse;
 import com.lms.api.admin.controller.dto.project.task.ListTaskResponse;
+import com.lms.api.admin.controller.dto.project.task.UpdateTaskRequest;
 import com.lms.api.admin.service.dto.project.task.GetTask;
 import com.lms.api.admin.service.dto.project.task.ListTask;
+import com.lms.api.admin.service.dto.project.task.UpdateTask;
 import com.lms.api.common.entity.project.task.SubTaskEntity;
 import com.lms.api.common.mapper.ControllerMapper;
 import com.lms.api.common.mapper.ControllerMapperConfig;
@@ -55,4 +57,12 @@ public interface TaskControllerMapper {
 
     @IterableMapping(elementTargetType = GetTaskResponse.TaskComment.class)
     List<GetTaskResponse.TaskComment> toTaskComment(List<GetTask.TaskComment> taskComments);
+
+    @Mapping(target = "multipartFiles" , source = "updateTaskRequest.files")
+    @Mapping(target = "file" , ignore = true)
+    @Mapping(target = "id" , source = "taskId")
+    @Mapping(target = "modifiedBy" , source = "modifiedBy")
+    @Mapping(target = "assignedMember" , source = "updateTaskRequest.assignedMemberId")
+    @Mapping(target = "taskStatusId" , source = "updateTaskRequest.taskStatusId")
+    UpdateTask toUpdateTask(String modifiedBy, String taskId, UpdateTaskRequest updateTaskRequest);
 }

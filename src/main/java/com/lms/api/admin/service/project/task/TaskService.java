@@ -5,6 +5,7 @@ import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
 import com.lms.api.admin.service.dto.project.task.GetTask;
 import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
 import com.lms.api.admin.service.dto.project.task.ListTask;
+import com.lms.api.admin.service.dto.project.task.UpdateTask;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
@@ -18,6 +19,8 @@ import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.*;
+import com.lms.api.common.service.FileService;
+import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +36,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TaskService {
-
     private final JpaConfig jpaConfig;
+    private final FileService fileService;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TaskStatusRepository taskStatusRepository;
@@ -252,6 +255,49 @@ public class TaskService {
                 .taskComments(taskServiceMapper.toTaskComment(taskComments))
                 .files(taskServiceMapper.toFile(taskFiles))
                 .build();
+    }
+
+    @Transactional
+    public void updateTask(UpdateTask updateTask){
+        TaskEntity taskEntity = taskRepository.findById(updateTask.getId())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
+
+        // 수정
+        taskServiceMapper.mapTaskEntity(updateTask , taskEntity);
+
+        TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(updateTask.getTaskStatusId())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
+
+        taskEntity.setTaskStatusEntity(taskStatusEntity);
+
+        // 파일 삭제 (서버에서는 삭제 안됨)
+        if(ObjectUtils.isNotEmpty(updateTask.getDeleteFiles())){
+            updateTask.getDeleteFiles()
+                    .forEach(fileId -> taskEntity.getTaskFileEntities().stream()
+                            .filter(taskFileEntity -> taskFileEntity.getId().equals(fileId))
+                            .findFirst()
+                            .ifPresent(taskFileEntity -> taskEntity.getTaskFileEntities()
+                                    .remove(taskFileEntity)));
+        }
+        //파일 등록
+        Map<String, String> files = fileService.upload(updateTask.getMultipartFiles());
+        if(ObjectUtils.isNotEmpty(files)){
+            List<TaskFileEntity> taskFileEntities = files.entrySet().stream()
+                    .map(entry ->{
+                        TaskFileEntity taskFileEntity = TaskFileEntity.builder()
+                                .originalFile(entry.getKey())
+                                .file(entry.getValue())
+                                .modifiedBy(updateTask.getModifiedBy())
+                                .taskEntity(taskEntity)
+                                .build();
+                        return taskFileEntity;
+                    })
+                    .toList();
+            taskEntity.getTaskFileEntities().addAll(taskFileEntities);
+        }
+
+        taskRepository.save(taskEntity);
+
     }
 }
 
