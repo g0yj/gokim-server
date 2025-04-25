@@ -1,12 +1,13 @@
 package com.lms.api.admin.controller.project.task;
 
+import com.lms.api.admin.controller.dto.project.task.ChangeTaskRequest;
 import com.lms.api.admin.controller.dto.project.task.GetTaskResponse;
 import com.lms.api.admin.controller.dto.project.task.ListTaskResponse;
 import com.lms.api.admin.controller.dto.project.task.UpdateTaskRequest;
+import com.lms.api.admin.service.dto.project.task.ChangeTask;
 import com.lms.api.admin.service.dto.project.task.GetTask;
 import com.lms.api.admin.service.dto.project.task.ListTask;
 import com.lms.api.admin.service.dto.project.task.UpdateTask;
-import com.lms.api.common.entity.project.task.SubTaskEntity;
 import com.lms.api.common.mapper.ControllerMapper;
 import com.lms.api.common.mapper.ControllerMapperConfig;
 import org.mapstruct.IterableMapping;
@@ -24,6 +25,11 @@ public interface TaskControllerMapper {
     @Mapping(target = "tasks", source = "tasks")
     ListTaskResponse toListTaskResponse(ListTask task);
 
+    @Mapping(target = "modifiedBy", source = "user")
+    @Mapping(target = "changes", source = "changeTaskRequest.changes")
+    ChangeTask toChangeTask(String user, ChangeTaskRequest changeTaskRequest);
+
+    ChangeTask.Change toChange(ChangeTaskRequest.Change change);
     ListTaskResponse.Task toTask(ListTask.TaskItem taskItem);
 
     ListTaskResponse.TaskStatus toTaskStatus(ListTask.TaskStatus taskStatus);

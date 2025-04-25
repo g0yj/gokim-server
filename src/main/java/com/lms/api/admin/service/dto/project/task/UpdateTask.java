@@ -13,7 +13,6 @@ public class UpdateTask {
 
     String id;
 
-    int sortOrder;
     String title;
     String description;
     String assignedMember;

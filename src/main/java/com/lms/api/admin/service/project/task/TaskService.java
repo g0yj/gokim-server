@@ -2,6 +2,7 @@ package com.lms.api.admin.service.project.task;
 
 
 import com.lms.api.admin.controller.dto.project.task.CreateTaskRequest;
+import com.lms.api.admin.service.dto.project.task.ChangeTask;
 import com.lms.api.admin.service.dto.project.task.GetTask;
 import com.lms.api.admin.controller.dto.project.task.ListTaskRequest;
 import com.lms.api.admin.service.dto.project.task.ListTask;
@@ -186,6 +187,32 @@ public class TaskService {
                         .build())
                 .toList();
     }
+
+    @Transactional
+    public void changeTask(ChangeTask changeTask) {
+        log.debug("메서드 진입");
+        // changes가 null이 아니고 비어있지 않으면
+        Optional<List<ChangeTask.Change>> changes = Optional.ofNullable(changeTask.getChanges());
+        log.debug("Optinal : {} ", changes);
+        if (changes.isPresent() && !changes.get().isEmpty()) {
+            // 첫 번째 TaskId를 사용하여 TaskEntity를 찾는다
+            for (ChangeTask.Change change : changes.get()) {
+                TaskEntity taskEntity = taskRepository.findById(change.getTaskId())
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
+
+                TaskStatusEntity taskStatusEntity = taskStatusRepository.findById((long) change.getTaskStatusId())
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
+
+                taskEntity.setTaskStatusEntity(taskStatusEntity);
+                taskEntity.setSortOrder(change.getSortOrder());
+
+                taskRepository.save(taskEntity);
+            }
+        } else {
+            log.debug("변경 사항 없음");
+        }
+    }
+
 
     @Transactional
     public GetTask getTask(String id) {
