@@ -1,15 +1,26 @@
 spring:
   application:
     name: go-api
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: create # 초기 개발 중이면 update, DB 완성 돼 있고, 스키마 변경을 원하지 않으면 validate
-
   servlet:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+  jwt:
+    secret: "#"
+    access-token-expiration: 1m  # 5분 (5 minutes)
+    refresh-token-expiration: 1d  # 30일 (30 days)
+  data:
+    redis: #  Redis Connection 설정만 인식 (접속 셋팅)
+      host: localhost
+      port: 6379
+token: # spring.data.redis 안에 넣으면 안됨! 별도로 추가
+  refresh-token-ttl: 7d
 lms:
   file:
     max-file-size: 2MB
