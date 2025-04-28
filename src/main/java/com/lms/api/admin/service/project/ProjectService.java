@@ -16,6 +16,7 @@ import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
+import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
@@ -38,6 +39,7 @@ public class ProjectService {
     private final JpaConfig jpaConfig;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final UserRepository userRepository;
     private final TaskRepository taskRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final ProjectServiceMapper projectServiceMapper;
@@ -80,6 +82,10 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public List<Project> listProject(String userId) {
+        log.debug("로그인 된 아이디 확인 : {}" , userId);
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
         QProjectEntity qProjectEntity = QProjectEntity.projectEntity;
         QProjectMemberEntity qProjectMemberEntity  = QProjectMemberEntity.projectMemberEntity;
         QUserEntity qUserEntity = QUserEntity.userEntity;
@@ -88,7 +94,10 @@ public class ProjectService {
                 .join(qProjectEntity.userEntity).fetchJoin()
                 .leftJoin(qProjectEntity.projectMemberEntities, qProjectMemberEntity).fetchJoin()
                 .leftJoin(qProjectMemberEntity.userEntity, qUserEntity).fetchJoin()
-                .where(qProjectEntity.userEntity.id.eq(userId))
+                .where(
+                        qProjectEntity.userEntity.id.eq(userId) // 만든사람
+                                .or(qProjectMemberEntity.userEntity.id.eq(userId))// 참여한사람
+                )
                 .distinct()
                 .fetch();
 

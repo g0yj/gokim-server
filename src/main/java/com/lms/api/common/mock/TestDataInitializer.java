@@ -45,6 +45,7 @@ public class TestDataInitializer implements CommandLineRunner {
         UserEntity owner = createUserIfNotExists("SampleOwner", "1234", "프로젝트소유자", "jinyjgo@gmail.com", "01091901376");
         UserEntity member1 = createUserIfNotExists("SampleMember1", "1234", "프로젝트멤버1", "jinyjgo@naver.com", "01079168787");
         UserEntity member2 = createUserIfNotExists("SampleMember2", "1234", "프로젝트멤버2", null, null);
+        UserEntity member3 = createUserIfNotExists("SampleMember3", "1234", "프로젝트멤버2", null, null);
 
         // 프로젝트 생성
         ProjectEntity project = ProjectEntity.builder()
