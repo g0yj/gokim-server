@@ -147,7 +147,7 @@ public class TaskService {
                             .projectMemberId(pm.getProjectMemberId())
                             .projectMemberName(user.getName())
                             .file(user.getFile())
-                            .role(pm.getRole())
+                            .projectRole(pm.getProjectRole())
                             .build();
                 }
             }

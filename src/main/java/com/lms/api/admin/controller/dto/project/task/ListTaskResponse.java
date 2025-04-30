@@ -1,7 +1,7 @@
 package com.lms.api.admin.controller.dto.project.task;
 
 
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -58,7 +58,7 @@ public class ListTaskResponse {
         @Schema(description = "담당자 이름")
         String projectMemberName;
         @Schema(description = "담당자의 권한")
-        Role role;
+        ProjectRole projectRole;
         @Schema(description = "담당자 이미지")
         String file;
     }

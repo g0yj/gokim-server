@@ -5,7 +5,7 @@ import com.lms.api.admin.controller.dto.project.UpdateProjectRequest;
 import com.lms.api.admin.service.dto.project.Function;
 import com.lms.api.admin.service.dto.project.Project;
 import com.lms.api.common.config.JpaConfig;
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
@@ -63,7 +63,7 @@ public class ProjectService {
                 .projectEntity(project)
                 .userEntity(user)
                 .createdBy(user.getId())
-                .role(Role.OWNER)
+                .projectRole(ProjectRole.OWNER)
                 .build();
 
         projectMemberRepository.save(owner);
@@ -141,7 +141,7 @@ public class ProjectService {
         ProjectEntity projectEntity = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
 
-        ProjectMemberEntity projectMemberEntity = projectMemberRepository.findByProjectEntity_IdAndUserEntity_IdAndRole(projectId, userId, Role.OWNER)
+        ProjectMemberEntity projectMemberEntity = projectMemberRepository.findByProjectEntity_IdAndUserEntity_IdAndProjectRole(projectId, userId, ProjectRole.OWNER)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.ACCESS_DENIED));
 
         projectRepository.delete(projectEntity);

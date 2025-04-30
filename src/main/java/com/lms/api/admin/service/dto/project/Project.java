@@ -1,8 +1,6 @@
 package com.lms.api.admin.service.dto.project;
 
-import com.lms.api.admin.service.dto.User;
-import com.lms.api.admin.service.dto.project.task.Task;
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,7 +20,7 @@ public class Project {
     public static class ProjectMember {
         String projectMemberId;
         String projectMemberName;
-        Role role;
+        ProjectRole projectRole;
     }
 
 }

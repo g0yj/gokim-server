@@ -20,6 +20,8 @@ public class SubTaskEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+
+
     String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

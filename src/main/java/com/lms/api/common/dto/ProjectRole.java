@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public enum Role {
+public enum ProjectRole  {
   OWNER("소유자"),
   MEMBER ("팀원"),
   ;

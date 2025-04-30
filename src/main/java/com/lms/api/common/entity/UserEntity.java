@@ -1,5 +1,6 @@
 package com.lms.api.common.entity;
 
+import com.lms.api.common.dto.UserRole;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import jakarta.persistence.*;
@@ -31,6 +32,8 @@ public class UserEntity extends BaseEntity {
 
   String file;
   String originalFile;
+
+  UserRole role;
 
   @ToString.Exclude
   @Builder.Default

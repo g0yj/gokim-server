@@ -1,6 +1,6 @@
 package com.lms.api.admin.service.dto.project.task;
 
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,7 +41,7 @@ public class ListTask {
     public static class ProjectMember {
         String projectMemberId;
         String projectMemberName;
-        Role role;
+        ProjectRole projectRole;
         String file;
     }
 

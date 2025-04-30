@@ -1,10 +1,9 @@
 package com.lms.api.common.entity.project;
 
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import com.lms.api.common.entity.BaseEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.id.ProjectMemberId;
-import com.lms.api.common.entity.project.ProjectEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,7 +25,7 @@ public class ProjectMemberEntity extends BaseEntity {
     String projectId;
 
     @Enumerated(EnumType.STRING)
-    Role role;
+    ProjectRole projectRole;
 
     @MapsId("projectMemberId")
     @ManyToOne(fetch = FetchType.LAZY)

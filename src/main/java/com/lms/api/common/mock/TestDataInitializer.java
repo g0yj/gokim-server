@@ -1,6 +1,6 @@
 package com.lms.api.common.mock;
 
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
@@ -57,9 +57,9 @@ public class TestDataInitializer implements CommandLineRunner {
         projectRepository.save(project);
 
         // 프로젝트 초대
-        ProjectMemberEntity assignee = addProjectMember(project, owner, Role.OWNER);
-        addProjectMember(project, member1, Role.MEMBER);
-        addProjectMember(project, member2, Role.MEMBER);
+        ProjectMemberEntity assignee = addProjectMember(project, owner, ProjectRole.OWNER);
+        addProjectMember(project, member1, ProjectRole.MEMBER);
+        addProjectMember(project, member2, ProjectRole.MEMBER);
 
         // 프로젝트 할일 등록
         List<String> statusNames = Arrays.asList("Idea", "Todo", "InProgress", "Done");
@@ -110,11 +110,11 @@ public class TestDataInitializer implements CommandLineRunner {
     /**
      * 프로젝트 멤버를 추가하는 메서드
      */
-    private ProjectMemberEntity addProjectMember(ProjectEntity project, UserEntity user, Role role) {
+    private ProjectMemberEntity addProjectMember(ProjectEntity project, UserEntity user, ProjectRole projectRole) {
         ProjectMemberEntity member = ProjectMemberEntity.builder()
                 .projectId(project.getId())
                 .projectMemberId(user.getId())
-                .role(role)
+                .projectRole(projectRole)
                 .projectEntity(project)
                 .userEntity(user)
                 .build();

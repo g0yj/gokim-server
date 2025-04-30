@@ -8,12 +8,9 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public enum LoginType {
-  NORMAL("일반"),
-  KAKAO("카카오"),
-  NAVER("네이버"),
-  GOOGLE("구글")
-  ;
+public enum UserRole {
+  USER("회원"),
+  ADMIN("관리자"),;
 
   String label;
 }

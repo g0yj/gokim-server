@@ -1,8 +1,7 @@
 package com.lms.api.admin.controller.dto.project;
 
 
-import com.lms.api.admin.service.dto.project.Project;
-import com.lms.api.common.dto.Role;
+import com.lms.api.common.dto.ProjectRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -31,7 +30,7 @@ public class ListProjectResponse {
         @Schema(description = "프로젝트 참여 회원 이름")
         String projectMemberName;
         @Schema(description = "프로젝트 참여 회원 권한 : MEMBER-참여자 / OWNER- 소유자")
-        Role role;
+        ProjectRole projectRole;
     }
 
 }
