@@ -1,12 +1,13 @@
 package com.lms.api.common.config;
 
+import com.lms.api.common.dto.UserRole;
 import com.lms.api.common.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,9 +33,17 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                      .requestMatchers(
+                              "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**",
+                                "/login"
+                        ).permitAll()
+                        .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
+                        .anyRequest().authenticated() // 그 외는 인증 필요
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
@@ -65,9 +74,3 @@ public class SecurityConfig {
 
 
 }
-
-/**
- * Customizer.withDefaults()
- * -> 특별한 설정 없이 기본 설정을 적용 해라!
- * -> 밑에 따로 등록한 @Bean corsConfigurationSource()를 Spring Security가 자동으로 찾아서 연결
- */

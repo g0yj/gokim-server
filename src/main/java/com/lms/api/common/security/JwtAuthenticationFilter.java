@@ -40,28 +40,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        log.debug("✅ doFilter 호출? ");
         String token = jwtTokenProvider.resolveToken(request);
-        log.debug("✅ jwt 필터에서 token = {} ", token);
+        log.debug("✅ jwt 필터에서 token = {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            //  정상 토큰이면 인증 객체 생성해서 저장
+            // 🔓 정상 토큰일 때만 인증 처리
             String userId = jwtTokenProvider.getUsernameFromToken(token);
             Authentication authentication = jwtTokenProvider.getAuthentication(userId);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.debug("✅ 인증 성공. SecurityContextHolder 저장 완료!");
-
-            // 🔥 다음 필터로 진행
-            filterChain.doFilter(request, response);
-
         } else {
-            log.error("❌ 유효하지 않은 토큰이거나 토큰이 없습니다.");
-
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
-            response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().write("{\"message\": \"Unauthorized - Invalid or Missing Token\"}");
-
-            return;
+            log.debug("토큰이 없거나 유효 하지 않음. 필터 통과만 수행.");
         }
+
+        // 무조건 다음 필터로 넘김
+        filterChain.doFilter(request, response);
     }
 
 }
