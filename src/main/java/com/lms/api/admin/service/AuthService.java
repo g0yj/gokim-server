@@ -3,6 +3,7 @@ package com.lms.api.admin.service;
 import com.lms.api.admin.controller.dto.LoginRequest;
 import com.lms.api.admin.service.dto.LoginResponse;
 import com.lms.api.admin.service.dto.NewTokenResponse;
+import com.lms.api.common.dto.LoginType;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
@@ -41,16 +42,19 @@ public class AuthService {
         String refreshToken = jwtTokenProvider.generateRefreshToken(userEntity.getId());
 
 
-        refreshTokenRepository.save(userEntity.getId(),refreshToken);
+        refreshTokenRepository.save(userEntity.getId(),refreshToken, LoginType.NORMAL);
         log.debug("✅ 로그인 성공 userId={}, accessToken={}, refreshToken={}", userEntity.getId(), accessToken, refreshToken);
 
 
         return LoginResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .role(userEntity.getRole())
+                .loginType(LoginType.NORMAL)
                 .build();
     }
 
+/*
     @Transactional
     public NewTokenResponse refresh(HttpServletRequest request){
         String refreshToken = jwtTokenProvider.resolveToken(request);
@@ -71,6 +75,7 @@ public class AuthService {
                 .accessToken(newAccessToken)
                 .build();
     }
+*/
 
 }
 

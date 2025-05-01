@@ -1,5 +1,6 @@
 package com.lms.api.admin.service.dto;
 
+import com.lms.api.common.dto.LoginType;
 import com.lms.api.common.dto.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

@@ -11,10 +11,10 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(description = "로그인 요청")
 public class LoginRequest {
-    @Schema(description = "아이디")
+    @Schema(description = "아이디", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     String id;
-    @Schema(description = "비밀번호")
+    @Schema(description = "비밀번호", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
     String password;
 }
