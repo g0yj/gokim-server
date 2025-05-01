@@ -1,5 +1,6 @@
 package com.lms.api.common.security;
 
+import com.lms.api.common.dto.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -9,12 +10,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 /**
  * JWT를 생성 하고 검증
@@ -56,9 +60,10 @@ public class JwtTokenProvider {
     }
 
     // Access Token 생성
-    public String generateAccessToken(String username){
+    public String generateAccessToken(String username, UserRole role){
         return Jwts.builder()
                 .setSubject(username) // 사용자의 username을 subject로 설정
+                .claim("role", role)
                 .setIssuedAt(new Date())  // 발행 시간 설정
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration.toMillis())) // 만료 시간 설정
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // 서명
@@ -110,9 +115,14 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public Authentication getAuthentication(String username) {
-        return new UsernamePasswordAuthenticationToken(username, null, null);
+    public Authentication getAuthentication(String token) {
+        String username = getUsernameFromToken(token);
+        String role = getClaimsFromToken(token).get("role", String.class);
+
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+        return new UsernamePasswordAuthenticationToken(username, null, authorities);
     }
+
 
     private Duration parseDuration(String value) {
         value = value.trim().toLowerCase();

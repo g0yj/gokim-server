@@ -27,10 +27,12 @@ public class AuthController {
     return authService.login(request);
   }
 
+
   @PostMapping("/refresh")
   @Operation(summary = "일정 시간이 지나면 로그인 시 새로운 토큰이 필요. 시간이 지날 때 새로운 토큰을 받기 위해 사용")
   public NewTokenResponse refresh(HttpServletRequest request){
     return authService.refresh(request);
   }
+
 
 }

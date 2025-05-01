@@ -40,14 +40,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        log.debug("✅ doFilter 호출? ");
         String token = jwtTokenProvider.resolveToken(request);
         log.debug("✅ jwt 필터에서 token = {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
-            // 🔓 정상 토큰일 때만 인증 처리
-            String userId = jwtTokenProvider.getUsernameFromToken(token);
-            Authentication authentication = jwtTokenProvider.getAuthentication(userId);
+            //  토큰이 유효하면 인증 객체 생성해서 SecurityContext에 저장
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } else {
             log.debug("토큰이 없거나 유효 하지 않음. 필터 통과만 수행.");
