@@ -1,5 +1,6 @@
 package com.lms.api.common.entity;
 
+import com.lms.api.common.dto.LoginType;
 import com.lms.api.common.dto.UserRole;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
@@ -33,7 +34,10 @@ public class UserEntity extends BaseEntity {
   String file;
   String originalFile;
 
+  @Enumerated(EnumType.STRING)
   UserRole role;
+  @Enumerated(EnumType.STRING)
+  LoginType loginType;
 
   @ToString.Exclude
   @Builder.Default

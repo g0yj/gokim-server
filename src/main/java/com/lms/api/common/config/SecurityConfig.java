@@ -1,10 +1,11 @@
 package com.lms.api.common.config;
 
 import com.lms.api.common.dto.UserRole;
-import com.lms.api.common.security.JwtAuthenticationFilter;
+import com.lms.api.common.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -40,12 +41,16 @@ public class SecurityConfig {
                               "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
-                                "/login"
+                                "/login",
+                              "/oauth2/**",
+                              "/login/oauth2/**",
+                              "/oauth2/authorization/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
                         .anyRequest().authenticated() // 그 외는 인증 필요
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login(Customizer.withDefaults())
                 .build();
     }
 

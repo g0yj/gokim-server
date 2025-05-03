@@ -1,4 +1,4 @@
-package com.lms.api.common.security;
+package com.lms.api.common.auth;
 
 import com.lms.api.common.dto.UserRole;
 import io.jsonwebtoken.*;

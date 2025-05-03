@@ -1,6 +1,8 @@
 package com.lms.api.common.mock;
 
+import com.lms.api.common.dto.LoginType;
 import com.lms.api.common.dto.ProjectRole;
+import com.lms.api.common.dto.UserRole;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
@@ -42,10 +44,11 @@ public class TestDataInitializer implements CommandLineRunner {
         log.debug("샘플 데이터 삽입 시작 ..");
 
         // 유저 생성
-        UserEntity owner = createUserIfNotExists("SampleOwner", "1234", "프로젝트소유자", "jinyjgo@gmail.com", "01091901376");
-        UserEntity member1 = createUserIfNotExists("SampleMember1", "1234", "프로젝트멤버1", "jinyjgo@naver.com", "01079168787");
-        UserEntity member2 = createUserIfNotExists("SampleMember2", "1234", "프로젝트멤버2", null, null);
-        UserEntity member3 = createUserIfNotExists("SampleMember3", "1234", "프로젝트멤버2", null, null);
+        UserEntity owner = createUserIfNotExists("SampleOwner", "1234", "프로젝트소유자", "duswls3000@gmail.com", "01091901376", UserRole.USER, LoginType.NORMAL);
+        UserEntity member1 = createUserIfNotExists("SampleMember1", "1234", "프로젝트멤버1", "jinyjgo@naver.com", "01079168787", UserRole.USER, LoginType.NORMAL);
+        UserEntity member2 = createUserIfNotExists("SampleMember2", "1234", "프로젝트멤버2", null, null, UserRole.USER, LoginType.NORMAL);
+        UserEntity member3 = createUserIfNotExists("SampleMember3", "1234", "프로젝트멤버3", null, null, UserRole.USER, LoginType.NORMAL);
+        UserEntity admin = createUserIfNotExists("Admin","1234", "관리자", "goyeonjin@naver.com", null, UserRole.ADMIN, LoginType.NORMAL);
 
         // 프로젝트 생성
         ProjectEntity project = ProjectEntity.builder()
@@ -93,7 +96,7 @@ public class TestDataInitializer implements CommandLineRunner {
     /**
      * 유저가 존재하지 않으면 새로운 유저를 추가하는 메서드
      */
-    private UserEntity createUserIfNotExists(String id, String rawPassword, String name, String email, String phone) {
+    private UserEntity createUserIfNotExists(String id, String rawPassword, String name, String email, String phone, UserRole role , LoginType loginType) {
         return userRepository.findById(id).orElseGet(() -> {
             String encodedPassword = passwordEncoder.encode(rawPassword);
             UserEntity user = UserEntity.builder()
@@ -102,6 +105,8 @@ public class TestDataInitializer implements CommandLineRunner {
                     .name(name)
                     .email(email)
                     .phone(phone)
+                    .role(role)
+                    .loginType(loginType)
                     .build();
             return userRepository.save(user);
         });
