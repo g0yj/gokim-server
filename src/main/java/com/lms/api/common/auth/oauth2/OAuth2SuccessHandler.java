@@ -12,10 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 
@@ -31,6 +33,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
+
+    @Value("${spring.oauth.redirect-uri.user}")
+    private String userRedirectUri;
+    @Value("${spring.oauth.redirect-uri.admin}")
+    private String adminRedirectUri;
 
 
     @Override
@@ -48,15 +55,20 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         refreshTokenRepository.save(userEntity.getId(), refreshToken, userEntity.getLoginType());
 
-        LoginResponse loginResponse = LoginResponse.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .role(userEntity.getRole())
-                .loginType(userEntity.getLoginType())
-                .build();
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(new ObjectMapper().writeValueAsString(loginResponse));
+        String baseRedirectUri = switch (userEntity.getRole()){
+            case ADMIN -> adminRedirectUri;
+            case USER -> userRedirectUri;
+        };
+
+        String redirectUrl  = UriComponentsBuilder.fromHttpUrl(baseRedirectUri)
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .queryParam("loginType", loginType)
+                .queryParam("role", userEntity.getRole())
+                .build()
+                .toUriString();
+
+        response.sendRedirect(redirectUrl);
         log.debug("✅ OAuth2 로그인 핸들러 종료");
     }
 }
