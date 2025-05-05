@@ -14,13 +14,30 @@ spring:
   jwt:
     secret: "#"
     access-token-expiration: 1m  # 5분 (5 minutes)
-    refresh-token-expiration: 1d  # 30일 (30 days)
+    refresh-token-expiration: 30m  # 7일
   data:
     redis: #  Redis Connection 설정만 인식 (접속 셋팅)
       host: localhost
       port: 6379
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: #
+            client-secret: #
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}" # 로그인 페이지로 리다이렉트
+            scope:
+              - profile
+              - email
+            user-name-attribute: email
+          provider:
+            google:
+              authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+              token-uri: https://oauth2.googleapis.com/token
+              user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
 token: # spring.data.redis 안에 넣으면 안됨! 별도로 추가
-  refresh-token-ttl: 7d
+  refresh-token-ttl: 30m
 lms:
   file:
     max-file-size: 2MB

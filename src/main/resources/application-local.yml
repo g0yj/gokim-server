@@ -13,6 +13,10 @@ spring:
         format_sql: true
         highlight_sql: true
         use_sql_comments: true
+  oauth:
+    redirect-uri:
+      user: http://localhost:8081/index
+      admin: http://localhost:8081/admin/index
 logging:
   level:
     reactor.netty.http.client: DEBUG
