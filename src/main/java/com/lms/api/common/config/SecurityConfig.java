@@ -4,7 +4,9 @@ import com.lms.api.common.auth.oauth2.CustomOAuth2UserService;
 import com.lms.api.common.auth.oauth2.OAuth2SuccessHandler;
 import com.lms.api.common.dto.UserRole;
 import com.lms.api.common.auth.JwtAuthenticationFilter;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -28,6 +30,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
@@ -59,6 +62,12 @@ public class SecurityConfig {
                                         .userService(customOAuth2UserService)
                                 )
                                 .successHandler(oAuth2SuccessHandler)
+                                .failureHandler(((request, response, exception) -> {
+                                    log.error("❌ OAuth2 로그인 실패: {}", exception.getMessage(), exception);
+                                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                                    response.setContentType("application/json");
+                                    response.getWriter().write("{\"error\": \"OAuth2 login failed\"}");
+                                }))
                 )
                 .build();
     }

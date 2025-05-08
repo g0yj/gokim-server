@@ -28,8 +28,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        // 1. 기본 OAuth2User 정보
         OAuth2User oAuth2User = super.loadUser(userRequest);
+            log.debug("기본 OAuth2User 정보: {}" , oAuth2User);
         // 2. 로그인 타입 확인
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         LoginType loginType = LoginType.valueOf(registrationId.toUpperCase());
@@ -40,13 +40,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .getUserNameAttributeName();
         // 4. 사용자 정보 통합 객체 생성
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, oAuth2User.getAttributes());
+        log.debug("attributes :{} ", attributes);
         String email = attributes.getEmail();
         String name = attributes.getName();
 
         if(email == null){
             throw new OAuth2AuthenticationException("소셜 로그인에 Email 정보가 없습니다");
         }
-
         // 5. 유저 조회 또는 신규 생성
         UserEntity userEntity = userRepository.findByEmailAndLoginType(email, loginType)
                 .orElseGet(() -> userRepository.save(
@@ -62,12 +62,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         // 6. 시큐리티 사용자 반환
         Map<String, Object> customAttributes = new HashMap<>(oAuth2User.getAttributes());
         customAttributes.put("loginType", loginType.name());
+        customAttributes.put("email", email);
+        customAttributes.put("name", name);
 
         return new DefaultOAuth2User(
                 List.of(new SimpleGrantedAuthority("ROLE_" + userEntity.getRole())),
                 customAttributes,
                 userNameAttr
         );
-
     }
+
+
 }

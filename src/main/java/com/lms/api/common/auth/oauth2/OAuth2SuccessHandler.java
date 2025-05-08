@@ -55,20 +55,15 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         refreshTokenRepository.save(userEntity.getId(), refreshToken, userEntity.getLoginType());
 
-        String baseRedirectUri = switch (userEntity.getRole()){
-            case ADMIN -> adminRedirectUri;
-            case USER -> userRedirectUri;
-        };
-
-        String redirectUrl  = UriComponentsBuilder.fromHttpUrl(baseRedirectUri)
-                .queryParam("accessToken", accessToken)
-                .queryParam("refreshToken", refreshToken)
-                .queryParam("loginType", loginType)
-                .queryParam("role", userEntity.getRole())
-                .build()
-                .toUriString();
-
-        response.sendRedirect(redirectUrl);
+        LoginResponse loginResponse = LoginResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .role(userEntity.getRole())
+                .loginType(userEntity.getLoginType())
+                .build();
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(loginResponse));
         log.debug("✅ OAuth2 로그인 핸들러 종료");
     }
 }
