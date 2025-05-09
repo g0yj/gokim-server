@@ -41,7 +41,7 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable) // 시큐리티가 기본적으로 제공하는 엔드포인트를 사용하지 않을 때 사용
                 .authorizeHttpRequests(auth -> auth
                       .requestMatchers(
                               "/v3/api-docs/**",
@@ -50,7 +50,8 @@ public class SecurityConfig {
                                 "/login",
                               "/oauth2/**",
                               "/login/oauth2/**",
-                              "/oauth2/authorization/**"
+                              "/oauth2/authorization/**",
+                              "/logout"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
                         .anyRequest().authenticated() // 그 외는 인증 필요
@@ -69,6 +70,7 @@ public class SecurityConfig {
                                     response.getWriter().write("{\"error\": \"OAuth2 login failed\"}");
                                 }))
                 )
+                .logout(AbstractHttpConfigurer::disable)
                 .build();
     }
 

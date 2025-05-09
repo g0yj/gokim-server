@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,5 +35,11 @@ public class AuthController {
     return authService.refresh(request);
   }
 
+  @PostMapping("/logout")
+  @Operation(summary = "로그아웃")
+  public ResponseEntity<?> logout(HttpServletRequest request){
+    authService.logout(request);
+    return ResponseEntity.ok().build();
+  }
 
 }
