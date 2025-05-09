@@ -13,29 +13,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name= "project")
+@Table(name= "function")
 @Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProjectEntity extends BaseEntity {
+public class FunctionEntity extends BaseEntity {
 
     @Id
     @Column(updatable = false)
     String id;
 
-    String projectName;
+    String functionName;
+
+    Long functionSort;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    UserEntity userEntity;
+    @JoinColumn(name = "project_id", nullable = false)
+    ProjectEntity projectEntity;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "projectEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ProjectMemberEntity> projectMemberEntities = new ArrayList<>();
-
-    @ToString.Exclude
-    @OneToMany(mappedBy = "projectEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<FunctionEntity> functionEntities = new ArrayList<>();
-
-
+    @OneToMany(mappedBy = "functionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<TaskEntity> taskEntities = new ArrayList<>();
 }
