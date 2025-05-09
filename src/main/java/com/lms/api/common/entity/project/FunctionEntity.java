@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name= "function")
+@Table(name= "project_function")
 @Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)

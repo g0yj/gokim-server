@@ -14,8 +14,8 @@ import lombok.experimental.FieldDefaults;
 public class ListTaskRequest {
 
     @NotBlank
-    @Schema(description = "프로젝트 식별키")
-    String projectId;
+    @Schema(description = "프로젝트 기능 식별키")
+    String functionId;
 
     // 필터링
     @Schema(description = "필터링 조건으로, 제목(title)로 조회합니다")

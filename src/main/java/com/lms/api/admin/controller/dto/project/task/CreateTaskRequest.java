@@ -17,7 +17,7 @@ public class CreateTaskRequest {
 
     @Schema(description = "프로젝트 식별키")
     @NotBlank(message = "필수 값")
-    String projectId;
+    String functionId;
 
     @Schema(description = "TODO 제목")
     @NotBlank(message = "필수 값")

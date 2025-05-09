@@ -10,6 +10,7 @@ import com.lms.api.admin.service.dto.project.task.UpdateTask;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
+import com.lms.api.common.entity.project.FunctionEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectMemberEntity;
@@ -17,6 +18,7 @@ import com.lms.api.common.entity.project.task.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
+import com.lms.api.common.repository.project.FunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.*;
@@ -44,6 +46,7 @@ public class TaskService {
     private final TaskStatusRepository taskStatusRepository;
     private final UserRepository userRepository;
     private final ProjectMemberRepository projectMemberRepository;
+    private final FunctionRepository functionRepository;
     private final SubTaskRepository subTaskRepository;
     private final TaskCommentRepository taskCommentRepository;
     private final TaskFileRepository taskFileRepository;
@@ -58,15 +61,15 @@ public class TaskService {
         String taskId = "T" + System.nanoTime();
         log.debug("taskId: {}" , taskId);
 
-        ProjectEntity projectEntity = projectRepository.findById(createTaskRequest.getProjectId())
-                .orElseThrow(()-> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+        FunctionEntity functionEntity = functionRepository.findById(createTaskRequest.getFunctionId())
+                .orElseThrow(()-> new ApiException(ApiErrorCode.FUNCTION_NOT_FOUND));
 
-        int sortOrder = taskRepository.countByProjectEntity_Id(createTaskRequest.getProjectId()) + 1;
+        int sortOrder = functionEntity.getTaskEntities().size() + 1;
         TaskEntity task = TaskEntity.builder()
                 .id(taskId)
                 .title(createTaskRequest.getTitle())
                 .taskStatusEntity(taskStatusEntity)
-                .projectEntity(projectEntity)
+                .functionEntity(functionEntity)
                 .sortOrder(sortOrder)
                 .createdBy(user.getId())
                 .build();
@@ -82,12 +85,17 @@ public class TaskService {
         QProjectMemberEntity qProjectMemberEntity = QProjectMemberEntity.projectMemberEntity;
         QUserEntity qUserEntity = QUserEntity.userEntity;
 
+        FunctionEntity functionEntity = functionRepository.findById(listTaskRequest.getFunctionId())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.FUNCTION_NOT_FOUND));
+        String projectId = functionEntity.getProjectEntity().getId();
+
         BooleanBuilder where = new BooleanBuilder();
-        where.and(qTaskEntity.projectEntity.id.eq(listTaskRequest.getProjectId()));
+        where.and(qTaskEntity.functionEntity.id.eq(listTaskRequest.getFunctionId()));
 
         if (listTaskRequest.getSearch() != null && !listTaskRequest.getSearch().isEmpty()) {
             where.and(qTaskEntity.title.containsIgnoreCase(listTaskRequest.getSearch()));
         }
+
 
         List<TaskEntity> taskEntities = jpaConfig.queryFactory()
                 .selectFrom(qTaskEntity)
@@ -110,7 +118,7 @@ public class TaskService {
         Map<String, ProjectMemberEntity> projectMemberMap = jpaConfig.queryFactory()
                 .selectFrom(qProjectMemberEntity)
                 .leftJoin(qProjectMemberEntity.userEntity, qUserEntity).fetchJoin()
-                .where(qProjectMemberEntity.projectEntity.id.eq(listTaskRequest.getProjectId()))
+                .where(qProjectMemberEntity.projectEntity.id.eq(projectId))
                 .fetch()
                 .stream()
                 .collect(Collectors.toMap(pm -> pm.getUserEntity().getId(), pm -> pm));

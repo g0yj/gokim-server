@@ -4,6 +4,7 @@ import com.lms.api.common.dto.LoginType;
 import com.lms.api.common.dto.ProjectRole;
 import com.lms.api.common.dto.UserRole;
 import com.lms.api.common.entity.UserEntity;
+import com.lms.api.common.entity.project.FunctionEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.task.SubTaskEntity;
@@ -11,6 +12,7 @@ import com.lms.api.common.entity.project.task.TaskCommentEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.repository.UserRepository;
+import com.lms.api.common.repository.project.FunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.SubTaskRepository;
@@ -38,6 +40,7 @@ public class TestDataInitializer implements CommandLineRunner {
     private final SubTaskRepository subTaskRepository;
     private final TaskCommentRepository taskCommentRepository;
     private final PasswordEncoder passwordEncoder;
+    private final FunctionRepository functionRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -64,6 +67,11 @@ public class TestDataInitializer implements CommandLineRunner {
         addProjectMember(project, member1, ProjectRole.MEMBER);
         addProjectMember(project, member2, ProjectRole.MEMBER);
 
+        // 기능 추가
+        FunctionEntity dashboard = addFunction("PF01","대시보드", 1L , project);
+        FunctionEntity board = addFunction("PF02", "할일", 2L, project);
+        FunctionEntity calendar = addFunction("PF03", "캘린더", 3L, project);
+
         // 프로젝트 할일 등록
         List<String> statusNames = Arrays.asList("Idea", "Todo", "InProgress", "Done");
         statusNames.stream()
@@ -79,10 +87,10 @@ public class TestDataInitializer implements CommandLineRunner {
         TaskStatusEntity inProgress = taskStatusRepository.findByNameAndProjectEntity_Id("InProgress", project.getId());
         TaskStatusEntity done = taskStatusRepository.findByNameAndProjectEntity_Id("Done", project.getId());
 
-        TaskEntity task = addTask("T1111", "테이블 설계", "테이블 설계에 관련된 내용입니다. 추후 에디터 사용", 1, project, owner, idea);
-        addTask("T2222", "프로젝트 관련 API 생성", "CRUD에 대한 API 설명을 추가해주세요", 2, project, owner, todo);
-        addTask("T3333", "보드 관련 API 생성", "멤버가 등록한 TODO입니다", 3, project, member1, inProgress);
-        addTask("T4444", "수정 사항 확인", "수정된 내용 체크했으면 문자로 알려주세요", 4, project, member1, done);
+        TaskEntity task = addTask("T1111", "테이블 설계", "테이블 설계에 관련된 내용입니다. 추후 에디터 사용", 1, board, owner, idea);
+        addTask("T2222", "프로젝트 관련 API 생성", "CRUD에 대한 API 설명을 추가해주세요", 2, board, owner, todo);
+        addTask("T3333", "보드 관련 API 생성", "멤버가 등록한 TODO입니다", 3, board, member1, inProgress);
+        addTask("T4444", "수정 사항 확인", "수정된 내용 체크했으면 문자로 알려주세요", 4, board, member1, done);
 
         addSubTask("첫번째 하위 항목입니다." ,task, idea, assignee);
         addSubTask("두번째 하위 항목입니다." ,task, done, assignee);
@@ -127,17 +135,28 @@ public class TestDataInitializer implements CommandLineRunner {
         return member;
     }
 
+    private FunctionEntity addFunction(String id, String functionName, Long functionSort , ProjectEntity projectEntity){
+        FunctionEntity function = FunctionEntity.builder()
+                .id(id)
+                .functionName(functionName)
+                .functionSort(functionSort)
+                .projectEntity(projectEntity)
+                .build();
+        functionRepository.save(function);
+        return function;
+    }
+
     /**
      * Task를 추가하는 메서드
      */
-    private TaskEntity addTask(String id, String title, String content, int sortOrder, ProjectEntity projectId , UserEntity userEntity, TaskStatusEntity taskStatusEntity ) {
+    private TaskEntity addTask(String id, String title, String content, int sortOrder, FunctionEntity functionEntity, UserEntity userEntity, TaskStatusEntity taskStatusEntity ) {
         TaskEntity task = TaskEntity.builder()
                 .id(id)
                 .title(title)
                 .description(content)
                 .sortOrder(sortOrder)
                 .assignedMember(userEntity.getId())
-                .projectEntity(projectId)
+                .functionEntity(functionEntity)
                 .taskStatusEntity(taskStatusEntity)
                 .createdBy(userEntity.getId())
                 .build();

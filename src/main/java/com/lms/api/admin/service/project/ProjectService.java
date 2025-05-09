@@ -2,21 +2,19 @@ package com.lms.api.admin.service.project;
 
 import com.lms.api.admin.controller.dto.project.CreateProjectRequest;
 import com.lms.api.admin.controller.dto.project.UpdateProjectRequest;
-import com.lms.api.admin.service.dto.project.Function;
 import com.lms.api.admin.service.dto.project.Project;
+import com.lms.api.admin.service.dto.project.ProjectFunction;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.ProjectRole;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
-import com.lms.api.common.entity.project.ProjectEntity;
-import com.lms.api.common.entity.project.ProjectMemberEntity;
-import com.lms.api.common.entity.project.QProjectEntity;
-import com.lms.api.common.entity.project.QProjectMemberEntity;
+import com.lms.api.common.entity.project.*;
 import com.lms.api.common.entity.project.task.TaskEntity;
 import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
+import com.lms.api.common.repository.project.FunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
@@ -41,6 +39,7 @@ public class ProjectService {
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
+    private final FunctionRepository functionRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final ProjectServiceMapper projectServiceMapper;
 
@@ -106,24 +105,6 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 템플릿을 추가할 때 마다 수정이 필요함
-     * @param id : 프로젝트 식별키
-     * @return taskId: task 관련 기능 목록
-     */
-    @Transactional
-    public Function getProject(String id){
-        // '보드' 관련 기능으로 할일에 관련한 기능이 들어간 곳에서 사용
-        List<TaskEntity> taskEntities = taskRepository.findByProjectEntity_Id(id);
-        List<String> taskIds = taskEntities.stream()
-                .map(TaskEntity::getId)
-                .toList();
-
-        return Function.builder()
-                .projectId(id)
-                .taskId(taskIds)
-                .build();
-    }
 
     @Transactional
     public void updateProject(String modifiedBy,String id, UpdateProjectRequest updateProjectRequest){
@@ -145,6 +126,19 @@ public class ProjectService {
                 .orElseThrow(() -> new ApiException(ApiErrorCode.ACCESS_DENIED));
 
         projectRepository.delete(projectEntity);
+    }
+
+    @Transactional
+    public ProjectFunction projectFunction(String projectId){
+        List<FunctionEntity> functionEntities = functionRepository.findByProjectEntity_IdOrderByFunctionSortAsc(projectId);
+        List<ProjectFunction.Function> functions = functionEntities.stream()
+                .map(projectServiceMapper::toFunction)
+                .toList();
+
+        return ProjectFunction.builder()
+                .projectId(projectId)
+                .functions(functions)
+                .build();
     }
 }
 

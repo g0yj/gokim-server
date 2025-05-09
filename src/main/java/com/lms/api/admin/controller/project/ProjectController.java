@@ -1,12 +1,13 @@
 package com.lms.api.admin.controller.project;
 
 import com.lms.api.admin.controller.dto.project.*;
-import com.lms.api.admin.service.dto.project.Function;
 import com.lms.api.admin.service.dto.project.Project;
+import com.lms.api.admin.service.dto.project.ProjectFunction;
 import com.lms.api.admin.service.project.ProjectService;
 import com.lms.api.common.dto.LoginUser;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,12 +39,6 @@ public class ProjectController {
         List<Project> projects = projectService.listProject(user.getId());
         return projectControllerMapper.toListProjectResponse(projects);
     }
-    @GetMapping("/{id}")
-    @Operation(summary = "프로젝트 상세조회" , description = "프로젝트가 가진 여러 기능에 대한 정보를 포함하고 있습니다. 여러가지 기능은 식별키로 구분합니다")
-    public GetProjectResponse getProject(@PathVariable String id){
-        Function project = projectService.getProject(id);
-        return projectControllerMapper.toGetProjectResponse(project);
-    }
 
     @PutMapping("/{id}")
     @Operation(summary = "프로젝트 수정" , description = "프로젝트 변경 시 사용합니다.")
@@ -59,6 +54,11 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
+    public ProjectFunction listProjectFunction(@PathVariable String id){
+        return projectService.projectFunction(id);
+    }
 
 
 }

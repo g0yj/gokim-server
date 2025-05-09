@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface FunctionRepository extends JpaRepository<FunctionEntity, String>,
     QuerydslPredicateExecutor<FunctionEntity> {
-
+    List<FunctionEntity> findByProjectEntity_IdOrderByFunctionSortAsc(String projectId);
 }
