@@ -111,7 +111,9 @@ public class AuthService {
         long expiration = jwtTokenProvider.getExpiration(accessToken);
 
         // accessToken → 블랙리스트 등록
-        redisTemplate.opsForValue().set(accessToken, "logout", expiration, TimeUnit.MILLISECONDS);
+        String blacklistKey = "blacklist:" + accessToken;
+        redisTemplate.opsForValue().set(blacklistKey, "logout", expiration, TimeUnit.MILLISECONDS);
+        log.info("🛑 accessToken 블랙리스트 등록 - key: {}, TTL: {}ms", blacklistKey, expiration);
 
         //  RefreshToken(및 loginType) → Redis에서 삭제
         refreshTokenRepository.delete(userId);

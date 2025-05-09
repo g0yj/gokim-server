@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,7 @@ import java.util.List;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired JwtTokenProvider jwtTokenProvider;
+    @Autowired RedisTemplate<String, Object> redisTemplate;
 
     private static final List<String> EXCLUDE_URLS = List.of(
             "/api/login"
@@ -44,6 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         log.debug("✅ jwt 필터에서 token = {}", token);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
+
+            // ✅ 블랙리스트 확인 (prefix 포함)
+            String blacklistKey = "blacklist:" + token;
+            if (Boolean.TRUE.equals(redisTemplate.hasKey(blacklistKey))) {
+                log.warn("⛔️ 블랙리스트 토큰 거부 - {}", token);
+                throw new SecurityException("로그아웃된 토큰입니다.");
+            }
+
             //  토큰이 유효하면 인증 객체 생성해서 SecurityContext에 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
