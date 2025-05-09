@@ -27,17 +27,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired JwtTokenProvider jwtTokenProvider;
     @Autowired RedisTemplate<String, Object> redisTemplate;
 
-    private static final List<String> EXCLUDE_URLS = List.of(
-            "/api/login"
-    );
-
-    @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String path = request.getRequestURI();
-        log.debug("🔎 현재 요청 path = {}", path);
-        return EXCLUDE_URLS.contains(path);
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
