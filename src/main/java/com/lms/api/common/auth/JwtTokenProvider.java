@@ -37,13 +37,18 @@ public class JwtTokenProvider {
     @Value("${spring.jwt.refresh-token-expiration}")
     private String refreshTokenExpirationRaw;
 
+    @Value("${token.refresh-token-ttl}")
+    private String refreshTokenTtlRaw;
+
     private Duration accessTokenExpiration;
     private Duration refreshTokenExpiration;
+    private Duration refreshTokenTtlExpiration;
 
     @PostConstruct
     private void init() {
         this.accessTokenExpiration = parseDuration(accessTokenExpirationRaw);
         this.refreshTokenExpiration = parseDuration(refreshTokenExpirationRaw);
+        this.refreshTokenTtlExpiration = parseDuration(refreshTokenTtlRaw);
     }
     // Key 객체 생성
     private Key getSigningKey(){
@@ -64,6 +69,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setSubject(username) // 사용자의 username을 subject로 설정
                 .claim("role", role)
+                .claim("type", "access")
                 .setIssuedAt(new Date())  // 발행 시간 설정
                 .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration.toMillis())) // 만료 시간 설정
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // 서명
@@ -73,6 +79,7 @@ public class JwtTokenProvider {
     public String generateRefreshToken(String username) {
         return Jwts.builder()
                 .setSubject(username) // 사용자의 username을 subject로 설정
+                .claim("type", "refresh")
                 .setIssuedAt(new Date()) // 발행 시간 설정
                 .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration.toMillis())) // 만료 시간 설정
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256) // 서명
@@ -115,11 +122,33 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public Authentication getAuthentication(String token) {
-        String username = getUsernameFromToken(token);
-        String role = getClaimsFromToken(token).get("role", String.class);
+    //토큰에서 남은 시간
+    public long getExpiration(String token) {
+        try {
+            Date expiration = getClaimsFromToken(token).getExpiration();
+            long now = System.currentTimeMillis();
+            long exp = expiration.getTime();
 
+            return Math.max(exp - now, 0);
+        } catch (JwtException | IllegalArgumentException e) {
+            log.warn("⏳ 토큰 만료 시각 조회 실패: {}", e.getMessage());
+            return 0;
+        }
+    }
+
+
+    public Authentication getAuthentication(String token) {
+        Claims claims = getClaimsFromToken(token);
+
+        String type = claims.get("type", String.class);
+        if (!"access".equals(type)) {
+            throw new SecurityException("❌ accessToken만 인증에 사용할 수 있습니다.");
+        }
+
+        String username = claims.getSubject();
+        String role = claims.get("role", String.class);
         List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+
         return new UsernamePasswordAuthenticationToken(username, null, authorities);
     }
 

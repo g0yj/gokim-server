@@ -4,6 +4,7 @@ import com.lms.api.common.dto.LoginType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -19,7 +20,7 @@ public class LoginRequest {
     @NotBlank
     String password;
     @Schema(description = "로그인 타입(로그아웃 시 분기 처리를 위함)", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotEmpty
+    @NotNull
     LoginType loginType;
 
 }
