@@ -1,6 +1,6 @@
 package com.lms.api.common.repository.project;
 
-import com.lms.api.common.dto.ProjectRole;
+import com.lms.api.admin.project.enums.ProjectRole;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.id.ProjectMemberId;
 import org.springframework.data.jpa.repository.JpaRepository;

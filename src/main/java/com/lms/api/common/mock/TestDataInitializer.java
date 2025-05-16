@@ -1,8 +1,8 @@
 package com.lms.api.common.mock;
 
-import com.lms.api.common.dto.LoginType;
-import com.lms.api.common.dto.ProjectRole;
-import com.lms.api.common.dto.UserRole;
+import com.lms.api.admin.auth.enums.LoginType;
+import com.lms.api.admin.project.enums.ProjectRole;
+import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.FunctionEntity;
 import com.lms.api.common.entity.project.ProjectEntity;

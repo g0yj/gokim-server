@@ -1,9 +1,9 @@
 package com.lms.api.common.mock;
 
-import com.lms.api.common.dto.LoginUser;
+import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.repository.UserRepository;
-import com.lms.api.common.security.JwtTokenProvider;
+import com.lms.api.admin.auth.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;

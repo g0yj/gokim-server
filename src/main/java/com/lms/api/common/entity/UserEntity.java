@@ -1,7 +1,7 @@
 package com.lms.api.common.entity;
 
-import com.lms.api.common.dto.LoginType;
-import com.lms.api.common.dto.UserRole;
+import com.lms.api.admin.auth.enums.LoginType;
+import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import jakarta.persistence.*;

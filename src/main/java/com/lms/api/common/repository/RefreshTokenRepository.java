@@ -1,6 +1,6 @@
 package com.lms.api.common.repository;
 
-import com.lms.api.common.dto.LoginType;
+import com.lms.api.admin.auth.enums.LoginType;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

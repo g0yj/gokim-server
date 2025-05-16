@@ -1,9 +1,9 @@
 package com.lms.api.common.config;
 
-import com.lms.api.common.auth.oauth2.CustomOAuth2UserService;
-import com.lms.api.common.auth.oauth2.OAuth2SuccessHandler;
-import com.lms.api.common.dto.UserRole;
-import com.lms.api.common.auth.JwtAuthenticationFilter;
+import com.lms.api.admin.auth.oauth2.CustomOAuth2UserService;
+import com.lms.api.admin.auth.oauth2.OAuth2SuccessHandler;
+import com.lms.api.admin.user.enums.UserRole;
+import com.lms.api.admin.auth.JwtAuthenticationFilter;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
