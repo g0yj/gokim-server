@@ -65,7 +65,7 @@ public interface TaskControllerMapper {
     List<GetTaskResponse.TaskComment> toTaskComment(List<GetTask.TaskComment> taskComments);
 
     @Mapping(target = "multipartFiles" , source = "updateTaskRequest.files")
-    @Mapping(target = "file" , ignore = true)
+    @Mapping(target = "fileName" , ignore = true)
     @Mapping(target = "id" , source = "taskId")
     @Mapping(target = "modifiedBy" , source = "modifiedBy")
     @Mapping(target = "assignedMember" , source = "updateTaskRequest.assignedMemberId")

@@ -193,6 +193,14 @@
       <artifactId>spring-boot-starter-oauth2-client</artifactId>
     </dependency>
 
+    <!--AWS S3-->
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>s3</artifactId>
+      <version>2.25.15</version>
+    </dependency>
+
+
   </dependencies>
 
   <build>

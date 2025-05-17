@@ -18,8 +18,8 @@ public class TaskFileEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String file;
-    String originalFile;
+    String fileName;
+    String originalFileName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id", nullable = false)

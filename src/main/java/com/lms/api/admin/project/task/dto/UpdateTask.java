@@ -21,7 +21,7 @@ public class UpdateTask {
 
     List<MultipartFile> multipartFiles; // 파일들
     List<Long> deleteFiles; // 삭제할 파일 목록
-    String file;
+    String fileName;
 
     String modifiedBy;
 }

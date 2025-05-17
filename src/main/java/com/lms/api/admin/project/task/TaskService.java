@@ -1,6 +1,7 @@
 package com.lms.api.admin.project.task;
 
 
+import com.lms.api.admin.File.FileStorageService;
 import com.lms.api.admin.project.task.dto.CreateTaskRequest;
 import com.lms.api.admin.project.task.dto.ChangeTask;
 import com.lms.api.admin.project.task.dto.GetTask;
@@ -39,7 +40,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaskService {
     private final JpaConfig jpaConfig;
-    private final FileService fileService;
+    private final FileStorageService fileStorageService;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TaskStatusRepository taskStatusRepository;
@@ -293,6 +294,7 @@ public class TaskService {
 
     @Transactional
     public void updateTask(UpdateTask updateTask){
+        log.debug("수정 메서드 서비스 진입");
         TaskEntity taskEntity = taskRepository.findById(updateTask.getId())
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
@@ -314,13 +316,13 @@ public class TaskService {
                                     .remove(taskFileEntity)));
         }
         //파일 등록
-        Map<String, String> files = fileService.upload(updateTask.getMultipartFiles());
+        Map<String, String> files = fileStorageService.upload(updateTask.getMultipartFiles());
         if(ObjectUtils.isNotEmpty(files)){
             List<TaskFileEntity> taskFileEntities = files.entrySet().stream()
                     .map(entry ->{
                         TaskFileEntity taskFileEntity = TaskFileEntity.builder()
-                                .originalFile(entry.getKey())
-                                .file(entry.getValue())
+                                .originalFileName(entry.getKey())
+                                .fileName(entry.getValue())
                                 .modifiedBy(updateTask.getModifiedBy())
                                 .taskEntity(taskEntity)
                                 .build();
