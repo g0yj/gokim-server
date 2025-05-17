@@ -3,8 +3,8 @@
   <!-- 공통 설정 -->
   <property name="LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n" />
 
-  <!-- 개발 환경 로그 설정 -->
-  <springProfile name="dev">
+  <!-- 운영 환경 로그 설정 -->
+  <springProfile name="prod">
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
       <encoder>
         <pattern>${LOG_PATTERN}</pattern>
@@ -56,4 +56,30 @@
     </root>
   </springProfile>
 
+  <springProfile name="dev">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder>
+        <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+    </appender>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>logs/server.log</file>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>server-%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory>
+      </rollingPolicy>
+      <encoder>
+        <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+    </appender>
+
+    <logger name="com.lms.api" level="DEBUG"/>
+    <logger name="reactor.netty.http.client" level="DEBUG"/>
+    <logger name="org.hibernate.orm.jdbc.bind" level="TRACE"/>
+
+    <root level="INFO">
+      <appender-ref ref="STDOUT" />
+      <appender-ref ref="FILE" />
+    </root>
+  </springProfile>
 </configuration>
