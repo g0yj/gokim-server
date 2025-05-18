@@ -28,13 +28,13 @@ import java.util.List;
 @Getter
 public class JwtTokenProvider {
 
-    @Value("${spring.jwt.secret}")
+    @Value("${spring.security.jwt.secret}")
     private String secretKey;
 
-    @Value("${spring.jwt.access-token-expiration}")
+    @Value("${spring.security.jwt.access-token-expiration}")
     private String accessTokenExpirationRaw;
 
-    @Value("${spring.jwt.refresh-token-expiration}")
+    @Value("${spring.security.jwt.refresh-token-expiration}")
     private String refreshTokenExpirationRaw;
 
     @Value("${token.refresh-token-ttl}")

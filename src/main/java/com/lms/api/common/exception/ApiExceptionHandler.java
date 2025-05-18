@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MaxUploadSizeExceededException;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-  @Value("${lms.file.max-file-size}")
+  @Value("${file.max-file-size}")
   private String maxFileSizeStr;
 
   @ExceptionHandler({ServletRequestBindingException.class, BindException.class,
