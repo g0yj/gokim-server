@@ -66,5 +66,5 @@ src/main/resources/application-dev.yml
 src/main/resources/application-local.yml
 src/main/resources/application-prod.yml
 
-# 이것도 자동 배포 가능한지 테스트
+# 배포테스트
 .env
