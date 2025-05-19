@@ -13,5 +13,5 @@ public interface FileStorageService {
     String upload(MultipartFile file);
     Map<String, String> upload(List<MultipartFile> files);
     void delete(String storedFilename);
-    String getUrl(String storedFilename); // ⬅️ 선택적으로 추가
+    String getUrl(String storedFilename);
 }

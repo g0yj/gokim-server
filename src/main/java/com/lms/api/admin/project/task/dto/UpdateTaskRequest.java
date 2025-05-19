@@ -23,8 +23,9 @@ public class UpdateTaskRequest {
     @Schema(description = "task 상태 식별키")
     long taskStatusId;
 
-
-    List<MultipartFile> files; // 파일들
-    List<Long> deleteFiles; // 삭제할 파일 목록
+    @Schema(description = "새롭게 추가된 파일들")
+    List<MultipartFile> files;
+    @Schema(description = "삭제할 파일의 식별키들")
+    List<Long> deleteFiles;
 
 }

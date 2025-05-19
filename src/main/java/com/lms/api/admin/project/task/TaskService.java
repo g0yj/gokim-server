@@ -341,6 +341,12 @@ public class TaskService {
 
         taskRepository.save(taskEntity);
     }
+    @Transactional
+    public void deleteTask(String userId, String taskId){
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
+        taskRepository.delete(taskEntity);
+    }
 
     @Transactional
     public List<ListSubTaskResponse> listSubTask(String id) {
