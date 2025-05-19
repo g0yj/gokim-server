@@ -1,9 +1,7 @@
 package com.lms.api.admin.project;
 
-import com.lms.api.admin.project.dto.CreateProjectRequest;
-import com.lms.api.admin.project.dto.UpdateProjectRequest;
-import com.lms.api.admin.project.dto.Project;
-import com.lms.api.admin.project.dto.ProjectFunction;
+import com.lms.api.admin.File.S3FileStorageService;
+import com.lms.api.admin.project.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.admin.project.enums.ProjectRole;
 import com.lms.api.common.entity.QUserEntity;
@@ -34,6 +32,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProjectService {
     private final JpaConfig jpaConfig;
+    private final S3FileStorageService s3FileStorageService;
     private final ProjectRepository projectRepository;
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
@@ -141,6 +140,45 @@ public class ProjectService {
                 .projectId(projectId)
                 .functions(functions)
                 .build();
+    }
+
+    @Transactional
+    public List<ProjectMember> listMember(String id) {
+        ProjectEntity projectEntity = projectRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+
+        List<ProjectMemberEntity> memberEntities = projectMemberRepository.findAll().stream()
+                .filter(pm -> pm.getProjectId().equals(projectEntity.getId()))
+                .toList();
+
+        return memberEntities.stream()
+                .map(pm -> {
+                    UserEntity userEntity = userRepository.findById(pm.getProjectMemberId())
+                            .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+                    return ProjectMember.builder()
+                            .id(pm.getProjectMemberId())
+                            .name(userEntity.getName())
+                            .email(userEntity.getEmail())
+                            .userImgUrl(s3FileStorageService.getUrl(userEntity.getFileName()))
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+    @Transactional
+    public void createMember(String projectId, String id){
+        ProjectEntity project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+        ProjectMemberEntity projectMemberEntity = ProjectMemberEntity.builder()
+                .projectMemberId(id)
+                .projectId(projectId)
+                .projectRole(ProjectRole.MEMBER)
+                .projectEntity(project)
+                .userEntity(user)
+                .build();
+        projectMemberRepository.save(projectMemberEntity);
     }
 }
 

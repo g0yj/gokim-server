@@ -1,14 +1,10 @@
 package com.lms.api.admin.project;
 
-import com.lms.api.admin.project.dto.CreateProjectRequest;
-import com.lms.api.admin.project.dto.CreateProjectResponse;
-import com.lms.api.admin.project.dto.ListProjectResponse;
-import com.lms.api.admin.project.dto.UpdateProjectRequest;
-import com.lms.api.admin.project.dto.Project;
-import com.lms.api.admin.project.dto.ProjectFunction;
+import com.lms.api.admin.project.dto.*;
 import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/project")
@@ -43,14 +40,14 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     @Operation(summary = "프로젝트 수정" , description = "프로젝트 변경 시 사용합니다.")
-    public ResponseEntity<?> updateProject(@LoginUser UserEntity user, @PathVariable String id, @Valid @RequestBody UpdateProjectRequest updateProjectRequest){
+    public ResponseEntity<?> updateProject(@LoginUser UserEntity user,@Parameter(description = "프로젝트 식별키") @PathVariable String id, @Valid @RequestBody UpdateProjectRequest updateProjectRequest){
         projectService.updateProject(user.getId(), id, updateProjectRequest);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "프로젝트 삭제", description = "권한이 소유자인 경우만 삭제가 가능하도록 접근 제한 합니다")
-    public ResponseEntity<?> deleteProject(@LoginUser UserEntity userEntity, @PathVariable String id){
+    public ResponseEntity<?> deleteProject(@LoginUser UserEntity userEntity,@Parameter(description = "프로젝트 식별키") @PathVariable String id){
         projectService.deleteProject(userEntity.getId(), id);
         return ResponseEntity.ok().build();
     }
@@ -61,5 +58,18 @@ public class ProjectController {
         return projectService.projectFunction(id);
     }
 
+    @GetMapping("/{projectId}/member")
+    @Operation(summary = "프로젝트 참여 멤버 목록")
+    public List<ProjectMember> listMember(@Parameter(description = "프로젝트 식별키")@PathVariable String projectId){
+        return projectService.listMember(projectId);
+    }
 
+    @PostMapping("/{projectId}/member")
+    @Operation(summary = "프로젝트 멤버 초대")
+    public ResponseEntity<?> createMember(
+            @Parameter(description = "프로젝트 식별키") @PathVariable String projectId,
+            @Valid @RequestBody CreateMemberRequest createMemberRequest){
+        projectService.createMember(projectId,createMemberRequest.getId());
+        return ResponseEntity.ok().build();
+    }
 }
