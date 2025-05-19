@@ -52,6 +52,7 @@ public class SecurityConfig {
                               "/login/oauth2/**",
                               "/oauth2/authorization/**",
                               "/logout",
+                              "/user",
                               "/test/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
