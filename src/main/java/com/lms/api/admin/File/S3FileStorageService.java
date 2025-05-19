@@ -48,7 +48,12 @@ public class S3FileStorageService implements FileStorageService{
 
     // prod와 dev 환경에서 버킷 하나로 동시에 쓰기 때문에 Prefix으로 구분해서 저장한거임! 실무에서는 버킷 따로 쓸 것.
     private String getObjectKey(String filename) {
-        return getActiveProfile() + "/uploads/" + filename;
+        // 변경: filename에 이미 prefix가 포함된 경우 중복 붙이지 않도록 처리
+        String prefix = getActiveProfile() + "/uploads/";
+        if(filename.startsWith(prefix)) {
+            return filename; // 이미 prefix가 붙은 상태이면 그대로 리턴
+        }
+        return prefix + filename;
     }
 
     @Override
@@ -94,24 +99,32 @@ public class S3FileStorageService implements FileStorageService{
 
     @Override
     public void delete(String fileName) {
+        log.debug("[S3 DELETE] 삭제 요청 파일명: {}", fileName);
+        // 변경: fileName에 이미 prefix가 붙어있을 수 있으므로 getObjectKey에서 중복처리함
         String key = getObjectKey(fileName);
         DeleteObjectRequest request = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
                 .build();
 
-        s3Client.deleteObject(request);
+        try {
+            s3Client.deleteObject(request);
+            log.debug("[S3 DELETE] 삭제 요청 성공 - key: {}", key);
+        } catch (Exception e) {
+            log.error("[S3 DELETE] 삭제 요청 실패 - key: {}, error: {}", key, e.getMessage(), e);
+            throw e;
+        }
     }
 
     @Override
     public String getUrl(String fileName) {
         if (fileName == null) {
-            log.warn("getUrl() 호출 시 fileName이 null입니다.");
             return "";
         }
         if (fileName.startsWith("http")) {
             return fileName;
         }
+        // 변경: getObjectKey 대신 fileName을 바로 넣음. fileName이 key이기 때문
         return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 

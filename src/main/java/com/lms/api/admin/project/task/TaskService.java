@@ -295,44 +295,49 @@ public class TaskService {
 
 
     @Transactional
-    public void updateTask(UpdateTask updateTask){
-        log.debug("수정 메서드 서비스 진입");
+    public void updateTask(UpdateTask updateTask) {
         TaskEntity taskEntity = taskRepository.findById(updateTask.getId())
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
-        // 수정
-        taskServiceMapper.mapTaskEntity(updateTask , taskEntity);
+        taskServiceMapper.mapTaskEntity(updateTask, taskEntity);
 
         TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(updateTask.getTaskStatusId())
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
 
         taskEntity.setTaskStatusEntity(taskStatusEntity);
 
-        // 파일 삭제 (서버에서는 삭제 안됨)
-        if(ObjectUtils.isNotEmpty(updateTask.getDeleteFiles())){
+        // 삭제할 파일은 S3에서 먼저 삭제
+        if (ObjectUtils.isNotEmpty(updateTask.getDeleteFiles())) {
             updateTask.getDeleteFiles()
-                    .forEach(fileId -> taskEntity.getTaskFileEntities().stream()
-                            .filter(taskFileEntity -> taskFileEntity.getId().equals(fileId))
-                            .findFirst()
-                            .ifPresent(taskFileEntity -> taskEntity.getTaskFileEntities()
-                                    .remove(taskFileEntity)));
+                    .forEach(fileId -> {
+                        taskEntity.getTaskFileEntities().stream()
+                                .filter(taskFileEntity -> taskFileEntity.getId().equals(fileId))
+                                .findFirst()
+                                .ifPresent(taskFileEntity -> fileStorageService.delete(taskFileEntity.getFileName()));
+                    });
         }
-        //파일 등록
+
+        // 새로 업로드한 파일들 업로드 및 DB 저장 준비
         Map<String, String> files = fileStorageService.upload(updateTask.getMultipartFiles());
-        if(ObjectUtils.isNotEmpty(files)){
-            List<TaskFileEntity> taskFileEntities = files.entrySet().stream()
-                    .map(entry ->{
-                        TaskFileEntity taskFileEntity = TaskFileEntity.builder()
-                                .originalFileName(entry.getKey())
-                                .fileName(entry.getValue())
-                                .modifiedBy(updateTask.getModifiedBy())
-                                .taskEntity(taskEntity)
-                                .build();
-                        return taskFileEntity;
-                    })
-                    .toList();
-            taskEntity.getTaskFileEntities().addAll(taskFileEntities);
-        }
+
+        // 기존 컬렉션에서 삭제할 파일 제외하고, 새로 업로드한 파일까지 합친 새 리스트 생성
+        List<TaskFileEntity> newFileList = taskEntity.getTaskFileEntities().stream()
+                .filter(file -> updateTask.getDeleteFiles() == null || !updateTask.getDeleteFiles().contains(file.getId()))
+                .collect(Collectors.toList());
+
+        files.forEach((originalName, savedFileName) -> {
+            TaskFileEntity newFileEntity = TaskFileEntity.builder()
+                    .originalFileName(originalName)
+                    .fileName(savedFileName)
+                    .modifiedBy(updateTask.getModifiedBy())
+                    .taskEntity(taskEntity)
+                    .build();
+            newFileList.add(newFileEntity);
+        });
+
+        // 컬렉션 인스턴스 유지하면서 내용 교체
+        taskEntity.getTaskFileEntities().clear();
+        taskEntity.getTaskFileEntities().addAll(newFileList);
 
         taskRepository.save(taskEntity);
     }
