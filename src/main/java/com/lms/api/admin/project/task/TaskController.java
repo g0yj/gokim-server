@@ -9,6 +9,7 @@ import com.lms.api.admin.project.task.dto.UpdateTask;
 import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -50,14 +51,16 @@ public class TaskController {
 
    @GetMapping("/{id}")
    @Operation(summary = "Task 상세조회", description = "task 목록 중 하나 클릭 시 식별키(id)를 사용해 상세 페이지로 이동합니다")
-    public GetTaskResponse getTask (@PathVariable String id) {
+    public GetTaskResponse getTask (@Parameter(description = "task 식별키") @PathVariable String id) {
         GetTask task = taskService.getTask(id);
         return taskControllerMapper.toGetTaskResponse(task);
    }
 
    @PutMapping("/{id}")
    @Operation(summary = "Task 수정", description = " 상세 조회에서 수정 시 사용")
-    public ResponseEntity<?> updateTask (@LoginUser UserEntity user, @PathVariable String id, UpdateTaskRequest updateTaskRequest){
+    public ResponseEntity<?> updateTask (@LoginUser UserEntity user,
+                                         @Parameter(description = "task 식별키") @PathVariable String id,
+                                         UpdateTaskRequest updateTaskRequest){
        UpdateTask updateTask = taskControllerMapper.toUpdateTask(user.getId(), id, updateTaskRequest);
        taskService.updateTask(updateTask);
         return ResponseEntity.ok().build();
@@ -65,18 +68,31 @@ public class TaskController {
 
    @DeleteMapping("/{id}")
    @Operation(summary = "Task 삭제")
-   public ResponseEntity<?> deleteTask(@LoginUser UserEntity userEntity, @PathVariable String id){
+   public ResponseEntity<?> deleteTask(@LoginUser UserEntity userEntity,@Parameter(description = "task 식별키") @PathVariable String id){
         taskService.deleteTask(userEntity.getId(), id);
         return ResponseEntity.ok().build();
    }
 
    @GetMapping("/{id}/subtask")
    @Operation(summary = "하위 항목 목록", description = "task 목록에서 식별키로 상세 페이지가 조회됩니다. 상세 페이지 안에 하위 업무 목록입니다")
-   public List<ListSubTaskResponse> listSubTask(@PathVariable String id){
+   public List<ListSubTaskResponse> listSubTask(@Parameter(description = "task 식별키") @PathVariable String id){
         return taskService.listSubTask(id);
-
    }
-
-
+   @PostMapping("/{id}/subtask")
+   @Operation(summary = "하위 항목 등록", description = "task 식별키를 통해 하위 항목과 연결됩니다")
+   public ResponseEntity<?> createSubTask(@LoginUser UserEntity userEntity,
+                                          @Parameter(description = "task 식별키") @PathVariable String id,
+                                          @RequestBody CreateSubTaskRequest createSubTaskRequest){
+        return ResponseEntity.ok().build();
+   }
+   @PutMapping("/subtask/{subTaskId}")
+   @Operation(summary = "하위 항목 수정", description = "요약 뿐 아니라, 담당자와 상태가 변경될 때도 사용됩니다.")
+   public ResponseEntity<?> updateSubTask(@LoginUser UserEntity userEntity,
+                                          @Parameter(description = "하위 항목 식별키") @PathVariable long subTaskId,
+                                          @Valid @RequestBody UpdateSubTaskRequest updateSubTaskRequest
+                                          ){
+        taskService.updateSubTask(userEntity.getId(), subTaskId, updateSubTaskRequest);
+        return ResponseEntity.ok().build();
+   }
 }
 

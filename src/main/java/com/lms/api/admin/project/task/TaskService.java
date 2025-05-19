@@ -7,6 +7,7 @@ import com.lms.api.admin.project.task.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
+import com.lms.api.common.entity.id.ProjectMemberId;
 import com.lms.api.common.entity.project.FunctionEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectMemberEntity;
@@ -379,6 +380,29 @@ public class TaskService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+    @Transactional
+    public void updateSubTask(String userId, long subTaskId, UpdateSubTaskRequest updateSubTaskRequest) {
+        SubTaskEntity subTaskEntity = subTaskRepository.findById(subTaskId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.SUB_TASK_NOT_FOUND));
+
+        TaskStatusEntity subStatus = taskStatusRepository.findById(updateSubTaskRequest.getSubTaskStatusId())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
+
+        // 복합키를 사용 중이라 이 절차 필요
+        ProjectMemberId projectMemberId = new ProjectMemberId();
+        projectMemberId.setProjectMemberId(updateSubTaskRequest.getSubTaskAssignedMemberId());
+        projectMemberId.setProjectId(updateSubTaskRequest.getProjectId());
+
+        ProjectMemberEntity projectMemberEntity = projectMemberRepository.findById(projectMemberId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_MEMBER_NOT_FOUND));
+
+        subTaskEntity.setContent(updateSubTaskRequest.getContent());
+        subTaskEntity.setTaskStatusEntity(subStatus);
+        subTaskEntity.setAssignee(projectMemberEntity);
+        subTaskEntity.setModifiedBy(userId);
+
+        subTaskRepository.save(subTaskEntity);
     }
 }
 

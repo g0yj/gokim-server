@@ -49,11 +49,11 @@ public class GetTaskResponse {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class File {
-        @Schema(description = "이미지 식별키")
+        @Schema(description = "첨부파일 식별키")
         long id;
-        @Schema(description = "이미지 파일명")
+        @Schema(description = "첨부파일 파일명")
         String originalFileName;
-        @Schema(description = "이미지 링크. src에 넣어야 할 주소")
+        @Schema(description = "첨부파일 링크. src에 넣어야 할 주소")
         String fileUrl;
     }
 
