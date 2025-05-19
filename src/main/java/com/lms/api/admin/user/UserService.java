@@ -101,7 +101,7 @@ public class UserService {
         }
         // multipart가 들어오면 수정 + userEntity의 fileName를 삭제해야함.
         if(updateUser.getMultipartFile() != null && !updateUser.getMultipartFile().isEmpty()){
-            String deleteFile = userEntity.getFileName();
+            String deleteFile = s3FileStorageService.getUrl(userEntity.getFileName());
             s3FileStorageService.delete(deleteFile);
             String fileName = s3FileStorageService.upload(updateUser.getMultipartFile());
             userEntity.setOriginalFileName(updateUser.getMultipartFile().getOriginalFilename());
