@@ -31,6 +31,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        String uri = request.getRequestURI();
+
+        // ✅ JWT 인증을 건너뛰는 예외 경로 목록
+        if (uri.startsWith("/api/test")){
+            log.debug("🔓 JWT 필터 예외 경로: {}", uri);
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String token = jwtTokenProvider.resolveToken(request);
         log.debug("✅ jwt 필터에서 token = {}", token);
 
