@@ -4,6 +4,7 @@ import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.auth.enums.LoginType;
 import com.lms.api.admin.user.dto.CreateUser;
 import com.lms.api.admin.user.dto.CreateUserResponse;
+import com.lms.api.admin.user.dto.GetUser;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.exception.ApiErrorCode;
@@ -14,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 
 @Slf4j
@@ -61,33 +61,23 @@ public class UserService {
                 .build();
     }
 
-/*    @Transactional(readOnly = true)
-    public List<Project> listProject(String userId) {
+    @Transactional
+    public GetUser getUser(String userId) {
         log.debug("로그인 된 아이디 확인 : {}" , userId);
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
-        QProjectEntity qProjectEntity = QProjectEntity.projectEntity;
-        QProjectMemberEntity qProjectMemberEntity  = QProjectMemberEntity.projectMemberEntity;
-        QUserEntity qUserEntity = QUserEntity.userEntity;
-        List<ProjectEntity> projectEntities = jpaConfig.queryFactory()
-                .selectFrom(qProjectEntity)
-                .join(qProjectEntity.userEntity).fetchJoin()
-                .leftJoin(qProjectEntity.projectMemberEntities, qProjectMemberEntity).fetchJoin()
-                .leftJoin(qProjectMemberEntity.userEntity, qUserEntity).fetchJoin()
-                .where(
-                        qProjectEntity.userEntity.id.eq(userId) // 만든사람
-                                .or(qProjectMemberEntity.userEntity.id.eq(userId))// 참여한사람
-                )
-                .distinct()
-                .fetch();
-
-        return projectEntities.stream()
-                .map(projectServiceMapper::toProject)
-                .collect(Collectors.toList());
+        return GetUser.builder()
+                .id(userEntity.getId())
+                .name(userEntity.getName())
+                .email(userEntity.getEmail())
+                .phone(userEntity.getPhone())
+                .userImgUrl(s3FileStorageService.getUrl(userEntity.getFileName()))
+                .loginType(userEntity.getLoginType())
+                .build();
     }
 
-
+/*
     @Transactional
     public void updateProject(String modifiedBy,String id, UpdateProjectRequest updateProjectRequest){
         ProjectEntity projectEntity = projectRepository.findById(id)

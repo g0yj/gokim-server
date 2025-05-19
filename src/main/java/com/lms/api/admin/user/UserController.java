@@ -1,8 +1,11 @@
 package com.lms.api.admin.user;
 
+import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.user.dto.CreateUser;
 import com.lms.api.admin.user.dto.CreateUserRequest;
 import com.lms.api.admin.user.dto.CreateUserResponse;
+import com.lms.api.admin.user.dto.GetUser;
+import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,15 +29,12 @@ public class UserController {
         CreateUser createUser = userControllerMapper.toCreateUser(createUserRequest);
         return userService.createUser(createUser);
     }
-
-/*
     @GetMapping
-    @Operation(summary = "프로젝트 목록" , description = "로그인한 회원이 참여 중인 프로젝트만 조회됩니다")
-    public List<ListProjectResponse> listProject(@LoginUser UserEntity user){
-        List<Project> projects = projectService.listProject(user.getId());
-        return projectControllerMapper.toListProjectResponse(projects);
+    @Operation(summary = "회원 상세 조회")
+    public GetUser getUser(@LoginUser UserEntity user){
+        return userService.getUser(user.getId());
     }
-
+/*
     @PutMapping("/{id}")
     @Operation(summary = "프로젝트 수정" , description = "프로젝트 변경 시 사용합니다.")
     public ResponseEntity<?> updateProject(@LoginUser UserEntity user, @PathVariable String id, @Valid @RequestBody UpdateProjectRequest updateProjectRequest){
@@ -49,11 +49,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
-    public ProjectFunction listProjectFunction(@PathVariable String id){
-        return projectService.projectFunction(id);
-    }
 
 */
 
