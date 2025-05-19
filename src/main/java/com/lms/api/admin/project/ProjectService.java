@@ -124,6 +124,9 @@ public class ProjectService {
         ProjectMemberEntity projectMemberEntity = projectMemberRepository.findByProjectEntity_IdAndUserEntity_IdAndProjectRole(projectId, userId, ProjectRole.OWNER)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.ACCESS_DENIED));
 
+        if(projectMemberEntity.getProjectRole() != ProjectRole.OWNER){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
         projectRepository.delete(projectEntity);
     }
 
