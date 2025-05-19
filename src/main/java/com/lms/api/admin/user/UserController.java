@@ -41,15 +41,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-/*
-    @DeleteMapping("/{id}")
-    @Operation(summary = "프로젝트 삭제", description = "권한이 소유자인 경우만 삭제가 가능하도록 접근 제한 합니다")
-    public ResponseEntity<?> deleteProject(@LoginUser UserEntity userEntity, @PathVariable String id){
-        projectService.deleteProject(userEntity.getId(), id);
+
+    @DeleteMapping
+    @Operation(summary = "회원 탈퇴")
+    public ResponseEntity<?> deleteUser(@LoginUser UserEntity userEntity){
+        userService.deleteUser(userEntity.getId());
         return ResponseEntity.ok().build();
     }
 
-
-*/
 
 }

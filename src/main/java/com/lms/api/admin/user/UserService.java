@@ -2,9 +2,14 @@ package com.lms.api.admin.user;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.auth.enums.LoginType;
+import com.lms.api.admin.project.dto.ProjectFunction;
+import com.lms.api.admin.project.enums.ProjectRole;
 import com.lms.api.admin.user.dto.*;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
+import com.lms.api.common.entity.project.FunctionEntity;
+import com.lms.api.common.entity.project.ProjectEntity;
+import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
@@ -14,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 
 
 @Slf4j
@@ -103,30 +109,17 @@ public class UserService {
         }
         userRepository.save(userEntity);
     }
-/*
+
+
     @Transactional
-    public void deleteProject(String userId, String projectId){
-        ProjectEntity projectEntity = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
-
-        ProjectMemberEntity projectMemberEntity = projectMemberRepository.findByProjectEntity_IdAndUserEntity_IdAndProjectRole(projectId, userId, ProjectRole.OWNER)
-                .orElseThrow(() -> new ApiException(ApiErrorCode.ACCESS_DENIED));
-
-        projectRepository.delete(projectEntity);
+    public void deleteUser(String userId){
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+        //S3에서 삭제
+        s3FileStorageService.delete(userEntity.getFileName());
+        userRepository.delete(userEntity);
     }
 
-    @Transactional
-    public ProjectFunction projectFunction(String projectId){
-        List<FunctionEntity> functionEntities = functionRepository.findByProjectEntity_IdOrderByFunctionSortAsc(projectId);
-        List<ProjectFunction.Function> functions = functionEntities.stream()
-                .map(projectServiceMapper::toFunction)
-                .toList();
-
-        return ProjectFunction.builder()
-                .projectId(projectId)
-                .functions(functions)
-                .build();
-    }*/
 }
 
 
