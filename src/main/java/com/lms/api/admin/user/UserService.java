@@ -2,9 +2,7 @@ package com.lms.api.admin.user;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.auth.enums.LoginType;
-import com.lms.api.admin.user.dto.CreateUser;
-import com.lms.api.admin.user.dto.CreateUserResponse;
-import com.lms.api.admin.user.dto.GetUser;
+import com.lms.api.admin.user.dto.*;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.exception.ApiErrorCode;
@@ -15,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 @Slf4j
@@ -77,18 +76,34 @@ public class UserService {
                 .build();
     }
 
-/*
     @Transactional
-    public void updateProject(String modifiedBy,String id, UpdateProjectRequest updateProjectRequest){
-        ProjectEntity projectEntity = projectRepository.findById(id)
-                .orElseThrow(()-> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+    public void updateUser(String userId, UpdateUser updateUser){
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
-        projectEntity.setModifiedBy(modifiedBy);
-        projectEntity.setProjectName(updateProjectRequest.getProjectName());
+        userEntity.setName(updateUser.getName());
+        userEntity.setPhone(updateUser.getPhone());
+        userEntity.setEmail(updateUser.getEmail());
+        userEntity.setModifiedBy(updateUser.getModifiedBy());
 
-        projectRepository.save(projectEntity);
+        // 비밀번호가 있을 경우만 수정
+        String newPwd = null;
+        if(updateUser.getPassword() != null && !updateUser.getPassword().isEmpty()){
+            BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+            newPwd = bCryptPasswordEncoder.encode(updateUser.getPassword());
+            userEntity.setPassword(newPwd);
+        }
+        // multipart가 들어오면 수정 + userEntity의 fileName를 삭제해야함.
+        if(updateUser.getMultipartFile() != null && !updateUser.getMultipartFile().isEmpty()){
+            String deleteFile = userEntity.getFileName();
+            s3FileStorageService.delete(deleteFile);
+            String fileName = s3FileStorageService.upload(updateUser.getMultipartFile());
+            userEntity.setOriginalFileName(updateUser.getMultipartFile().getOriginalFilename());
+            userEntity.setFileName(fileName);
+        }
+        userRepository.save(userEntity);
     }
-
+/*
     @Transactional
     public void deleteProject(String userId, String projectId){
         ProjectEntity projectEntity = projectRepository.findById(projectId)
