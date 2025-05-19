@@ -14,6 +14,6 @@ public class TestController {
 
     @GetMapping("/2")
     public String test2(){
-        return "";
+        return "젠킨슨 자동 실행 확인";
     }
 }
