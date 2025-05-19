@@ -64,7 +64,9 @@ public class S3FileStorageService implements FileStorageService{
                     .build();
 
             s3Client.putObject(request, RequestBody.fromInputStream(file.getInputStream(), file.getSize()));
-            return getUrl(filename);
+
+            // 변경: 반환할 때 파일명(filename) 대신 S3에 저장된 key 전체를 반환
+            return key;
         } catch (IOException e) {
             throw new RuntimeException("S3 업로드 실패", e);
         }
@@ -83,16 +85,16 @@ public class S3FileStorageService implements FileStorageService{
                     if (file.getSize() > getMaxFileSize()) {
                         throw new ApiException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
                     }
-                    String storedFilename = upload(file); // UUID_붙은 저장 파일명
-                    fileNames.put(file.getOriginalFilename(), storedFilename);
+                    String fileName = upload(file); // UUID_붙은 저장 파일명 (실제로는 key 전체)
+                    fileNames.put(file.getOriginalFilename(), fileName);
                 });
 
         return fileNames;
     }
 
     @Override
-    public void delete(String storedFilename) {
-        String key = getObjectKey(storedFilename);
+    public void delete(String fileName) {
+        String key = getObjectKey(fileName);
         DeleteObjectRequest request = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
@@ -101,10 +103,17 @@ public class S3FileStorageService implements FileStorageService{
         s3Client.deleteObject(request);
     }
 
-
     @Override
-    public String getUrl(String storedFilename) {
-        return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + getObjectKey(storedFilename);
+    public String getUrl(String fileName) {
+        if (fileName == null) {
+            log.warn("getUrl() 호출 시 fileName이 null입니다.");
+            return "";
+        }
+        if (fileName.startsWith("http")) {
+            return fileName;
+        }
+        return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
+
 
 }

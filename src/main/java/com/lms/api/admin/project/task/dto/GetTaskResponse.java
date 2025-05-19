@@ -51,10 +51,8 @@ public class GetTaskResponse {
     public static class File {
         @Schema(description = "이미지 식별키")
         long id;
-        @Schema(description = "서버에 저장된 파일명")
-        String file;
         @Schema(description = "이미지 파일명")
-        String originalFile;
+        String originalFileName;
         @Schema(description = "이미지 링크. src에 넣어야 할 주소")
         String fileUrl;
     }
@@ -71,6 +69,8 @@ public class GetTaskResponse {
         String subTaskAssignedMemberId;
         @Schema(description = "하위 항목 담당자 이름")
         String subTaskAssignedMemberName;
+        @Schema(description = "하위 항목 담당자 이미지")
+        String userImgUrl;
         @Schema(description = "하위 항목 처리 상태 식별키")
         long subTaskStatusId;
         @Schema(description = "하위 항목 처리 상태 이름")

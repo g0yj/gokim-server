@@ -31,8 +31,8 @@ public class UserEntity extends BaseEntity {
   String email;
   String phone;
 
-  String file;
-  String originalFile;
+  String fileName;
+  String originalFileName;
 
   @Enumerated(EnumType.STRING)
   UserRole role;

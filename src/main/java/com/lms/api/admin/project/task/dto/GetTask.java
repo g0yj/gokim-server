@@ -47,9 +47,9 @@ public class GetTask {
         @Schema(description = "이미지 식별키")
         long id;
         @Schema(description = "이미지 링크. src에 넣어야 할 주소")
-        String file;
+        String fileUrl;
         @Schema(description = "이미지 파일명")
-        String originalFile;
+        String originalFileName;
     }
 
     @Getter
@@ -57,6 +57,7 @@ public class GetTask {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class SubTask {
         long id;
+        String userImgUrl;
         String content;
         String subTaskAssignedMemberId;
         String subTaskAssignedMemberName;

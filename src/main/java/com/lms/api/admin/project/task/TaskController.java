@@ -62,5 +62,14 @@ public class TaskController {
        taskService.updateTask(updateTask);
         return ResponseEntity.ok().build();
    }
+
+   @GetMapping("/{id}/subtask")
+   @Operation(summary = "하위 항목 목록", description = "task 목록에서 식별키로 상세 페이지가 조회됩니다. 상세 페이지 안에 하위 업무 목록입니다")
+   public List<ListSubTaskResponse> listSubTask(@PathVariable String id){
+        return taskService.listSubTask(id);
+
+   }
+
+
 }
 

@@ -42,7 +42,7 @@ public class ListTask {
         String projectMemberId;
         String projectMemberName;
         ProjectRole projectRole;
-        String file;
+        String fileUrl;
     }
 
     @Getter

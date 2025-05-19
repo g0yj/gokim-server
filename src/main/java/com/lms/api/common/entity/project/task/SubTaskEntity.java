@@ -21,7 +21,6 @@ public class SubTaskEntity extends BaseEntity {
     Long id;
 
 
-
     String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

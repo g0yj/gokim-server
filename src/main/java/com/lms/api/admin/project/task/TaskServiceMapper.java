@@ -28,6 +28,7 @@ public interface TaskServiceMapper {
 
     List<GetTask.TaskComment> toTaskComment(List<TaskCommentEntity> taskCommentEntities);
 
+    @Mapping(source = "fileName", target = "fileUrl")
     GetTask.File toFile(TaskFileEntity taskFileEntity);
 
     List<GetTask.File> toFile(List<TaskFileEntity> taskFileEntities);

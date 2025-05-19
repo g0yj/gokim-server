@@ -2,12 +2,8 @@ package com.lms.api.admin.project.task;
 
 
 import com.lms.api.admin.File.FileStorageService;
-import com.lms.api.admin.project.task.dto.CreateTaskRequest;
-import com.lms.api.admin.project.task.dto.ChangeTask;
-import com.lms.api.admin.project.task.dto.GetTask;
-import com.lms.api.admin.project.task.dto.ListTaskRequest;
-import com.lms.api.admin.project.task.dto.ListTask;
-import com.lms.api.admin.project.task.dto.UpdateTask;
+import com.lms.api.admin.File.S3FileStorageService;
+import com.lms.api.admin.project.task.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
@@ -22,7 +18,6 @@ import com.lms.api.common.repository.project.FunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.*;
-import com.lms.api.admin.File.FileService;
 import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.BooleanBuilder;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +36,7 @@ import java.util.stream.Collectors;
 public class TaskService {
     private final JpaConfig jpaConfig;
     private final FileStorageService fileStorageService;
+    private final S3FileStorageService s3FileStorageService;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TaskStatusRepository taskStatusRepository;
@@ -154,7 +150,7 @@ public class TaskService {
                     member = ListTask.ProjectMember.builder()
                             .projectMemberId(pm.getProjectMemberId())
                             .projectMemberName(user.getName())
-                            .file(user.getFile())
+                            .fileUrl(user.getFileName())
                             .projectRole(pm.getProjectRole())
                             .build();
                 }
@@ -227,11 +223,9 @@ public class TaskService {
         TaskEntity taskEntity = taskRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
-        // task
         Optional<UserEntity> assignedMember = userRepository.findById(taskEntity.getAssignedMember());
         Optional<UserEntity> writer = userRepository.findById(taskEntity.getCreatedBy());
 
-        // subtask
         String taskId = taskEntity.getId();
         List<GetTask.SubTask> subTasks = subTaskRepository.findAll().stream()
                 .filter(sub -> sub.getTaskEntity().getId().equals(taskId))
@@ -239,9 +233,9 @@ public class TaskService {
                     UserEntity assigneeUser = userRepository.findById(subTaskEntity.getAssignee().getProjectMemberId())
                             .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
-                    // SubTask 매핑
                     return GetTask.SubTask.builder()
                             .id(subTaskEntity.getId())
+                            .userImgUrl(s3FileStorageService.getUrl(assigneeUser.getFileName()))
                             .content(subTaskEntity.getContent())
                             .subTaskAssignedMemberName(assigneeUser.getName())
                             .subTaskAssignedMemberId(assigneeUser.getId())
@@ -253,20 +247,26 @@ public class TaskService {
                 })
                 .collect(Collectors.toList());
 
-        // 완료된 하위 작업 갯수
         long completedCount = subTasks.stream()
                 .filter(sub -> sub.getSubTaskStatus() != null && sub.getSubTaskStatus().getId() == 4)
                 .count();
 
-        // comment
         List<TaskCommentEntity> taskComments = taskCommentRepository.findAll().stream()
                 .filter(comment -> comment.getTaskEntity().getId().equals(taskId))
                 .collect(Collectors.toList());
 
-        // file
+        // 파일명 null 필터링 + fileUrl 직접 세팅
         List<TaskFileEntity> taskFiles = taskFileRepository.findAll().stream()
                 .filter(file -> file.getTaskEntity().getId().equals(taskId))
+                .filter(file -> file.getFileName() != null)
                 .collect(Collectors.toList());
+
+        // 직접 fileUrl 세팅 후 DTO 변환
+        List<TaskFileEntity> filesWithUrl = taskFiles.stream()
+                .peek(file -> file.setFileName(s3FileStorageService.getUrl(file.getFileName())))
+                .collect(Collectors.toList());
+
+        log.debug("✅ fileUrl 확인 : {} ", filesWithUrl);
 
         // task response 생성
         return GetTask.builder()
@@ -288,9 +288,11 @@ public class TaskService {
                 .completedSubTaskCount((int) completedCount)
                 .subTasks(subTasks)
                 .taskComments(taskServiceMapper.toTaskComment(taskComments))
-                .files(taskServiceMapper.toFile(taskFiles))
+                .files(taskServiceMapper.toFile(filesWithUrl))  // 여기서는 fileName에 URL이 들어있음
                 .build();
     }
+
+
 
     @Transactional
     public void updateTask(UpdateTask updateTask){
@@ -333,7 +335,39 @@ public class TaskService {
         }
 
         taskRepository.save(taskEntity);
+    }
 
+    @Transactional
+    public List<ListSubTaskResponse> listSubTask(String id) {
+        return subTaskRepository.findAll().stream()
+                .filter(sub -> sub.getTaskEntity().getId().equals(id))
+                .map(subTaskEntity -> {
+                    UserEntity userEntity = userRepository.findById(subTaskEntity.getAssignee().getProjectMemberId())
+                            .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+                    TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(subTaskEntity.getTaskStatusEntity().getId())
+                            .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
+
+                    // SubTask 매핑
+                    return ListSubTaskResponse.builder()
+                            .id(subTaskEntity.getId())
+                            .content(subTaskEntity.getContent())
+                            .projectMember(
+                                    ListSubTaskResponse.ProjectMember.builder()
+                                            .id(userEntity.getId())
+                                            .name(userEntity.getName())
+                                            .fileUrl("")  // 필요하면 프로필 이미지 URL 넣기
+                                            .build()
+                            )
+                            .taskStatus(
+                                    ListSubTaskResponse.TaskStatus.builder()
+                                            .id(taskStatusEntity.getId())
+                                            .name(taskStatusEntity.getName())
+                                            .build()
+                            )
+                            .build();
+                })
+                .collect(Collectors.toList());
     }
 }
 
