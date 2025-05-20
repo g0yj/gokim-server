@@ -40,7 +40,7 @@ public enum ApiErrorCode implements ApiError {
 
   //project error
   PROJECT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0200", "찾을 수 없는 프로젝트입니다."),
-  PROJECT_MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "0201", "찾을 수 없는 프로젝트입니다."),
+  PROJECT_MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "0201", "프로젝트 참여 멤버가 아닙니다"),
   FUNCTION_NOT_FOUND(HttpStatus.BAD_REQUEST, "0202", "찾을 수 없는 프로젝트 기능입니다"),
 
   //task error

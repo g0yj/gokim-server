@@ -2,14 +2,9 @@ package com.lms.api.admin.user;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.auth.enums.LoginType;
-import com.lms.api.admin.project.dto.ProjectFunction;
-import com.lms.api.admin.project.enums.ProjectRole;
 import com.lms.api.admin.user.dto.*;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
-import com.lms.api.common.entity.project.FunctionEntity;
-import com.lms.api.common.entity.project.ProjectEntity;
-import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
@@ -18,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 @Slf4j

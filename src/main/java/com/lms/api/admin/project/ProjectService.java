@@ -131,7 +131,7 @@ public class ProjectService {
 
     @Transactional
     public ProjectFunction projectFunction(String projectId){
-        List<FunctionEntity> functionEntities = functionRepository.findByProjectEntity_IdOrderByFunctionSortAsc(projectId);
+        List<ProjectFunctionEntity> functionEntities = functionRepository.findByProjectEntity_IdOrderByFunctionSortAsc(projectId);
         List<ProjectFunction.Function> functions = functionEntities.stream()
                 .map(projectServiceMapper::toFunction)
                 .toList();
@@ -179,6 +179,32 @@ public class ProjectService {
                 .userEntity(user)
                 .build();
         projectMemberRepository.save(projectMemberEntity);
+    }
+
+    @Transactional
+    public void deleteMember(String userId, String projectMemberId, String projectId) {
+        ProjectEntity projectEntity = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+
+        // 소유자인지 체크
+        boolean isOwner = projectEntity.getProjectMemberEntities().stream()
+                .anyMatch(pm -> pm.getProjectRole() == ProjectRole.OWNER
+                        && pm.getUserEntity().getId().equals(userId));
+        log.debug("소유자 여부 확인 : {}", isOwner);
+        if (!isOwner) {
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        // 삭제 대상 멤버 찾기 (projectEntity 컬렉션에서)
+        ProjectMemberEntity targetMember = projectEntity.getProjectMemberEntities().stream()
+                .filter(pm -> pm.getProjectMemberId().equals(projectMemberId))
+                .findFirst()
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_MEMBER_NOT_FOUND));
+
+        // 양방향 관계 고려해 컬렉션에서 제거
+        projectEntity.getProjectMemberEntities().remove(targetMember);
+        targetMember.setProjectEntity(null);  // 연관 관계 끊기
+        log.debug("멤버 삭제 처리 완료 - 트랜잭션 커밋 시 삭제 반영");
     }
 }
 

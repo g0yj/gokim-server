@@ -1,9 +1,7 @@
 package com.lms.api.common.entity.project;
 
 import com.lms.api.common.entity.BaseEntity;
-import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
-import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +15,7 @@ import java.util.List;
 @Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class FunctionEntity extends BaseEntity {
+public class ProjectFunctionEntity extends BaseEntity {
 
     @Id
     @Column(updatable = false)

@@ -1,8 +1,7 @@
 package com.lms.api.common.entity.project.task;
 
 import com.lms.api.common.entity.*;
-import com.lms.api.common.entity.project.FunctionEntity;
-import com.lms.api.common.entity.project.ProjectEntity;
+import com.lms.api.common.entity.project.ProjectFunctionEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -34,7 +33,7 @@ public class TaskEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "function_id", nullable = false)
-    FunctionEntity functionEntity;
+    ProjectFunctionEntity functionEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_status_id", nullable = false)

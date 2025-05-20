@@ -72,4 +72,13 @@ public class ProjectController {
         projectService.createMember(projectId,createMemberRequest.getId());
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{projectId}/member")
+    @Operation(summary = "프로젝트 멤버 삭제")
+    public ResponseEntity<?> deleteMember(@LoginUser UserEntity userEntity,
+                                          @Parameter(description = "프로젝트 식별키",required = true) @PathVariable String projectId,
+                                          @Parameter(description = "프로젝트 참여 멤버 식별키",required = true)@RequestParam String projectMemberId){
+        projectService.deleteMember(userEntity.getId(), projectMemberId, projectId);
+        return ResponseEntity.ok().build();
+    }
 }

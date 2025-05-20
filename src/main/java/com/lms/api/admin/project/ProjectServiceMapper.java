@@ -2,7 +2,7 @@ package com.lms.api.admin.project;
 
 import com.lms.api.admin.project.dto.Project;
 import com.lms.api.admin.project.dto.ProjectFunction;
-import com.lms.api.common.entity.project.FunctionEntity;
+import com.lms.api.common.entity.project.ProjectFunctionEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.mapper.ServiceMapper;
@@ -24,5 +24,5 @@ public interface ProjectServiceMapper {
     @Mapping(target = "projectMemberName", source = "userEntity.name")
     Project.ProjectMember toProjectMember(ProjectMemberEntity projectMemberEntity);
 
-    ProjectFunction.Function toFunction(FunctionEntity functionEntity);
+    ProjectFunction.Function toFunction(ProjectFunctionEntity functionEntity);
 }
