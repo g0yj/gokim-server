@@ -160,6 +160,7 @@ public class ProjectService {
                             .name(userEntity.getName())
                             .email(userEntity.getEmail())
                             .userImgUrl(s3FileStorageService.getUrl(userEntity.getFileName()))
+                            .projectRole(pm.getProjectRole())
                             .build();
                 })
                 .collect(Collectors.toList());
@@ -205,6 +206,31 @@ public class ProjectService {
         projectEntity.getProjectMemberEntities().remove(targetMember);
         targetMember.setProjectEntity(null);  // 연관 관계 끊기
         log.debug("멤버 삭제 처리 완료 - 트랜잭션 커밋 시 삭제 반영");
+    }
+
+    @Transactional
+    public void updateMember(String loginId, UpdateMemberRequest updateMemberRequest, String projectId) {
+        ProjectEntity projectEntity = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+
+        // 소유자인지 체크
+        boolean isOwner = projectEntity.getProjectMemberEntities().stream()
+                .anyMatch(pm -> pm.getProjectRole() == ProjectRole.OWNER
+                        && pm.getUserEntity().getId().equals(loginId));
+        log.debug("소유자 여부 확인 : {}", isOwner);
+        if (!isOwner) {
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        ProjectMemberEntity targetMember = projectEntity.getProjectMemberEntities().stream()
+                .filter(pm -> pm.getProjectMemberId().equals(updateMemberRequest.getProjectMemberId()))
+                .findFirst()
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_MEMBER_NOT_FOUND));
+        targetMember.setProjectRole(updateMemberRequest.getProjectRole());
+        targetMember.setModifiedBy(loginId);
+
+        projectMemberRepository.save(targetMember);
+
     }
 }
 

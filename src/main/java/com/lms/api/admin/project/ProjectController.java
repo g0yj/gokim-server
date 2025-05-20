@@ -52,11 +52,6 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
-    public ProjectFunction listProjectFunction(@PathVariable String id){
-        return projectService.projectFunction(id);
-    }
 
     @GetMapping("/{projectId}/member")
     @Operation(summary = "프로젝트 참여 멤버 목록")
@@ -81,4 +76,20 @@ public class ProjectController {
         projectService.deleteMember(userEntity.getId(), projectMemberId, projectId);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{projectId}/member")
+    @Operation(summary = "프로젝트 멤버 수정", description = "프로젝트 권한 변경 시 사용")
+    public ResponseEntity<?> updateMember(@LoginUser UserEntity userEntity,
+                                          @Parameter(description = "프로젝트 식별키",required = true) @PathVariable String projectId,
+                                          @Valid @RequestBody UpdateMemberRequest updateMemberRequest){
+        projectService.updateMember(userEntity.getId(), updateMemberRequest, projectId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
+    public ProjectFunction listProjectFunction(@PathVariable String id){
+        return projectService.projectFunction(id);
+    }
+
 }
