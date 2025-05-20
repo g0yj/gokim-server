@@ -24,5 +24,6 @@ public interface ProjectServiceMapper {
     @Mapping(target = "projectMemberName", source = "userEntity.name")
     Project.ProjectMember toProjectMember(ProjectMemberEntity projectMemberEntity);
 
-    ProjectFunction.Function toFunction(ProjectFunctionEntity functionEntity);
+    @Mapping(target = "projectFunctionType", source = "projectFunctionType")
+    ProjectFunction.Function toFunction(ProjectFunctionEntity projectFunctionEntity);
 }

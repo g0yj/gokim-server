@@ -1,5 +1,6 @@
 package com.lms.api.admin.project.dto;
 
+import com.lms.api.admin.project.enums.ProjectFunctionType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +27,7 @@ public class ProjectFunction {
         String functionName;
         @Schema(description = "기능(카테고리) 순서")
         Long functionSort;
+        ProjectFunctionType projectFunctionType;
     }
 
 

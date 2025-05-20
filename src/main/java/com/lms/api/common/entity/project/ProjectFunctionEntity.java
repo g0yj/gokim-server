@@ -1,5 +1,6 @@
 package com.lms.api.common.entity.project;
 
+import com.lms.api.admin.project.enums.ProjectFunctionType;
 import com.lms.api.common.entity.BaseEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
 import jakarta.persistence.*;
@@ -24,6 +25,9 @@ public class ProjectFunctionEntity extends BaseEntity {
     String functionName;
 
     Long functionSort;
+
+    @Enumerated(EnumType.STRING)
+    ProjectFunctionType projectFunctionType;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
