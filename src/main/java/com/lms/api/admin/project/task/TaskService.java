@@ -469,7 +469,7 @@ public class TaskService {
         subTaskRepository.save(subTaskEntity);
     }
 
-
+    @Transactional
     public void createComment(String loginId, String taskId, CreateCommentRequest createCommentRequest) {
         TaskEntity taskEntity = taskRepository.findById(taskId)
                 .orElseThrow(()-> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
@@ -482,6 +482,7 @@ public class TaskService {
         taskCommentRepository.save(taskCommentEntity);
     }
 
+    @Transactional
     public void updateComment(String loginId, Long taskCommentId, UpdateCommentRequest updateCommentRequest) {
 
         TaskCommentEntity taskCommentEntity = taskCommentRepository.findById(taskCommentId)
@@ -490,6 +491,10 @@ public class TaskService {
         taskCommentEntity.setModifiedBy(loginId);
 
         taskCommentRepository.save(taskCommentEntity);
+    }
+    @Transactional
+    public void deleteComment(Long taskCommentId) {
+        taskCommentRepository.deleteById(taskCommentId);
     }
 }
 

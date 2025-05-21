@@ -140,5 +140,12 @@ public class TaskController {
         taskService.updateComment(userEntity.getId(), taskCommentId, updateCommentRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("comment/{taskCommentId}")
+    @Operation(summary = "댓글 삭제")
+    public ResponseEntity<?> deleteComment(@Parameter(description = "댓글 식별키") @PathVariable Long taskCommentId){
+        taskService.deleteComment(taskCommentId);
+        return ResponseEntity.ok().build();
+    }
 }
 
