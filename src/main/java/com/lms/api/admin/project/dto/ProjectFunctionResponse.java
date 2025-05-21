@@ -22,7 +22,7 @@ public class ProjectFunctionResponse {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Function {
         @Schema(description = "기능(카테고리) 식별키")
-        String id;
+        String projectFunctionId;
         @Schema(description = "기능명")
         String projectFunctionName;
         @Schema(description = "기능(카테고리) 순서")

@@ -3,11 +3,16 @@ package com.lms.api.admin.project;
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.project.dto.*;
 import com.lms.api.admin.project.enums.ProjectFunctionType;
+import com.lms.api.admin.project.task.TaskService;
+import com.lms.api.admin.project.task.dto.CreateTaskRequest;
+import com.lms.api.admin.project.task.dto.CreateTaskStatusRequest;
+import com.lms.api.admin.project.task.dto.CreateTaskStatusResponse;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.admin.project.enums.ProjectRole;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.*;
+import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
@@ -42,6 +47,7 @@ public class ProjectService {
     private final TaskStatusRepository taskStatusRepository;
     private final FunctionRepository functionRepository;
     private final ProjectServiceMapper projectServiceMapper;
+    private final TaskService taskService;
 
     @Transactional
     public List<FunctionResponse> listFunction() {
@@ -79,6 +85,7 @@ public class ProjectService {
         projectMemberRepository.save(owner);
         project.getProjectMemberEntities().add(owner);
 
+        // 프로젝트 멤버 추가
         if(createProjectRequest.getProjectMemberId() != null && !createProjectRequest.getProjectMemberId().isEmpty()){
             for(String memberId : createProjectRequest.getProjectMemberId()){
                 if(memberId.equals(user.getId())) continue; // 위에서 owner 추가함
@@ -99,6 +106,7 @@ public class ProjectService {
             }
         }
 
+        // 프로젝트 기능 추가
         if(createProjectRequest.getProjectFunction() != null && !createProjectRequest.getProjectFunction().isEmpty()){
             int sort = createProjectRequest.getProjectFunction().size()+ 1 ;
 
@@ -120,8 +128,25 @@ public class ProjectService {
                         .build();
                 projectFunctionRepository.save(projectFunctionEntity);
                 project.getProjectFunctionEntities().add(projectFunctionEntity);
+
+                // Task기능이 추가되면 taskStatus 생성이 필수
+                if(projectFunction.getProjectFunctionType().equals(ProjectFunctionType.TASK)){
+                    log.debug("TASK일 때 TaskStatus 생성은 필수!! ProjectFunctionType : {}", projectFunction.getProjectFunctionName());
+                    CreateTaskStatusRequest createTaskStatusRequest = CreateTaskStatusRequest.builder()
+                            .projectFunctionId(functionId)
+                            .build();
+                    List<CreateTaskStatusResponse> responses = taskService.createTaskStatus(user.getId(),createTaskStatusRequest);
+                    for(CreateTaskStatusResponse response : responses){
+                        TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(response.getTaskStatusId())
+                                .orElseThrow(()-> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
+                        log.debug("taskEntity의 프로젝트 id 없는 상태 : {}", taskStatusEntity.getProjectId());
+                        taskStatusEntity.setProjectId(projectId);
+                        log.debug("프로젝트 id 있는 상태 : {}", taskStatusEntity.getProjectId());
+                    }
+                }
             }
         } else {
+            log.debug("빈페이지 생성하는 곳으로 진입");
             String functionId = "PF" + System.nanoTime();
             ProjectFunctionEntity defaultFunction = ProjectFunctionEntity.builder()
                     .id(functionId)
@@ -130,6 +155,7 @@ public class ProjectService {
                     .projectFunctionType(ProjectFunctionType.PAGE)
                     .projectEntity(project)
                     .build();
+            // todo 추후 페이지 관련한 기능 추가 로직 필요 (테이블 생성 될듯)
             projectFunctionRepository.save(defaultFunction);
             project.getProjectFunctionEntities().add(defaultFunction);
 
@@ -191,20 +217,20 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectFunction listProjectFunction(String projectId){
+    public ProjectFunctionResponse listProjectFunction(String projectId){
         List<ProjectFunctionEntity> functionEntities = projectFunctionRepository.findByProjectEntity_IdOrderByProjectFunctionSortAsc(projectId);
-        List<ProjectFunction.Function> functions = functionEntities.stream()
+        List<ProjectFunctionResponse.Function> functions = functionEntities.stream()
                 .map(projectServiceMapper::toFunction)
                 .toList();
 
-        return ProjectFunction.builder()
+        return ProjectFunctionResponse.builder()
                 .projectId(projectId)
                 .functions(functions)
                 .build();
     }
 
     @Transactional
-    public List<ProjectMember> listMember(String id) {
+    public List<ProjectMemberResponse> listMember(String id) {
         ProjectEntity projectEntity = projectRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
 
@@ -216,7 +242,7 @@ public class ProjectService {
                 .map(pm -> {
                     UserEntity userEntity = userRepository.findById(pm.getProjectMemberId())
                             .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
-                    return ProjectMember.builder()
+                    return ProjectMemberResponse.builder()
                             .id(pm.getProjectMemberId())
                             .name(userEntity.getName())
                             .email(userEntity.getEmail())
@@ -293,6 +319,54 @@ public class ProjectService {
         projectMemberRepository.save(targetMember);
 
     }
+
+    // todo 기능 추가 시 마다 로직 수정 필요
+    @Transactional
+    public void createProjectFunction(String loginId, String projectId, CreateProjectFunctionRequest createProjectFunctionRequest) {
+
+        ProjectEntity projectEntity = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_NOT_FOUND));
+
+        boolean isOwner = projectMemberRepository.existsByProjectEntity_IdAndUserEntity_IdAndProjectRole(projectId,loginId, ProjectRole.OWNER );
+        if(!isOwner){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        int projectFunctionSort = projectFunctionRepository.findAll().stream().toList().size() + 1;
+
+
+        String functionId = "PF" + System.nanoTime();
+        ProjectFunctionEntity projectFunction = ProjectFunctionEntity.builder()
+                .id(functionId)
+                .projectFunctionName(createProjectFunctionRequest.getProjectFunctionName())
+                .projectFunctionSort(projectFunctionSort)
+                .projectFunctionType(createProjectFunctionRequest.getProjectFunctionType())
+                .projectEntity(projectEntity)
+                .build();
+        projectFunctionRepository.save(projectFunction);
+
+        switch (createProjectFunctionRequest.getProjectFunctionType()){
+            case TASK -> {
+                // taskStatus 생성
+                CreateTaskStatusRequest createTaskStatusRequest = CreateTaskStatusRequest.builder()
+                        .projectId(projectId)
+                        .projectFunctionId(functionId)
+                        .name(createProjectFunctionRequest.getProjectFunctionName())
+                        .build();
+                taskService.createTaskStatus(loginId, createTaskStatusRequest);
+            }
+            case FILE -> {
+            }
+            case BOARD -> {
+            }
+            case CALENDAR -> {
+            }
+            case PAGE -> {
+            }
+        }
+    }
+
+
 
 
 }

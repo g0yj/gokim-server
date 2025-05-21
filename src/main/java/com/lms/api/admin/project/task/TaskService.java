@@ -51,14 +51,46 @@ public class TaskService {
 
 
     @Transactional
-    public void createTaskStatus(String loginId, CreateTaskStatusRequest createTaskStatusRequest){
-        TaskStatusEntity taskStatusEntity = TaskStatusEntity.builder()
-                .name(createTaskStatusRequest.getName())
-                .projectFunctionId(createTaskStatusRequest.getProjectFunctionId())
-                .projectId(createTaskStatusRequest.getProjectId())
-                .createdBy(loginId)
-                .build();
-        taskStatusRepository.save(taskStatusEntity);
+    public List<CreateTaskStatusResponse> createTaskStatus(String loginId, CreateTaskStatusRequest createTaskStatusRequest){
+        log.debug("createTaskStatus 메서드 진입 확인!! 프로젝트 ID 여부: {} ", createTaskStatusRequest.getProjectId());
+        log.debug("createTaskStatus 메서드 진입 확인!! 프로젝트 기능 ID: {} ", createTaskStatusRequest.getProjectFunctionId());
+
+        List<CreateTaskStatusResponse> responses = new ArrayList<>();
+        // 만약 projectId가 없다면 기본만 추가
+        if(createTaskStatusRequest.getProjectId() == null){
+            log.debug("projectId 없을 때는 자동으로 4개 생성!");
+            List<String> names = List.of("Idea","Todo","InProgress","Done");
+
+            for (String name : names) {
+                TaskStatusEntity taskStatusEntity = TaskStatusEntity.builder()
+                        .name(name)
+                        .projectId(null)
+                        .projectFunctionId(createTaskStatusRequest.getProjectFunctionId())
+                        .build();
+                taskStatusEntity = taskStatusRepository.save(taskStatusEntity);
+                responses.add(
+                        CreateTaskStatusResponse.builder()
+                                .taskStatusId(taskStatusEntity.getId())
+                                .build());
+                taskStatusEntity.setProjectId(createTaskStatusRequest.getProjectFunctionId());
+                taskStatusEntity= taskStatusRepository.save(taskStatusEntity);
+            }
+            return responses;
+        } else{
+            log.debug("프로젝트 id 있을 때 진입하는 거 확인 projectId: {}", createTaskStatusRequest.getProjectId());
+            TaskStatusEntity taskStatusEntity = TaskStatusEntity.builder()
+                    .name(createTaskStatusRequest.getName())
+                    .projectFunctionId(createTaskStatusRequest.getProjectFunctionId())
+                    .projectId(createTaskStatusRequest.getProjectId())
+                    .createdBy(loginId)
+                    .build();
+            taskStatusEntity = taskStatusRepository.save(taskStatusEntity);
+            responses.add(
+                    CreateTaskStatusResponse.builder()
+                            .taskStatusId(taskStatusEntity.getId())
+                            .build());
+            return responses;
+        }
     }
 
     @Transactional

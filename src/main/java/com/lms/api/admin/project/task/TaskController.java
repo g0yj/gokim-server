@@ -30,9 +30,8 @@ public class TaskController {
 
     @PostMapping("/taskstatus")
     @Operation(summary = "TaskStatus 만들기", description = "진행, 완료 등 진행 상태를 만드는 api")
-    public ResponseEntity<?> createTaskStatus(@LoginUser UserEntity userEntity, @Valid @RequestBody CreateTaskStatusRequest createTaskStatusRequest){
-        taskService.createTaskStatus(userEntity.getId(),createTaskStatusRequest);
-        return ResponseEntity.ok().build();
+    public List<CreateTaskStatusResponse> createTaskStatus(@LoginUser UserEntity userEntity, @Valid @RequestBody CreateTaskStatusRequest createTaskStatusRequest){
+        return taskService.createTaskStatus(userEntity.getId(),createTaskStatusRequest);
     }
 
     @GetMapping("/{projectFunctionId}/taskstatus")
@@ -106,16 +105,16 @@ public class TaskController {
    public List<ListSubTaskResponse> listSubTask(@Parameter(description = "task 식별키") @PathVariable String id){
         return taskService.listSubTask(id);
    }
-   @PostMapping("/{id}/subtask")
-   @Operation(summary = "하위 항목 등록", description = "task 식별키를 통해 하위 항목과 연결됩니다")
+   @PostMapping("/{subTaskId}")
+   @Operation(summary = "하위 항목 등록")
    public ResponseEntity<?> createSubTask(@LoginUser UserEntity userEntity,
-                                          @Parameter(description = "task 식별키") @PathVariable String id,
+                                          @Parameter(description = "하위 항목 식별키") @PathVariable String subTaskId,
                                           @Valid @RequestBody CreateSubTaskRequest createSubTaskRequest){
-        taskService.createSubTask(userEntity.getId(), id, createSubTaskRequest);
+        taskService.createSubTask(userEntity.getId(), subTaskId, createSubTaskRequest);
 
         return ResponseEntity.ok().build();
    }
-   @PutMapping("/subtask/{subTaskId}")
+   @PutMapping("/{subTaskId}")
    @Operation(summary = "하위 항목 수정", description = "요약 뿐 아니라, 담당자와 상태가 변경될 때도 사용됩니다.")
    public ResponseEntity<?> updateSubTask(@LoginUser UserEntity userEntity,
                                           @Parameter(description = "하위 항목 식별키") @PathVariable long subTaskId,
@@ -132,7 +131,7 @@ public class TaskController {
         taskService.createComment(userEntity.getId(), id, createCommentRequest);
         return ResponseEntity.ok().build();
    }
-    @PutMapping("/comment/{taskCommentId}")
+    @PutMapping("/{taskCommentId}")
     @Operation(summary = "댓글 수정")
     public ResponseEntity<?> updateComment(@LoginUser UserEntity userEntity,
                                            @Parameter(description = "댓글 식별키") @PathVariable Long taskCommentId,
@@ -141,7 +140,7 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("comment/{taskCommentId}")
+    @DeleteMapping("/{taskCommentId}")
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<?> deleteComment(@Parameter(description = "댓글 식별키") @PathVariable Long taskCommentId){
         taskService.deleteComment(taskCommentId);

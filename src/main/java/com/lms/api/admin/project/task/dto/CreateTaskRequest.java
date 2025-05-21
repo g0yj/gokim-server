@@ -4,13 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter@AllArgsConstructor@NoArgsConstructor
+@Getter@AllArgsConstructor@NoArgsConstructor@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(name = "CreateTaskRequest", description = "이슈 만들기 (todo 생성 데이터)")
 public class CreateTaskRequest {

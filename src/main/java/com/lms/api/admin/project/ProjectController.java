@@ -60,13 +60,13 @@ public class ProjectController {
 
     @GetMapping("/{id}/function")
     @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 사이드바로 위치. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
-    public ProjectFunction listProjectFunction(@Parameter(description = "프로젝트 식별키") @PathVariable String id){
+    public ProjectFunctionResponse listProjectFunction(@Parameter(description = "프로젝트 식별키") @PathVariable String id){
         return projectService.listProjectFunction(id);
     }
 
     @GetMapping("/{projectId}/member")
     @Operation(summary = "프로젝트 참여 멤버 목록")
-    public List<ProjectMember> listMember(@Parameter(description = "프로젝트 식별키")@PathVariable String projectId){
+    public List<ProjectMemberResponse> listMember(@Parameter(description = "프로젝트 식별키")@PathVariable String projectId){
         return projectService.listMember(projectId);
     }
 
@@ -97,6 +97,13 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-
+    @PostMapping("/{projectId}/function")
+    @Operation(summary = "프로젝트 기능 추가", description = "사이드바에 기능을 추가할 때 사용")
+    public ResponseEntity<?> createProjectFunction(@Parameter(description = "프로젝트 식별키") @PathVariable String projectId,
+                                                   @Valid @RequestBody CreateProjectFunctionRequest createProjectFunctionRequest,
+                                                   @LoginUser UserEntity userEntity){
+        projectService.createProjectFunction(userEntity.getId(), projectId, createProjectFunctionRequest);
+        return ResponseEntity.ok().build();
+    }
 
 }
