@@ -1,11 +1,11 @@
 package com.lms.api.common.entity.project.task;
 
 import com.lms.api.common.entity.BaseEntity;
-import com.lms.api.common.entity.project.ProjectEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
+
 
 @Entity
 @Setter@Getter
@@ -22,7 +22,7 @@ public class TaskStatusEntity extends BaseEntity {
 
     String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    ProjectEntity projectEntity;
+    String projectFunctionId;
+    String projectId;
+
 }
