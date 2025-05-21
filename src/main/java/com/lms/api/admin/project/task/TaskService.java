@@ -8,6 +8,7 @@ import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.id.ProjectMemberId;
+import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectFunctionEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import com.lms.api.common.entity.project.QProjectMemberEntity;
@@ -32,7 +33,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TaskService {
     private final JpaConfig jpaConfig;
@@ -423,6 +423,28 @@ public class TaskService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public void createSubTask(String loginId, String taskId, CreateSubTaskRequest createSubTaskRequest) {
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
+
+        TaskStatusEntity taskStatusEntity = taskStatusRepository.findAll().get(0);
+
+        ProjectEntity projectEntity = taskEntity.getProjectFunctionEntity().getProjectEntity();
+        ProjectMemberEntity projectMemberEntity = projectMemberRepository.findByProjectEntityAndUserEntity_Id(projectEntity, loginId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.PROJECT_MEMBER_NOT_FOUND));
+
+        SubTaskEntity subTaskEntity = SubTaskEntity.builder()
+                .content(createSubTaskRequest.getContent())
+                .taskEntity(taskEntity)
+                .taskStatusEntity(taskStatusEntity)
+                .assignee(projectMemberEntity)
+                .createdBy(loginId)
+                .build();
+        subTaskRepository.save(subTaskEntity);
+    }
+
     @Transactional
     public void updateSubTask(String userId, long subTaskId, UpdateSubTaskRequest updateSubTaskRequest) {
         SubTaskEntity subTaskEntity = subTaskRepository.findById(subTaskId)

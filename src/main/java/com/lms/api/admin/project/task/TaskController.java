@@ -110,7 +110,9 @@ public class TaskController {
    @Operation(summary = "하위 항목 등록", description = "task 식별키를 통해 하위 항목과 연결됩니다")
    public ResponseEntity<?> createSubTask(@LoginUser UserEntity userEntity,
                                           @Parameter(description = "task 식별키") @PathVariable String id,
-                                          @RequestBody CreateSubTaskRequest createSubTaskRequest){
+                                          @Valid @RequestBody CreateSubTaskRequest createSubTaskRequest){
+        taskService.createSubTask(userEntity.getId(), id, createSubTaskRequest);
+
         return ResponseEntity.ok().build();
    }
    @PutMapping("/subtask/{subTaskId}")
