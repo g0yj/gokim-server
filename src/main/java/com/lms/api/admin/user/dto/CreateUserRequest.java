@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "회원가입")
+@Schema(name = "CreateUserRequest", description = "회원가입")
 public class CreateUserRequest {
     @Schema(description = "아이디", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank

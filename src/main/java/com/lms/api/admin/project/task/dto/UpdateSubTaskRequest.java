@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 @Setter@Getter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "하위 항목 수정 ")
+@Schema(name = "UpdateSubTaskRequest", description = "하위 항목 수정 ")
 public class UpdateSubTaskRequest {
     @Schema(description = "프로젝트 식별키", requiredMode = Schema.RequiredMode.REQUIRED)
     String projectId;

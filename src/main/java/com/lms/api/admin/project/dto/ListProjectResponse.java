@@ -10,7 +10,7 @@ import java.util.List;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "회원이 참여 중인 프로젝트 목록")
+@Schema(name = "ListProjectResponse", description = "회원이 참여 중인 프로젝트 목록")
 public class ListProjectResponse {
     @Schema(description = "프로젝트 식별키")
     String id;

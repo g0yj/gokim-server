@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter@AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "프로젝트 수정 데이터")
+@Schema(name = "UpdateProjectRequest", description = "프로젝트 수정 데이터")
 public class UpdateProjectRequest {
 
     @Schema(description = "프로젝트 명")

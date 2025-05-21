@@ -9,7 +9,7 @@ import java.util.List;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "Task 목록의 순서, 상태 변경 시 사용")
+@Schema(name = "ChangeTaskRequest", description = "Task 목록의 순서, 상태 변경 시 사용")
 public class ChangeTaskRequest {
     @Schema(description = "task의 상태를 변경하거나 순서를 변경할 때마다 api 호출이 필요하며, 이때 사용합니다. 목록에 있는 모든 task의 sortOrder을 순서에 따라 변경하여 넘겨야합니다.")
     List<Change> changes;

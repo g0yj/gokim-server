@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter@AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "프로젝트 생성 데이터")
+@Schema(name = "CreateProjectRequest", description = "프로젝트 생성 데이터")
 public class CreateProjectRequest {
 
     @Schema(description = "프로젝트 명", requiredMode = Schema.RequiredMode.REQUIRED)

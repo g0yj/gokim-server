@@ -18,7 +18,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
  */
 @Component
 @RequiredArgsConstructor
-@Profile({"local", "dev"}) // local, dev 환경에서만 동작
+@Profile({"local", "dev", "prod"}) // local, dev 환경에서만 동작
 public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
 
     private final UserRepository userRepository;

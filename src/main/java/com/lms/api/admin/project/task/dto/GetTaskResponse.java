@@ -10,7 +10,7 @@ import java.util.List;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "Task 상세 조회")
+@Schema(name = "GetTaskResponse", description = "Task 상세 조회")
 public class GetTaskResponse {
 
     @Schema(description = "Task 식별키")

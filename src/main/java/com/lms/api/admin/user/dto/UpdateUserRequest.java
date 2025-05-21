@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "수정할 회원 데이터")
+@Schema(name = "UpdateUserRequest", description = "수정할 회원 데이터")
 public class UpdateUserRequest {
 
     @Schema(description = "비밀번호")

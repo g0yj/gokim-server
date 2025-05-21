@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter@AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "Task 조회 (필터링)")
+@Schema(name = "ListTaskRequest", description = "Task 조회 (필터링)")
 public class ListTaskRequest {
 
     @NotBlank

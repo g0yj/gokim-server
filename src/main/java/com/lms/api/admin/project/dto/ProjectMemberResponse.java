@@ -8,7 +8,8 @@ import lombok.experimental.FieldDefaults;
 @Getter@Setter@Builder
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProjectMember {
+@Schema(name = "ProjectMemberResponse", description = "프로젝트가 가진 기능 목록")
+public class ProjectMemberResponse {
     @Schema(description = "프로젝트 멤버 식별키")
     String id;
     @Schema(description = "프로젝트 멤버 이름")

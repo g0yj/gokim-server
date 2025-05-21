@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter@AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "하위 항목 등록")
+@Schema(name = "CreateSubTaskRequest", description = "하위 항목 등록")
 public class CreateSubTaskRequest {
 
     String id;

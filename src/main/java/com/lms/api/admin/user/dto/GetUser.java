@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Getter@Setter@Builder
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "회원 상세 조회 , 회원 정보 수정에 사용 됩니다")
+@Schema(name = "GetUser", description = "회원 상세 조회 , 회원 정보 수정에 사용 됩니다")
 public class GetUser {
     @Schema(description = "회원 아이디로 변경이 불가능 하도록 조건 추가 필요 (비활성화 등)")
     String id;

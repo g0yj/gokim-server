@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "권한을 변경할 때 사용")
+@Schema(name = "UpdateMemberRequest", description = "권한을 변경할 때 사용")
 public class UpdateMemberRequest {
     @Schema(description = "프로젝트 참여 멤버 식별키", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank

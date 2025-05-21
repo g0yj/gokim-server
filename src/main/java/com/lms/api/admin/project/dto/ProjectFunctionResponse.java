@@ -11,8 +11,8 @@ import java.util.List;
 @AllArgsConstructor@NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "프로젝트가 가진 기능 목록")
-public class ProjectFunction {
+@Schema(name = "ProjectFunctionResponse", description = "프로젝트가 가진 기능 목록")
+public class ProjectFunctionResponse {
     @Schema(description = "프로젝트 식별키")
     String projectId;
     List<Function> functions;

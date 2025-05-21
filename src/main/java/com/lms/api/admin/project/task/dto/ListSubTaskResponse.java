@@ -11,7 +11,7 @@ import java.util.List;
 @Getter@Setter@Builder
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "하위 업무 항목")
+@Schema(name = "ListSubTaskResponse", description = "하위 업무 항목")
 public class ListSubTaskResponse {
     @Schema(description = "하위 업무 식별키")
     Long id;

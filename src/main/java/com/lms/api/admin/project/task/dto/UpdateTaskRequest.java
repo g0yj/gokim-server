@@ -11,7 +11,7 @@ import java.util.List;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "Task 수정 데이터")
+@Schema(name = "UpdateTaskRequest", description = "Task 수정 데이터")
 public class UpdateTaskRequest {
 
     @Schema(description = "제목")

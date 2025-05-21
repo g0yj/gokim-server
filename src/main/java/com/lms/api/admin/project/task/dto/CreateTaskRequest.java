@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter@AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "이슈 만들기 (todo 생성 데이터)")
+@Schema(name = "CreateTaskRequest", description = "이슈 만들기 (todo 생성 데이터)")
 public class CreateTaskRequest {
 
     @Schema(description = "프로젝트 식별키")

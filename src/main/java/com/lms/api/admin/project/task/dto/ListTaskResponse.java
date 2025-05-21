@@ -11,7 +11,7 @@ import java.util.List;
 @Getter@Setter
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "todo(보드) 목록 조회")
+@Schema(name = "ListTaskResponse", description = "todo(보드) 목록 조회")
 public class ListTaskResponse {
     @Schema(description = "그룹핑 하여 전달하고 있습니다. 이걸 기준으로 목록을 출력할 수 있습니다.")
     TaskStatus taskStatus;

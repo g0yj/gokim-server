@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Setter@Getter
 @NoArgsConstructor@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(description = "로그인 요청")
+@Schema(name = "LoginRequest", description = "로그인 요청")
 public class LoginRequest {
     @Schema(description = "아이디", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank
