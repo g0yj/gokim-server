@@ -19,6 +19,7 @@ public enum ProjectFunctionType {
     FILE("첨부 파일"),
     BOARD("게시판"),
     CALENDAR("캘린더"),
+    PAGE("빈페이지")
     ;
 
     String label;

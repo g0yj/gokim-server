@@ -24,7 +24,7 @@ public class ProjectFunctionEntity extends BaseEntity {
 
     String projectFunctionName;
 
-    Long projectFunctionSort;
+    int projectFunctionSort;
 
     @Enumerated(EnumType.STRING)
     ProjectFunctionType projectFunctionType;

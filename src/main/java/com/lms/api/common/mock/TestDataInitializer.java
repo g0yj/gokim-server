@@ -59,6 +59,7 @@ public class TestDataInitializer implements CommandLineRunner {
         FunctionEntity functionCalendar = createFunctionIfNotExists(ProjectFunctionType.CALENDAR, "캘린더");
         FunctionEntity functionBoard = createFunctionIfNotExists(ProjectFunctionType.BOARD, "게시판");
         FunctionEntity functionFile = createFunctionIfNotExists(ProjectFunctionType.FILE, "첨부파일");
+        FunctionEntity functionPage = createFunctionIfNotExists(ProjectFunctionType.PAGE, "빈페이지");
         // 회원(owner,member1,member2,member3, admin)
         UserEntity user1 = createUserIfNotExists("SampleOwner", "1234", "프로젝트소유자", "duswls3000@gmail.com", "01091901376", UserRole.USER, LoginType.NORMAL);
         UserEntity user2 = createUserIfNotExists("SampleMember1", "1234", "프로젝트멤버1", "jinyjgo@naver.com", "01079168787", UserRole.USER, LoginType.NORMAL);
@@ -73,9 +74,9 @@ public class TestDataInitializer implements CommandLineRunner {
         ProjectMemberEntity member2 = createProjectMemberIfNotExists(project, user3, ProjectRole.MEMBER);
         ProjectMemberEntity member3 = createProjectMemberIfNotExists(project, user4, ProjectRole.MEMBER);
         // 프로젝트 기능 (board ,task, calendar)
-        ProjectFunctionEntity board = createProjectFunctionIfNotExists("PF01", "게시판11", functionBoard.getProjectFunctionType(), 1L, project);
-        ProjectFunctionEntity task = createProjectFunctionIfNotExists("PF02", "보드11", functionTask.getProjectFunctionType(), 2L, project);
-        ProjectFunctionEntity calendar = createProjectFunctionIfNotExists("PF03", "캘린더11", functionCalendar.getProjectFunctionType(), 3L, project);
+        ProjectFunctionEntity board = createProjectFunctionIfNotExists("PF01", "게시판11", functionBoard.getProjectFunctionType(), 1, project);
+        ProjectFunctionEntity task = createProjectFunctionIfNotExists("PF02", "보드11", functionTask.getProjectFunctionType(), 2, project);
+        ProjectFunctionEntity calendar = createProjectFunctionIfNotExists("PF03", "캘린더11", functionCalendar.getProjectFunctionType(), 3, project);
         // task 상태(task) : 기본값 먼저 있으면 실행
         TaskStatusEntity idea = createTaskStatusIfNotExists("Idea", project);
         TaskStatusEntity todo = createTaskStatusIfNotExists("Todo", project);
@@ -178,7 +179,7 @@ public class TestDataInitializer implements CommandLineRunner {
 
     @Transactional
     private ProjectFunctionEntity createProjectFunctionIfNotExists(
-            String id, String functionName, ProjectFunctionType functionType, Long sort, ProjectEntity project) {
+            String id, String functionName, ProjectFunctionType functionType, int sort, ProjectEntity project) {
 
         return projectFunctionRepository.findById(id)
                 .stream()

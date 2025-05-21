@@ -2,12 +2,12 @@ package com.lms.api.admin.project;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.project.dto.*;
+import com.lms.api.admin.project.enums.ProjectFunctionType;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.admin.project.enums.ProjectRole;
 import com.lms.api.common.entity.QUserEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.*;
-import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,15 +45,19 @@ public class ProjectService {
     @Transactional
     public String createProject( UserEntity user, CreateProjectRequest createProjectRequest){
         String projectId = "P" + System.nanoTime();
-        log.debug("projectId: {} ", projectId);
+
+        // 프로젝트 추가
         ProjectEntity project = ProjectEntity.builder()
                 .id(projectId)
                 .projectName(createProjectRequest.getProjectName())
                 .createdBy(user.getId())
                 .userEntity(user)
+                .projectMemberEntities(new ArrayList<>())
+                .projectFunctionEntities(new ArrayList<>())
                 .build();
         projectRepository.save(project);
 
+        // 기본적으로 소유자로 projectMember 추가
         ProjectMemberEntity owner = ProjectMemberEntity.builder()
                 .projectId(projectId)
                 .projectMemberId(user.getId())
@@ -62,17 +66,64 @@ public class ProjectService {
                 .createdBy(user.getId())
                 .projectRole(ProjectRole.OWNER)
                 .build();
-
         projectMemberRepository.save(owner);
+        project.getProjectMemberEntities().add(owner);
 
-        List<String> statusNames = Arrays.asList("Idea", "Todo", "InProgress", "Done");
+        if(createProjectRequest.getProjectMemberId() != null && !createProjectRequest.getProjectMemberId().isEmpty()){
+            for(String memberId : createProjectRequest.getProjectMemberId()){
+                if(memberId.equals(user.getId())) continue; // 위에서 owner 추가함
+                UserEntity userEntity = userRepository.findById(memberId)
+                        .orElseThrow(() -> new ApiException( ApiErrorCode.USER_NOT_FOUND));
 
-        statusNames.stream()
-                .map(name -> TaskStatusEntity.builder()
+                ProjectMemberEntity memberEntity = ProjectMemberEntity.builder()
+                        .projectId(projectId)
+                        .projectMemberId(memberId)
                         .projectEntity(project)
-                        .name(name)
-                        .build())
-                .forEach(taskStatusRepository::save);
+                        .userEntity(userEntity)
+                        .createdBy(user.getId())
+                        .projectRole(ProjectRole.MEMBER)
+                        .build();
+
+                projectMemberRepository.save(memberEntity);
+                project.getProjectMemberEntities().add(memberEntity);
+            }
+        }
+
+        if(createProjectRequest.getProjectFunction() != null && !createProjectRequest.getProjectFunction().isEmpty()){
+            int sort = createProjectRequest.getProjectFunction().size()+ 1 ;
+
+            for(CreateProjectRequest.ProjectFunction projectFunction : createProjectRequest.getProjectFunction()){
+                String functionId = "PF" + System.nanoTime();
+
+                ProjectFunctionEntity projectFunctionEntity = ProjectFunctionEntity.builder()
+                        .id(functionId)
+                        .projectFunctionName(
+                                projectFunction.getProjectFunctionName() != null ?
+                                        projectFunction.getProjectFunctionName() : projectFunction.getProjectFunctionType().getLabel()
+                                )
+                        .projectFunctionSort(
+                                !createProjectRequest.getProjectFunction().isEmpty() ?
+                                        projectFunction.getFunctionSort() : sort++
+                        )
+                        .projectFunctionType(projectFunction.getProjectFunctionType())
+                        .projectEntity(project)
+                        .build();
+                projectFunctionRepository.save(projectFunctionEntity);
+                project.getProjectFunctionEntities().add(projectFunctionEntity);
+            }
+        } else {
+            String functionId = "PF" + System.nanoTime();
+            ProjectFunctionEntity defaultFunction = ProjectFunctionEntity.builder()
+                    .id(functionId)
+                    .projectFunctionName(ProjectFunctionType.PAGE.getLabel())  // 원하는 기본 이름 설정 가능
+                    .projectFunctionSort(1)
+                    .projectFunctionType(ProjectFunctionType.PAGE)
+                    .projectEntity(project)
+                    .build();
+            projectFunctionRepository.save(defaultFunction);
+            project.getProjectFunctionEntities().add(defaultFunction);
+
+        }
 
         return projectId;
     }
