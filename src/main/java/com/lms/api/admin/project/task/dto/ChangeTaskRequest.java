@@ -1,6 +1,8 @@
 package com.lms.api.admin.project.task.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,11 +20,16 @@ public class ChangeTaskRequest {
     @Builder
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Change {
-        @Schema(description = "task 식별키")
+        @Schema(description = "task 식별키" ,requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotBlank
         String taskId;
-        @Schema(description = "task 정렬을 위한 순서")
+
+        @Schema(description = "task 정렬을 위한 순서", requiredMode = Schema.RequiredMode.REQUIRED)
+        @NotNull
         int sortOrder;
-        @Schema(description = "task 상태 식별키")
+
+        @Schema(description = "task 상태 식별키", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+        @NotNull
         int taskStatusId;
     }
 
