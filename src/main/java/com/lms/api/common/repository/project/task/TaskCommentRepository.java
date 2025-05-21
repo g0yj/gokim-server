@@ -12,4 +12,6 @@ public interface TaskCommentRepository extends JpaRepository<TaskCommentEntity, 
 
     boolean existsByTaskEntityAndContentAndCreatedBy(TaskEntity taskEntity, String content, String createdBy);
     Optional<TaskCommentEntity> findByTaskEntityAndContent(TaskEntity taskEntity, String content);
+
+    TaskCommentEntity findByTaskEntity_Id(String taskId);
 }

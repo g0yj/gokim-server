@@ -15,16 +15,20 @@ import lombok.experimental.FieldDefaults;
 @Schema(name = "CreateTaskRequest", description = "이슈 만들기 (todo 생성 데이터)")
 public class CreateTaskRequest {
 
-    @Schema(description = "프로젝트 식별키")
-    @NotBlank(message = "필수 값")
-    String functionId;
+    @Schema(description = "프로젝트 식별키", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank
+    String projectId;
 
-    @Schema(description = "TODO 제목")
-    @NotBlank(message = "필수 값")
+    @Schema(description = "프로젝트 기능 식별키", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank
+    String projectFunctionId;
+
+    @Schema(description = "TODO 제목", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotBlank
     String title;
 
-    @Schema(description = "이슈 만들기 제목")
-    @NotNull(message = "status식별키로, 검토중, 완료와 같은 상태의 식별키 필수")
+    @Schema(description = "status 식별키로, 검토중, 완료와 같은 상태", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull
     Long taskStatusId;
 
 

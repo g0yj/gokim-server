@@ -124,5 +124,21 @@ public class TaskController {
         taskService.updateSubTask(userEntity.getId(), subTaskId, updateSubTaskRequest);
         return ResponseEntity.ok().build();
    }
+
+   @PostMapping("/{id}/comment")
+   @Operation(summary = "댓글 등록")
+   public ResponseEntity<?> createComment(@LoginUser UserEntity userEntity , @Parameter(description = "task식별키", required = true) @PathVariable String id,
+                                          @Valid @RequestBody CreateCommentRequest createCommentRequest){
+        taskService.createComment(userEntity.getId(), id, createCommentRequest);
+        return ResponseEntity.ok().build();
+   }
+    @PutMapping("/comment/{taskCommentId}")
+    @Operation(summary = "댓글 수정")
+    public ResponseEntity<?> updateComment(@LoginUser UserEntity userEntity,
+                                           @Parameter(description = "댓글 식별키") @PathVariable Long taskCommentId,
+                                           @Valid @RequestBody UpdateCommentRequest updateCommentRequest){
+        taskService.updateComment(userEntity.getId(), taskCommentId, updateCommentRequest);
+        return ResponseEntity.ok().build();
+    }
 }
 

@@ -46,7 +46,8 @@ public enum ApiErrorCode implements ApiError {
   //task error
   TASK_STATUS_NOT_FOUND(HttpStatus.BAD_REQUEST,"0300", "찾을 수 없는 상태입니다."),
   TASK_NOT_FOUND(HttpStatus.BAD_REQUEST,"0301", "찾을 수 없는 task입니다."),
-  SUB_TASK_NOT_FOUND(HttpStatus.BAD_REQUEST,"0302", "찾을 수 없는 하위 항목입니다.")
+  SUB_TASK_NOT_FOUND(HttpStatus.BAD_REQUEST,"0302", "찾을 수 없는 하위 항목입니다."),
+  TASK_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST,"0303", "찾을 수 없는 댓글 입니다"),
 
   ;
   HttpStatusCode httpStatusCode;

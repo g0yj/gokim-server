@@ -470,7 +470,27 @@ public class TaskService {
     }
 
 
+    public void createComment(String loginId, String taskId, CreateCommentRequest createCommentRequest) {
+        TaskEntity taskEntity = taskRepository.findById(taskId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
+        TaskCommentEntity taskCommentEntity = TaskCommentEntity.builder()
+                .content(createCommentRequest.getContent())
+                .taskEntity(taskEntity)
+                .createdBy(loginId)
+                .build();
+        taskCommentRepository.save(taskCommentEntity);
+    }
+
+    public void updateComment(String loginId, Long taskCommentId, UpdateCommentRequest updateCommentRequest) {
+
+        TaskCommentEntity taskCommentEntity = taskCommentRepository.findById(taskCommentId)
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
+        taskCommentEntity.setContent(updateCommentRequest.getContent());
+        taskCommentEntity.setModifiedBy(loginId);
+
+        taskCommentRepository.save(taskCommentEntity);
+    }
 }
 
 
