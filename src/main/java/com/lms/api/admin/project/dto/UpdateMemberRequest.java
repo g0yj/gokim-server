@@ -16,7 +16,7 @@ public class UpdateMemberRequest {
     @NotBlank
     String projectMemberId;
 
-    @Schema(description = "프로젝트 참여 멤버 식별키", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "프로젝트 참여 멤버 역할", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull
     ProjectRole projectRole;
 }

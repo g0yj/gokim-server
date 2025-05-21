@@ -41,6 +41,14 @@ public class TaskController {
         List<ListTask.TaskStatus> taskStatuses = taskService.listTaskStatus(projectFunctionId);
         return taskControllerMapper.toListTaskStatusResponse(taskStatuses);
     }
+
+    @PutMapping("/taskstatus/{taskStatusId}")
+    @Operation(summary = "TaskStatus 수정")
+    public ResponseEntity<?> updateTaskStatus(@Parameter(description = "상태 식별키", required = true) @PathVariable Long taskStatusId,
+                                              @Valid @RequestBody UpdateTaskStatusRequest updateTaskStatusRequest){
+        taskService.updateTaskStatus(taskStatusId, updateTaskStatusRequest);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping
     @Operation(summary = "Task 만들기", description = "task를 추가할 때 사용합니다.")
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){

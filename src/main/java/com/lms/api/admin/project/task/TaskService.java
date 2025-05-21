@@ -61,6 +61,7 @@ public class TaskService {
         taskStatusRepository.save(taskStatusEntity);
     }
 
+    @Transactional
     public List<ListTask.TaskStatus> listTaskStatus(String projectFunctionId) {
         List<TaskStatusEntity> taskStatusEntities = taskStatusRepository.findAll().stream()
                 .filter(ts -> ts.getProjectFunctionId() != null
@@ -77,6 +78,13 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void updateTaskStatus(Long taskStatusId, UpdateTaskStatusRequest updateTaskStatusRequest) {
+        TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(taskStatusId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
+        taskStatusEntity.setName(updateTaskStatusRequest.getName());
+        taskStatusRepository.save(taskStatusEntity);
+    }
     @Transactional
     public String createTask(String loginId , CreateTaskRequest createTaskRequest){
 
@@ -433,6 +441,7 @@ public class TaskService {
 
         subTaskRepository.save(subTaskEntity);
     }
+
 
 
 }
