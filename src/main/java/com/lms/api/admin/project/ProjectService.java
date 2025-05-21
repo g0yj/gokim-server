@@ -344,7 +344,7 @@ public class ProjectService {
                 .projectEntity(projectEntity)
                 .build();
         projectFunctionRepository.save(projectFunction);
-
+        // todo 기능 추가할 때마다 추가 필요
         switch (createProjectFunctionRequest.getProjectFunctionType()){
             case TASK -> {
                 // taskStatus 생성
@@ -366,9 +366,22 @@ public class ProjectService {
         }
     }
 
+    @Transactional
+    public void updateProjectFunction(String loginId, String projectId, UpdateProjectFunctionRequest updateProjectFunctionRequest) {
+        boolean isOwner = projectMemberRepository.existsByProjectEntity_IdAndUserEntity_IdAndProjectRole(projectId, loginId, ProjectRole.OWNER);
+        if(!isOwner){
+           throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+        ProjectFunctionEntity projectFunctionEntity = projectFunctionRepository.findById(updateProjectFunctionRequest.getProjectFunctionId())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_FUNCTION_NOT_FOUND));
 
+        projectFunctionEntity.setProjectFunctionName(updateProjectFunctionRequest.getProjectFunctionName());
+        projectFunctionEntity.setProjectFunctionSort(updateProjectFunctionRequest.getProjectFunctionSort());
+        projectFunctionEntity.setModifiedBy(loginId);
 
+        projectFunctionRepository.save(projectFunctionEntity);
 
+    }
 }
 
 

@@ -106,4 +106,13 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
+   @PutMapping("/{projectId}/function")
+    public ResponseEntity<?> updateProjectFunction(@LoginUser UserEntity userEntity,
+                                                   @Parameter(description = "프로젝트 식별키") @PathVariable String projectId,
+                                                   @Valid @RequestBody UpdateProjectFunctionRequest updateProjectFunctionRequest){
+        projectService.updateProjectFunction(userEntity.getId(), projectId, updateProjectFunctionRequest);
+        return ResponseEntity.ok("ok");
+   }
+
+
 }
