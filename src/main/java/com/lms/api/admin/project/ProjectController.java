@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +23,12 @@ import java.util.List;
 public class ProjectController {
     private final ProjectControllerMapper projectControllerMapper;
     private final ProjectService projectService;
+
+    @GetMapping("/function")
+    @Operation(summary = "기능 목록" , description = "프로젝트 생성 시, 기능을 추가할 때 추가할 기능에 대한 정보를 제공합니다. select 박스 등에 사용합니다")
+    public List<FunctionResponse> listFunction(){
+         return projectService.listFunction();
+    }
 
     @PostMapping
     @Operation(summary = "프로젝트 생성", description = "새로운 프로젝트를 생성합니다.")

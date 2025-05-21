@@ -1,7 +1,9 @@
 package com.lms.api.admin.project;
 
+import com.lms.api.admin.project.dto.FunctionResponse;
 import com.lms.api.admin.project.dto.Project;
 import com.lms.api.admin.project.dto.ProjectFunction;
+import com.lms.api.common.entity.project.FunctionEntity;
 import com.lms.api.common.entity.project.ProjectFunctionEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
@@ -30,4 +32,6 @@ public interface ProjectServiceMapper {
     @Mapping(target = "projectFunctionSort", source = "projectFunctionSort")
     @Mapping(target = "projectFunctionType", source = "projectFunctionType")
     ProjectFunction.Function toFunction(ProjectFunctionEntity projectFunctionEntity);
+
+    FunctionResponse toFunctionResponse(FunctionEntity functionEntity);
 }

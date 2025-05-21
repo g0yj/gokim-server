@@ -11,6 +11,7 @@ import com.lms.api.common.entity.project.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
+import com.lms.api.common.repository.project.FunctionRepository;
 import com.lms.api.common.repository.project.ProjectFunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
@@ -39,8 +40,17 @@ public class ProjectService {
     private final TaskRepository taskRepository;
     private final ProjectFunctionRepository projectFunctionRepository;
     private final TaskStatusRepository taskStatusRepository;
+    private final FunctionRepository functionRepository;
     private final ProjectServiceMapper projectServiceMapper;
 
+    @Transactional
+    public List<FunctionResponse> listFunction() {
+        List<FunctionEntity> functionEntities = functionRepository.findAll().stream()
+                .toList();
+        return functionEntities.stream()
+                .map(projectServiceMapper::toFunctionResponse)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public String createProject( UserEntity user, CreateProjectRequest createProjectRequest){
@@ -283,6 +293,8 @@ public class ProjectService {
         projectMemberRepository.save(targetMember);
 
     }
+
+
 }
 
 
