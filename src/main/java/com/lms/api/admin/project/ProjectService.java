@@ -130,7 +130,7 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public List<Project> listProject(String userId) {
-        log.debug("로그인 된 아이디 확인 : {}" , userId);
+
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 

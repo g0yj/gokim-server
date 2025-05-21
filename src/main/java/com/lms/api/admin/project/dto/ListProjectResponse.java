@@ -18,6 +18,8 @@ public class ListProjectResponse {
     String projectName;
     @Schema(description = "프로젝트 소유자 이름")
     String ownerName;
+    @Schema(description = "프로젝트 소유자 식별키")
+    String ownerId;
 
     List<ProjectMember> projectMembers;
 

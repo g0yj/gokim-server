@@ -16,6 +16,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", config = ServiceMapperConfig.class, uses = {ServiceMapper.class})
 public interface ProjectServiceMapper {
     @Mapping(target = "ownerName", source = "projectEntity.userEntity.name")
+    @Mapping(target = "ownerId", source = "projectEntity.userEntity.id")
     @Mapping(target = "projectMembers", source = "projectMemberEntities")
     Project toProject(ProjectEntity projectEntity);
 
