@@ -15,7 +15,7 @@ import com.lms.api.common.entity.project.task.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
-import com.lms.api.common.repository.project.FunctionRepository;
+import com.lms.api.common.repository.project.ProjectFunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.*;
@@ -43,7 +43,7 @@ public class TaskService {
     private final TaskStatusRepository taskStatusRepository;
     private final UserRepository userRepository;
     private final ProjectMemberRepository projectMemberRepository;
-    private final FunctionRepository functionRepository;
+    private final ProjectFunctionRepository functionRepository;
     private final SubTaskRepository subTaskRepository;
     private final TaskCommentRepository taskCommentRepository;
     private final TaskFileRepository taskFileRepository;
@@ -66,7 +66,7 @@ public class TaskService {
                 .id(taskId)
                 .title(createTaskRequest.getTitle())
                 .taskStatusEntity(taskStatusEntity)
-                .functionEntity(functionEntity)
+                .projectFunctionEntity(functionEntity)
                 .sortOrder(sortOrder)
                 .createdBy(user.getId())
                 .build();
@@ -87,7 +87,7 @@ public class TaskService {
         String projectId = functionEntity.getProjectEntity().getId();
 
         BooleanBuilder where = new BooleanBuilder();
-        where.and(qTaskEntity.functionEntity.id.eq(listTaskRequest.getFunctionId()));
+        where.and(qTaskEntity.projectFunctionEntity.id.eq(listTaskRequest.getFunctionId()));
 
         if (listTaskRequest.getSearch() != null && !listTaskRequest.getSearch().isEmpty()) {
             where.and(qTaskEntity.title.containsIgnoreCase(listTaskRequest.getSearch()));
@@ -195,10 +195,8 @@ public class TaskService {
 
     @Transactional
     public void changeTask(ChangeTask changeTask) {
-        log.debug("메서드 진입");
         // changes가 null이 아니고 비어있지 않으면
         Optional<List<ChangeTask.Change>> changes = Optional.ofNullable(changeTask.getChanges());
-        log.debug("Optinal : {} ", changes);
         if (changes.isPresent() && !changes.get().isEmpty()) {
             // 첫 번째 TaskId를 사용하여 TaskEntity를 찾는다
             for (ChangeTask.Change change : changes.get()) {
@@ -224,8 +222,11 @@ public class TaskService {
         TaskEntity taskEntity = taskRepository.findById(id)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_NOT_FOUND));
 
-        Optional<UserEntity> assignedMember = userRepository.findById(taskEntity.getAssignedMember());
-        Optional<UserEntity> writer = userRepository.findById(taskEntity.getCreatedBy());
+        UserEntity assignedMember = userRepository.findById(taskEntity.getAssignedMember())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+        UserEntity writer = userRepository.findById(taskEntity.getCreatedBy())
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
         String taskId = taskEntity.getId();
         List<GetTask.SubTask> subTasks = subTaskRepository.findAll().stream()
@@ -275,12 +276,12 @@ public class TaskService {
                 .title(taskEntity.getTitle())
                 .assignedMember(
                         GetTask.ProjectMember.builder()
-                                .projectMemberId(assignedMember.get().getId())
-                                .projectMemberName(assignedMember.get().getName())
+                                .projectMemberId(assignedMember.getId())
+                                .projectMemberName(assignedMember.getName())
                                 .build()
                 )
                 .description(taskEntity.getDescription())
-                .writer(writer.get().getName())
+                .writer(writer.getName())
                 .taskStatus(GetTask.TaskStatus.builder()
                         .id(taskEntity.getTaskStatusEntity().getId())
                         .name(taskEntity.getTaskStatusEntity().getName())
@@ -368,7 +369,7 @@ public class TaskService {
                                     ListSubTaskResponse.ProjectMember.builder()
                                             .id(userEntity.getId())
                                             .name(userEntity.getName())
-                                            .fileUrl("")  // 필요하면 프로필 이미지 URL 넣기
+                                            .fileUrl(s3FileStorageService.getUrl(userEntity.getFileName()))
                                             .build()
                             )
                             .taskStatus(

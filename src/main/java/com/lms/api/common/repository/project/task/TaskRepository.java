@@ -9,9 +9,9 @@ import java.util.List;
 public interface TaskRepository extends JpaRepository<TaskEntity, String>,
     QuerydslPredicateExecutor<TaskEntity> {
 
-    List<TaskEntity> findByFunctionEntity_Id(String functionId);
+    List<TaskEntity> findByProjectFunctionEntity_Id(String functionId);
 
-    int countByFunctionEntity_Id(String functionId);
+    int countByProjectFunctionEntity_Id(String functionId);
 
 
 
