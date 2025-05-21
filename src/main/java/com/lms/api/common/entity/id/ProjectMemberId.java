@@ -17,6 +17,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectMemberId implements Serializable {
-    String projectMemberId;
     String projectId;
+    String projectMemberId;
 }
