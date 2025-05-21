@@ -6,6 +6,9 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Setter@Getter
@@ -24,5 +27,8 @@ public class TaskStatusEntity extends BaseEntity {
 
     String projectFunctionId;
     String projectId;
+
+    @OneToMany(mappedBy = "taskStatusEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<TaskEntity> taskEntities = new ArrayList<>();
 
 }

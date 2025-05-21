@@ -85,6 +85,11 @@ public class TaskService {
         taskStatusEntity.setName(updateTaskStatusRequest.getName());
         taskStatusRepository.save(taskStatusEntity);
     }
+
+    @Transactional
+    public void deleteTaskStatus(Long taskStatusId) {
+        taskStatusRepository.deleteById(taskStatusId);
+    }
     @Transactional
     public String createTask(String loginId , CreateTaskRequest createTaskRequest){
 

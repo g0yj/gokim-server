@@ -49,6 +49,13 @@ public class TaskController {
         taskService.updateTaskStatus(taskStatusId, updateTaskStatusRequest);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/taskstatus/{taskStatusId}")
+    @Operation(summary = "TaskStatus 삭제")
+    public ResponseEntity<?> deleteTaskStatus(@Parameter(description = "상태 식별키", required = true) @PathVariable Long taskStatusId, @LoginUser UserEntity userEntity){
+        taskService.deleteTaskStatus(taskStatusId);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping
     @Operation(summary = "Task 만들기", description = "task를 추가할 때 사용합니다.")
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){
