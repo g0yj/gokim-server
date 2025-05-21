@@ -38,6 +38,7 @@ public class TaskService {
     private final JpaConfig jpaConfig;
     private final FileStorageService fileStorageService;
     private final S3FileStorageService s3FileStorageService;
+    private final TaskServiceMapper taskServiceMapper;
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final TaskStatusRepository taskStatusRepository;
@@ -47,10 +48,20 @@ public class TaskService {
     private final SubTaskRepository subTaskRepository;
     private final TaskCommentRepository taskCommentRepository;
     private final TaskFileRepository taskFileRepository;
-    private final TaskServiceMapper taskServiceMapper;
+
 
     @Transactional
-    public String createTask(UserEntity user , CreateTaskRequest createTaskRequest){
+    public void createTaskStatus(String loginId, CreateTaskStatusRequest createTaskStatusRequest){
+        TaskStatusEntity taskStatusEntity = TaskStatusEntity.builder()
+                .name(createTaskStatusRequest.getName())
+                .projectFunctionId(createTaskStatusRequest.getProjectFunctionId())
+                .projectId(createTaskStatusRequest.getProjectId())
+                .createdBy(loginId)
+                .build();
+        taskStatusRepository.save(taskStatusEntity);
+    }
+    @Transactional
+    public String createTask(String loginId , CreateTaskRequest createTaskRequest){
 
         TaskStatusEntity taskStatusEntity = taskStatusRepository.findById(createTaskRequest.getTaskStatusId())
                 .orElseThrow(() -> new ApiException(ApiErrorCode.TASK_STATUS_NOT_FOUND));
@@ -58,7 +69,7 @@ public class TaskService {
         String taskId = "T" + System.nanoTime();
         log.debug("taskId: {}" , taskId);
 
-        ProjectFunctionEntity functionEntity = functionRepository.findById(createTaskRequest.getFunctionId())
+        ProjectFunctionEntity functionEntity = functionRepository.findById(createTaskRequest.getProjectFunctionId())
                 .orElseThrow(()-> new ApiException(ApiErrorCode.FUNCTION_NOT_FOUND));
 
         int sortOrder = functionEntity.getTaskEntities().size() + 1;
@@ -68,7 +79,7 @@ public class TaskService {
                 .taskStatusEntity(taskStatusEntity)
                 .projectFunctionEntity(functionEntity)
                 .sortOrder(sortOrder)
-                .createdBy(user.getId())
+                .createdBy(loginId)
                 .build();
         taskRepository.save(task);
         return taskId;

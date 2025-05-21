@@ -28,10 +28,16 @@ public class TaskController {
     private final TaskService taskService;
     private final TaskControllerMapper taskControllerMapper;
 
+    @PostMapping("/taskstatus")
+    @Operation(summary = "TaskStatus 만들기", description = "진행, 완료 등 진행 상태를 만드는 api")
+    public ResponseEntity<?> createTaskStatus(@LoginUser UserEntity userEntity, @Valid @RequestBody CreateTaskStatusRequest createTaskStatusRequest){
+        taskService.createTaskStatus(userEntity.getId(),createTaskStatusRequest);
+        return ResponseEntity.ok().build();
+    }
     @PostMapping
     @Operation(summary = "Task 만들기", description = "task를 추가할 때 사용합니다.")
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){
-        return ResponseEntity.ok(taskService.createTask(user, createTaskRequest));
+        return ResponseEntity.ok(taskService.createTask(user.getId(), createTaskRequest));
     }
 
    @GetMapping

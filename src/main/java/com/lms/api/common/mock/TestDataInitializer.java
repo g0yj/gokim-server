@@ -78,10 +78,10 @@ public class TestDataInitializer implements CommandLineRunner {
         ProjectFunctionEntity task = createProjectFunctionIfNotExists("PF02", "보드11", functionTask.getProjectFunctionType(), 2, project);
         ProjectFunctionEntity calendar = createProjectFunctionIfNotExists("PF03", "캘린더11", functionCalendar.getProjectFunctionType(), 3, project);
         // task 상태(task) : 기본값 먼저 있으면 실행
-        TaskStatusEntity idea = createTaskStatusIfNotExists("Idea", project , board.getProjectEntity().getId());
-        TaskStatusEntity todo = createTaskStatusIfNotExists("Todo", project , board.getProjectEntity().getId());
-        TaskStatusEntity inProgress = createTaskStatusIfNotExists("InProgress", project , board.getProjectEntity().getId());
-        TaskStatusEntity done = createTaskStatusIfNotExists("Done", project, board.getProjectEntity().getId());
+        TaskStatusEntity idea = createTaskStatusIfNotExists("Idea", project , task.getId());
+        TaskStatusEntity todo = createTaskStatusIfNotExists("Todo", project , task.getId());
+        TaskStatusEntity inProgress = createTaskStatusIfNotExists("InProgress", project , task.getId());
+        TaskStatusEntity done = createTaskStatusIfNotExists("Done", project, task.getId());
         // task 추가
         TaskEntity task1 = createTaskIfNotExists("T1111", "테이블 설계", "테이블 설계에 관련된 내용입니다. 추후 에디터 사용", 1, owner.getUserEntity().getId(), board, idea, owner.getUserEntity().getId());
         TaskEntity task2 = createTaskIfNotExists("T2222", "추가 기획", "챗봇 추가 계획", 2, owner.getUserEntity().getId(), board, todo, owner.getUserEntity().getId());

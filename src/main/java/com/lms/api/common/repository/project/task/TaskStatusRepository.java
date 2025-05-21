@@ -9,10 +9,10 @@ import java.util.List;
 public interface TaskStatusRepository extends JpaRepository<TaskStatusEntity, Long>,
     QuerydslPredicateExecutor<TaskStatusEntity> {
 
-    List<TaskStatusEntity> findAllByNameAndProjectEntity_Id(String name, String projectId);
 
-    List<TaskStatusEntity> findByNameAndProjectEntity_Id(String name, String projectId);
+    List<TaskStatusEntity> findAllByNameAndProjectId(String name, String projectId);
 
+    List<TaskStatusEntity> findByNameAndProjectId(String name, String projectId);
 
 
 
