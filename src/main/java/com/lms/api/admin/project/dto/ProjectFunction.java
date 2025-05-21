@@ -24,9 +24,9 @@ public class ProjectFunction {
         @Schema(description = "기능(카테고리) 식별키")
         String id;
         @Schema(description = "기능명")
-        String functionName;
+        String projectFunctionName;
         @Schema(description = "기능(카테고리) 순서")
-        Long functionSort;
+        Long projectFunctionSort;
         ProjectFunctionType projectFunctionType;
     }
 

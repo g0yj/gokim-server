@@ -52,6 +52,11 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 사이드바로 위치. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
+    public ProjectFunction listProjectFunction(@Parameter(description = "프로젝트 식별키") @PathVariable String id){
+        return projectService.listProjectFunction(id);
+    }
 
     @GetMapping("/{projectId}/member")
     @Operation(summary = "프로젝트 참여 멤버 목록")
@@ -86,10 +91,6 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "프로젝트 기능 목록", description = "프로젝트가 가진 기능에 대한 식별키 입니다. 캘린더, 보드 등등.. 식별키를 통해 프로젝트가 가진 기능을 조회")
-    public ProjectFunction listProjectFunction(@PathVariable String id){
-        return projectService.projectFunction(id);
-    }
+
 
 }

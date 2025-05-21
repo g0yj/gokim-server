@@ -11,7 +11,7 @@ import com.lms.api.common.entity.project.task.TaskStatusEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
-import com.lms.api.common.repository.project.FunctionRepository;
+import com.lms.api.common.repository.project.ProjectFunctionRepository;
 import com.lms.api.common.repository.project.ProjectMemberRepository;
 import com.lms.api.common.repository.project.ProjectRepository;
 import com.lms.api.common.repository.project.task.TaskRepository;
@@ -37,7 +37,7 @@ public class ProjectService {
     private final ProjectMemberRepository projectMemberRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-    private final FunctionRepository functionRepository;
+    private final ProjectFunctionRepository projectFunctionRepository;
     private final TaskStatusRepository taskStatusRepository;
     private final ProjectServiceMapper projectServiceMapper;
 
@@ -130,8 +130,8 @@ public class ProjectService {
     }
 
     @Transactional
-    public ProjectFunction projectFunction(String projectId){
-        List<ProjectFunctionEntity> functionEntities = functionRepository.findByProjectEntity_IdOrderByFunctionSortAsc(projectId);
+    public ProjectFunction listProjectFunction(String projectId){
+        List<ProjectFunctionEntity> functionEntities = projectFunctionRepository.findByProjectEntity_IdOrderByProjectFunctionSortAsc(projectId);
         List<ProjectFunction.Function> functions = functionEntities.stream()
                 .map(projectServiceMapper::toFunction)
                 .toList();
