@@ -11,6 +11,7 @@ public class Project {
     String id;
     String projectName;
     String ownerName;
+    String ownerId;
 
     List<ProjectMember> projectMembers;
 
