@@ -60,6 +60,23 @@ public class TaskService {
                 .build();
         taskStatusRepository.save(taskStatusEntity);
     }
+
+    public List<ListTask.TaskStatus> listTaskStatus(String projectFunctionId) {
+        List<TaskStatusEntity> taskStatusEntities = taskStatusRepository.findAll().stream()
+                .filter(ts -> ts.getProjectFunctionId() != null
+                                && ts.getProjectFunctionId().equals(projectFunctionId)
+                        )
+                .toList();
+
+        return taskStatusEntities.stream()
+                .map(ts -> ListTask.TaskStatus.builder()
+                        .id(ts.getId())
+                        .name(ts.getName())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
+
     @Transactional
     public String createTask(String loginId , CreateTaskRequest createTaskRequest){
 
@@ -416,6 +433,8 @@ public class TaskService {
 
         subTaskRepository.save(subTaskEntity);
     }
+
+
 }
 
 

@@ -34,6 +34,13 @@ public class TaskController {
         taskService.createTaskStatus(userEntity.getId(),createTaskStatusRequest);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/{projectFunctionId}/taskstatus")
+    @Operation(summary = "TaskStatus 목록")
+    public List<ListTaskStatusResponse> listTaskStatus(@Parameter(description = "기능 식별키(projectFunctionId)")@PathVariable String projectFunctionId){
+        List<ListTask.TaskStatus> taskStatuses = taskService.listTaskStatus(projectFunctionId);
+        return taskControllerMapper.toListTaskStatusResponse(taskStatuses);
+    }
     @PostMapping
     @Operation(summary = "Task 만들기", description = "task를 추가할 때 사용합니다.")
     public ResponseEntity<String> createTask(@LoginUser UserEntity user, @Valid @RequestBody CreateTaskRequest createTaskRequest){
