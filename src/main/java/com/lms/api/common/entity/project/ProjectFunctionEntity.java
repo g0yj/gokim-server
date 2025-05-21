@@ -13,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name= "project_function")
-@Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectFunctionEntity extends BaseEntity {
@@ -22,9 +22,9 @@ public class ProjectFunctionEntity extends BaseEntity {
     @Column(updatable = false)
     String id;
 
-    String functionName;
+    String projectFunctionName;
 
-    Long functionSort;
+    Long projectFunctionSort;
 
     @Enumerated(EnumType.STRING)
     ProjectFunctionType projectFunctionType;
@@ -35,6 +35,6 @@ public class ProjectFunctionEntity extends BaseEntity {
     ProjectEntity projectEntity;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "functionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "projectFunctionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     List<TaskEntity> taskEntities = new ArrayList<>();
 }

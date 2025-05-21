@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 @Setter@Getter
 @ToString
 @Table(name = "sub_task")
-@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SubTaskEntity extends BaseEntity {
 

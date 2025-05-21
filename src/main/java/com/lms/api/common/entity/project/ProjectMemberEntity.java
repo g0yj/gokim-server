@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Setter@Getter@ToString@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter@Getter@ToString@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name = "project_member")
 @IdClass(ProjectMemberId.class)
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -27,13 +27,14 @@ public class ProjectMemberEntity extends BaseEntity {
     @Enumerated(EnumType.STRING)
     ProjectRole projectRole;
 
+    @MapsId("projectId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", insertable = false, updatable = false)
+    ProjectEntity projectEntity;
+
     @MapsId("projectMemberId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_member_id" , insertable = false, updatable = false)
     UserEntity userEntity;
 
-    @MapsId("projectId")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id", insertable = false, updatable = false)
-    ProjectEntity projectEntity;
 }

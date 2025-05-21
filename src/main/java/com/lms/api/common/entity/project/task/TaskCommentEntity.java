@@ -8,7 +8,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Setter@Getter
-@ToString@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name = "task_comment")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskCommentEntity extends BaseEntity {

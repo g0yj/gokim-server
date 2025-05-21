@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name= "project")
-@Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter@Setter@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProjectEntity extends BaseEntity {
@@ -33,7 +33,7 @@ public class ProjectEntity extends BaseEntity {
 
     @ToString.Exclude
     @OneToMany(mappedBy = "projectEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ProjectFunctionEntity> functionEntities = new ArrayList<>();
+    List<ProjectFunctionEntity> projectFunctionEntities = new ArrayList<>();
 
 
 }

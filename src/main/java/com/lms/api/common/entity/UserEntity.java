@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity extends BaseEntity {

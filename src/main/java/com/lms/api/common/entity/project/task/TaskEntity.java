@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name= "task")
 @Getter@Setter @ToString(callSuper = true)
-@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskEntity extends BaseEntity {
 
@@ -33,7 +33,7 @@ public class TaskEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "function_id", nullable = false)
-    ProjectFunctionEntity functionEntity;
+    ProjectFunctionEntity projectFunctionEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_status_id", nullable = false)

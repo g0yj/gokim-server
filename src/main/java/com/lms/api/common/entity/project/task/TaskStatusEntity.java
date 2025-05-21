@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Setter@Getter
 @ToString
-@SuperBuilder@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SuperBuilder@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Table(name = "task_status")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class TaskStatusEntity extends BaseEntity {
