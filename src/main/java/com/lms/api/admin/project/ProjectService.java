@@ -367,13 +367,16 @@ public class ProjectService {
     }
 
     @Transactional
-    public void updateProjectFunction(String loginId, String projectId, UpdateProjectFunctionRequest updateProjectFunctionRequest) {
-        boolean isOwner = projectMemberRepository.existsByProjectEntity_IdAndUserEntity_IdAndProjectRole(projectId, loginId, ProjectRole.OWNER);
+    public void updateProjectFunction(String loginId, String projectFunctionId, UpdateProjectFunctionRequest updateProjectFunctionRequest) {
+        log.debug("로그인 아이디 확인 : {}" , loginId);
+        ProjectFunctionEntity projectFunctionEntity = projectFunctionRepository.findById(projectFunctionId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.PROJECT_FUNCTION_NOT_FOUND));
+
+        boolean isOwner = projectMemberRepository.existsByUserEntity_IdAndProjectEntity_IdAndProjectRole(loginId, projectFunctionEntity.getProjectEntity().getId(), ProjectRole.OWNER);
+
         if(!isOwner){
            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
         }
-        ProjectFunctionEntity projectFunctionEntity = projectFunctionRepository.findById(updateProjectFunctionRequest.getProjectFunctionId())
-                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_FUNCTION_NOT_FOUND));
 
         projectFunctionEntity.setProjectFunctionName(updateProjectFunctionRequest.getProjectFunctionName());
         projectFunctionEntity.setProjectFunctionSort(updateProjectFunctionRequest.getProjectFunctionSort());
@@ -381,6 +384,10 @@ public class ProjectService {
 
         projectFunctionRepository.save(projectFunctionEntity);
 
+    }
+    @Transactional
+    public void deleteProjectFunction(String projectFunctionId) {
+        projectFunctionRepository.deleteById(projectFunctionId);
     }
 }
 

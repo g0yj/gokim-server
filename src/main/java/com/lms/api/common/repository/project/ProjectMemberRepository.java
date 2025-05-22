@@ -16,6 +16,7 @@ public interface ProjectMemberRepository extends JpaRepository<ProjectMemberEnti
 
     // 소유자 권한 확인용
     boolean existsByProjectEntity_IdAndUserEntity_IdAndProjectRole(String projectId, String loginId, ProjectRole role);
+    boolean existsByUserEntity_IdAndProjectEntity_IdAndProjectRole(String userId, String projectId, ProjectRole role);
 
     Optional<ProjectMemberEntity> findByProjectEntityAndUserEntity_Id(ProjectEntity projectEntity, String userId);
 }

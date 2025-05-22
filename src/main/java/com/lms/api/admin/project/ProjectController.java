@@ -106,13 +106,19 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 
-   @PutMapping("/{projectId}/function")
+   @PutMapping("/function/{projectFunctionId}")
     public ResponseEntity<?> updateProjectFunction(@LoginUser UserEntity userEntity,
-                                                   @Parameter(description = "프로젝트 식별키") @PathVariable String projectId,
+                                                   @Parameter(description = "프로젝트 기능 식별키") @PathVariable String projectFunctionId,
                                                    @Valid @RequestBody UpdateProjectFunctionRequest updateProjectFunctionRequest){
-        projectService.updateProjectFunction(userEntity.getId(), projectId, updateProjectFunctionRequest);
+        projectService.updateProjectFunction(userEntity.getId(), projectFunctionId, updateProjectFunctionRequest);
         return ResponseEntity.ok("ok");
    }
+
+    @DeleteMapping("/function/{projectFunctionId}")
+    public ResponseEntity<?> deleteProjectFunction(@Parameter(description = "프로젝트 식별키") @PathVariable String projectFunctionId){
+        projectService.deleteProjectFunction(projectFunctionId);
+        return ResponseEntity.ok("ok");
+    }
 
 
 }
