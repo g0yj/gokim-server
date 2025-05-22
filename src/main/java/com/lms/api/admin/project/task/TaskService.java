@@ -383,17 +383,21 @@ public class TaskService {
 
         // 삭제할 파일은 S3에서 먼저 삭제
         if (ObjectUtils.isNotEmpty(updateTask.getDeleteFiles())) {
-            updateTask.getDeleteFiles()
-                    .forEach(fileId -> {
-                        taskEntity.getTaskFileEntities().stream()
-                                .filter(taskFileEntity -> taskFileEntity.getId().equals(fileId))
-                                .findFirst()
-                                .ifPresent(taskFileEntity -> fileStorageService.delete(taskFileEntity.getFileName()));
-                    });
+            updateTask.getDeleteFiles().forEach(fileId -> {
+                taskEntity.getTaskFileEntities().stream()
+                        .filter(taskFileEntity -> taskFileEntity.getId().equals(fileId))
+                        .findFirst()
+                        .ifPresent(taskFileEntity -> {
+                            String s3Key = taskFileEntity.getFileName(); // 또는 getS3Key()
+                            if (s3Key != null && !s3Key.isBlank()) {
+                                fileStorageService.delete(s3Key); // key로 바로 삭제
+                            }
+                        });
+            });
         }
 
         // 새로 업로드한 파일들 업로드 및 DB 저장 준비
-        Map<String, String> files = fileStorageService.upload(updateTask.getMultipartFiles());
+        Map<String, String> files = fileStorageService.upload(updateTask.getMultipartFiles(),"/project/task/");
 
         // 기존 컬렉션에서 삭제할 파일 제외하고, 새로 업로드한 파일까지 합친 새 리스트 생성
         List<TaskFileEntity> newFileList = taskEntity.getTaskFileEntities().stream()

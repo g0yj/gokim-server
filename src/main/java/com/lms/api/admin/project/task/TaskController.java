@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/task")
-@Tag(name = "Task API", description = "Task 관련 API입니다")
+@Tag(name = "Task API", description = "프로젝트 기능 중 Task 관련 API입니다")
 @RequiredArgsConstructor
 @Slf4j
 public class TaskController {
@@ -105,7 +105,7 @@ public class TaskController {
    public List<ListSubTaskResponse> listSubTask(@Parameter(description = "task 식별키") @PathVariable String id){
         return taskService.listSubTask(id);
    }
-   @PostMapping("/{subTaskId}")
+   @PostMapping("/subtask/{subTaskId}")
    @Operation(summary = "하위 항목 등록")
    public ResponseEntity<?> createSubTask(@LoginUser UserEntity userEntity,
                                           @Parameter(description = "하위 항목 식별키") @PathVariable String subTaskId,
@@ -114,7 +114,7 @@ public class TaskController {
 
         return ResponseEntity.ok().build();
    }
-   @PutMapping("/{subTaskId}")
+   @PutMapping("/subtask/{subTaskId}")
    @Operation(summary = "하위 항목 수정", description = "요약 뿐 아니라, 담당자와 상태가 변경될 때도 사용됩니다.")
    public ResponseEntity<?> updateSubTask(@LoginUser UserEntity userEntity,
                                           @Parameter(description = "하위 항목 식별키") @PathVariable long subTaskId,
@@ -131,7 +131,7 @@ public class TaskController {
         taskService.createComment(userEntity.getId(), id, createCommentRequest);
         return ResponseEntity.ok().build();
    }
-    @PutMapping("/{taskCommentId}")
+    @PutMapping("/taskcomment/{taskCommentId}")
     @Operation(summary = "댓글 수정")
     public ResponseEntity<?> updateComment(@LoginUser UserEntity userEntity,
                                            @Parameter(description = "댓글 식별키") @PathVariable Long taskCommentId,
@@ -140,7 +140,7 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{taskCommentId}")
+    @DeleteMapping("/taskcomment/{taskCommentId}")
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<?> deleteComment(@Parameter(description = "댓글 식별키") @PathVariable Long taskCommentId){
         taskService.deleteComment(taskCommentId);
