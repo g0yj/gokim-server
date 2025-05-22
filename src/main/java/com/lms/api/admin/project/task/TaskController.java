@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/task")
-@Tag(name = "Task API", description = "프로젝트 기능 중 Task 관련 API입니다")
+@Tag(name = "Project_task API", description = "프로젝트 기능 중 Task 관련 API입니다")
 @RequiredArgsConstructor
 @Slf4j
 public class TaskController {

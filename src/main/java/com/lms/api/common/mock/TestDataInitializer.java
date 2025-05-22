@@ -77,6 +77,7 @@ public class TestDataInitializer implements CommandLineRunner {
         ProjectFunctionEntity board = createProjectFunctionIfNotExists("PF01", "게시판11", functionBoard.getProjectFunctionType(), 1, project);
         ProjectFunctionEntity task = createProjectFunctionIfNotExists("PF02", "보드11", functionTask.getProjectFunctionType(), 2, project);
         ProjectFunctionEntity calendar = createProjectFunctionIfNotExists("PF03", "캘린더11", functionCalendar.getProjectFunctionType(), 3, project);
+        ProjectFunctionEntity file = createProjectFunctionIfNotExists("PF04", "파일모음", functionFile.getProjectFunctionType(), 4, project);
         // task 상태(task) : 기본값 먼저 있으면 실행
         TaskStatusEntity idea = createTaskStatusIfNotExists("Idea", project , task.getId());
         TaskStatusEntity todo = createTaskStatusIfNotExists("Todo", project , task.getId());

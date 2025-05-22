@@ -32,7 +32,7 @@ public class TaskEntity extends BaseEntity {
     String assignedMember;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "function_id", nullable = false)
+    @JoinColumn(name = "project_function_id", nullable = false)
     ProjectFunctionEntity projectFunctionEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)

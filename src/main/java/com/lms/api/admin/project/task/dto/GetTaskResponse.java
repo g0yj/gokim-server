@@ -87,7 +87,20 @@ public class GetTaskResponse {
         long taskCommentId;
         @Schema(description = "댓글 내용")
         String taskCommentContent;
+        @Schema(description = "댓글 작성자 식별키")
+        String commentProjectMemberId;
+        @Schema(description = "댓글 작성자 이름")
+        String commentProjectMemberName;
+        @Schema(description = "댓글 작성자 이미지")
+        String userImgUrl;
     }
 
 
 }
+/**
+ *         long id;
+ *         String content;
+ *         String commentProjectMemberId;
+ *         String commentProjectMemberName;
+ *         String userImgUrl;
+ */

@@ -49,7 +49,10 @@ public interface TaskControllerMapper {
 
     @Mapping(target = "taskCommentId", source = "id")
     @Mapping(target = "taskCommentContent", source = "content")
-    GetTaskResponse.TaskComment toTaskComment(GetTask.TaskComment subTask);
+    @Mapping(target = "commentProjectMemberId", source = "commentProjectMemberId")
+    @Mapping(target = "commentProjectMemberName", source = "commentProjectMemberName")
+    @Mapping(target = "userImgUrl", source = "userImgUrl")
+    GetTaskResponse.TaskComment toTaskComment(GetTask.TaskComment taskComment);
 
     @IterableMapping(elementTargetType = GetTaskResponse.SubTask.class)
     List<GetTaskResponse.SubTask> toSubTask(List<GetTask.SubTask> subTasks);

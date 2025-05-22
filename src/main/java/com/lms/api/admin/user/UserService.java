@@ -2,6 +2,7 @@ package com.lms.api.admin.user;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.auth.enums.LoginType;
+import com.lms.api.admin.project.file.dto.FileMeta;
 import com.lms.api.admin.user.dto.*;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
@@ -26,18 +27,19 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public CreateUserResponse createUser( CreateUser createUser){
+    public CreateUserResponse createUser(CreateUser createUser) {
 
-        if(userRepository.existsById(createUser.getId())){
+        if (userRepository.existsById(createUser.getId())) {
             throw new ApiException(ApiErrorCode.LOGIN_SERVER_ERROR);
         }
-        String fileName = null;
-        String originalFileName = null;
 
-        if(createUser.getMultipartFile() != null && !createUser.getMultipartFile().isEmpty()){
-            fileName = s3FileStorageService.upload(createUser.getMultipartFile(), "/user/");
-            originalFileName = createUser.getMultipartFile().getOriginalFilename();
+        FileMeta fileMeta = null;
+
+        MultipartFile profileFile = createUser.getMultipartFile();
+        if (profileFile != null && !profileFile.isEmpty()) {
+            fileMeta = s3FileStorageService.upload(profileFile, "user");
         }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
         UserEntity user = UserEntity.builder()
@@ -46,65 +48,70 @@ public class UserService {
                 .name(createUser.getName())
                 .email(createUser.getEmail())
                 .phone(createUser.getPhone())
-                .fileName(fileName)
-                .originalFileName(originalFileName)
+                .fileName(fileMeta != null ? fileMeta.getS3Key() : null)
+                .originalFileName(fileMeta != null ? fileMeta.getOriginalFileName() : null)
                 .role(UserRole.USER)
                 .loginType(LoginType.NORMAL)
                 .build();
+
         userRepository.save(user);
 
-
         return CreateUserResponse.builder()
-                .id(createUser.getId())
-                .name(createUser.getName())
+                .id(user.getId())
+                .name(user.getName())
                 .build();
     }
-
     @Transactional
     public GetUser getUser(String userId) {
-        log.debug("로그인 된 아이디 확인 : {}" , userId);
+        log.debug("로그인 된 아이디 확인 : {}", userId);
+
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+        String profileImgUrl = s3FileStorageService.getUrl(userEntity.getFileName());
 
         return GetUser.builder()
                 .id(userEntity.getId())
                 .name(userEntity.getName())
                 .email(userEntity.getEmail())
                 .phone(userEntity.getPhone())
-                .userImgUrl(s3FileStorageService.getUrl(userEntity.getFileName()))
+                .userImgUrl(profileImgUrl) // key → full URL 변환
                 .loginType(userEntity.getLoginType())
                 .build();
     }
 
     @Transactional
-    public void updateUser(String userId, UpdateUser updateUser){
+    public void updateUser(String userId, UpdateUser updateUser) {
         UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(()-> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
         userEntity.setName(updateUser.getName());
         userEntity.setPhone(updateUser.getPhone());
         userEntity.setEmail(updateUser.getEmail());
         userEntity.setModifiedBy(updateUser.getModifiedBy());
 
-        // 비밀번호가 있을 경우만 수정
-        String newPwd = null;
-        if(updateUser.getPassword() != null && !updateUser.getPassword().isEmpty()){
+        // 비밀번호 수정 (있는 경우만)
+        if (updateUser.getPassword() != null && !updateUser.getPassword().isEmpty()) {
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-            newPwd = bCryptPasswordEncoder.encode(updateUser.getPassword());
-            userEntity.setPassword(newPwd);
+            userEntity.setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
         }
-        // multipart가 들어오면 수정 + userEntity의 fileName를 삭제해야함.
+
+        // 프로필 파일 수정
         MultipartFile newFile = updateUser.getMultipartFile();
         if (newFile != null && !newFile.isEmpty()) {
+            // 기존 파일 삭제
             String existingKey = userEntity.getFileName();
             if (existingKey != null && !existingKey.isBlank()) {
-                s3FileStorageService.delete(existingKey); // ❗ key로 삭제
+                s3FileStorageService.delete(existingKey);
             }
 
-            String newKey = s3FileStorageService.upload(newFile, "/user/"); // ❗ "user"만 넘김 (슬래시 없이)
-            userEntity.setOriginalFileName(newFile.getOriginalFilename());
-            userEntity.setFileName(newKey); // ❗ S3 key 저장
+            // 새 파일 업로드
+            FileMeta fileMeta = s3FileStorageService.upload(newFile, "user");
+
+            userEntity.setOriginalFileName(fileMeta.getOriginalFileName());
+            userEntity.setFileName(fileMeta.getS3Key());
         }
+
         userRepository.save(userEntity);
     }
 

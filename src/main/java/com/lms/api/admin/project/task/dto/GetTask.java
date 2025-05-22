@@ -65,6 +65,9 @@ public class GetTask {
     public static class TaskComment {
         long id;
         String content;
+        String commentProjectMemberId;
+        String commentProjectMemberName;
+        String userImgUrl;
     }
 
     @Getter@AllArgsConstructor
@@ -73,6 +76,7 @@ public class GetTask {
     public static class ProjectMember {
         String projectMemberId;
         String projectMemberName;
+        String userImgUrl;
     }
 
 }

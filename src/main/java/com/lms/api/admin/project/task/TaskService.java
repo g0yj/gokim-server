@@ -1,8 +1,8 @@
 package com.lms.api.admin.project.task;
 
 
-import com.lms.api.admin.File.FileStorageService;
 import com.lms.api.admin.File.S3FileStorageService;
+import com.lms.api.admin.project.file.dto.FileMeta;
 import com.lms.api.admin.project.task.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class TaskService {
     private final JpaConfig jpaConfig;
-    private final FileStorageService fileStorageService;
     private final S3FileStorageService s3FileStorageService;
     private final TaskServiceMapper taskServiceMapper;
     private final TaskRepository taskRepository;
@@ -310,7 +309,7 @@ public class TaskService {
 
                     return GetTask.SubTask.builder()
                             .id(subTaskEntity.getId())
-                            .userImgUrl(s3FileStorageService.getUrl(assigneeUser.getFileName()))
+                            .userImgUrl(assigneeUser.getFileName())
                             .content(subTaskEntity.getContent())
                             .subTaskAssignedMemberName(assigneeUser.getName())
                             .subTaskAssignedMemberId(assigneeUser.getId())
@@ -330,6 +329,20 @@ public class TaskService {
                 .filter(comment -> comment.getTaskEntity().getId().equals(taskId))
                 .collect(Collectors.toList());
 
+        List<GetTask.TaskComment> commentDtos = taskComments.stream()
+                .map(comment -> {
+                    UserEntity commentUser = userRepository.findById(comment.getModifiedBy())
+                            .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+                    return GetTask.TaskComment.builder()
+                            .id(comment.getId())
+                            .content(comment.getContent())
+                            .commentProjectMemberId(commentUser.getId())
+                            .commentProjectMemberName(commentUser.getName())
+                            .userImgUrl(s3FileStorageService.getUrl(commentUser.getFileName()))
+                            .build();
+                })
+                .collect(Collectors.toList());
         // 파일명 null 필터링 + fileUrl 직접 세팅
         List<TaskFileEntity> taskFiles = taskFileRepository.findAll().stream()
                 .filter(file -> file.getTaskEntity().getId().equals(taskId))
@@ -341,8 +354,6 @@ public class TaskService {
                 .peek(file -> file.setFileName(s3FileStorageService.getUrl(file.getFileName())))
                 .collect(Collectors.toList());
 
-        log.debug("✅ fileUrl 확인 : {} ", filesWithUrl);
-
         // task response 생성
         return GetTask.builder()
                 .id(id)
@@ -351,6 +362,7 @@ public class TaskService {
                         GetTask.ProjectMember.builder()
                                 .projectMemberId(assignedMember.getId())
                                 .projectMemberName(assignedMember.getName())
+                                .userImgUrl(assignedMember.getFileName())
                                 .build()
                 )
                 .description(taskEntity.getDescription())
@@ -362,8 +374,8 @@ public class TaskService {
                 .totalSubTask(subTasks.size())
                 .completedSubTaskCount((int) completedCount)
                 .subTasks(subTasks)
-                .taskComments(taskServiceMapper.toTaskComment(taskComments))
-                .files(taskServiceMapper.toFile(filesWithUrl))  // 여기서는 fileName에 URL이 들어있음
+                .taskComments(commentDtos)
+                .files(taskServiceMapper.toFile(filesWithUrl))
                 .build();
     }
 
@@ -381,40 +393,41 @@ public class TaskService {
 
         taskEntity.setTaskStatusEntity(taskStatusEntity);
 
-        // 삭제할 파일은 S3에서 먼저 삭제
+        // 삭제할 파일 S3에서 제거
         if (ObjectUtils.isNotEmpty(updateTask.getDeleteFiles())) {
             updateTask.getDeleteFiles().forEach(fileId -> {
                 taskEntity.getTaskFileEntities().stream()
                         .filter(taskFileEntity -> taskFileEntity.getId().equals(fileId))
                         .findFirst()
                         .ifPresent(taskFileEntity -> {
-                            String s3Key = taskFileEntity.getFileName(); // 또는 getS3Key()
+                            String s3Key = taskFileEntity.getFileName();
                             if (s3Key != null && !s3Key.isBlank()) {
-                                fileStorageService.delete(s3Key); // key로 바로 삭제
+                                s3FileStorageService.delete(s3Key);
                             }
                         });
             });
         }
 
-        // 새로 업로드한 파일들 업로드 및 DB 저장 준비
-        Map<String, String> files = fileStorageService.upload(updateTask.getMultipartFiles(),"/project/task/");
+        // 새로 업로드된 파일 S3에 업로드
+        List<FileMeta> uploadedFiles = s3FileStorageService.upload(updateTask.getMultipartFiles(), "project/tasks");
 
-        // 기존 컬렉션에서 삭제할 파일 제외하고, 새로 업로드한 파일까지 합친 새 리스트 생성
+        // 기존 리스트에서 삭제할 파일 제거
         List<TaskFileEntity> newFileList = taskEntity.getTaskFileEntities().stream()
                 .filter(file -> updateTask.getDeleteFiles() == null || !updateTask.getDeleteFiles().contains(file.getId()))
                 .collect(Collectors.toList());
 
-        files.forEach((originalName, savedFileName) -> {
+        // 업로드된 파일들을 TaskFileEntity로 변환하여 추가
+        uploadedFiles.forEach(fileMeta -> {
             TaskFileEntity newFileEntity = TaskFileEntity.builder()
-                    .originalFileName(originalName)
-                    .fileName(savedFileName)
+                    .originalFileName(fileMeta.getOriginalFileName())
+                    .fileName(fileMeta.getS3Key())
                     .modifiedBy(updateTask.getModifiedBy())
                     .taskEntity(taskEntity)
                     .build();
             newFileList.add(newFileEntity);
         });
 
-        // 컬렉션 인스턴스 유지하면서 내용 교체
+        // 컬렉션 재구성
         taskEntity.getTaskFileEntities().clear();
         taskEntity.getTaskFileEntities().addAll(newFileList);
 
