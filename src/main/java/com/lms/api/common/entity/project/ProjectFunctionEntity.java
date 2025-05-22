@@ -2,6 +2,7 @@ package com.lms.api.common.entity.project;
 
 import com.lms.api.admin.project.enums.ProjectFunctionType;
 import com.lms.api.common.entity.BaseEntity;
+import com.lms.api.common.entity.project.file.ProjectFileEntity;
 import com.lms.api.common.entity.project.task.TaskEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -37,4 +38,8 @@ public class ProjectFunctionEntity extends BaseEntity {
     @ToString.Exclude
     @OneToMany(mappedBy = "projectFunctionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     List<TaskEntity> taskEntities = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToMany(mappedBy = "projectFunctionEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ProjectFileEntity> projectFileEntities = new ArrayList<>();
 }
