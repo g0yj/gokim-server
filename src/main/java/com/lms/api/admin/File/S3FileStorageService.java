@@ -47,19 +47,22 @@ public class S3FileStorageService implements FileStorageService{
     }
 
     // prod와 dev 환경에서 버킷 하나로 동시에 쓰기 때문에 Prefix으로 구분해서 저장한거임! 실무에서는 버킷 따로 쓸 것.
-    private String getObjectKey(String filename) {
-        // 변경: filename에 이미 prefix가 포함된 경우 중복 붙이지 않도록 처리
-        String prefix = getActiveProfile() + "/uploads/";
-        if(filename.startsWith(prefix)) {
-            return filename; // 이미 prefix가 붙은 상태이면 그대로 리턴
+    private String getObjectKey(String subDir, String filename) {
+        String profile = getActiveProfile();
+
+        if (subDir == null || subDir.isBlank()) {
+            return profile + "/" + filename;
         }
-        return prefix + filename;
+
+        // 슬래시 정리
+        subDir = subDir.replaceAll("^/+", "").replaceAll("/+$", ""); // 앞뒤 슬래시 제거
+        return profile + "/uploads/" + subDir + "/" + filename;
     }
 
     @Override
-    public String upload(MultipartFile file) {
+    public String upload(MultipartFile file, String subDir) {
         String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        String key = getObjectKey(filename);
+        String key = getObjectKey(subDir, filename);
 
         try {
             PutObjectRequest request = PutObjectRequest.builder()
@@ -78,8 +81,12 @@ public class S3FileStorageService implements FileStorageService{
     }
 
     @Override
-    public Map<String, String> upload(List<MultipartFile> files) {
+    public String upload(MultipartFile file) {
+        return null;
+    }
 
+    @Override
+    public Map<String, String> upload(List<MultipartFile> files, String subDir) {
         Map<String, String> fileNames = new HashMap<>();
 
         if (files == null || files.isEmpty()) return fileNames;
@@ -90,18 +97,24 @@ public class S3FileStorageService implements FileStorageService{
                     if (file.getSize() > getMaxFileSize()) {
                         throw new ApiException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
                     }
-                    String fileName = upload(file); // UUID_붙은 저장 파일명 (실제로는 key 전체)
-                    fileNames.put(file.getOriginalFilename(), fileName);
+
+                    String s3Key = upload(file, subDir); // 여기서 subDir 전달!
+                    fileNames.put(file.getOriginalFilename(), s3Key); // key 전체 반환
                 });
 
         return fileNames;
     }
 
     @Override
-    public void delete(String fileName) {
+    public Map<String, String> upload(List<MultipartFile> files) {
+        return null;
+    }
+
+    @Override
+    public void delete(String subDir, String fileName) {
         log.debug("[S3 DELETE] 삭제 요청 파일명: {}", fileName);
-        // 변경: fileName에 이미 prefix가 붙어있을 수 있으므로 getObjectKey에서 중복처리함
-        String key = getObjectKey(fileName);
+        String key = getObjectKey(subDir, fileName);
+
         DeleteObjectRequest request = DeleteObjectRequest.builder()
                 .bucket(bucket)
                 .key(key)
@@ -115,6 +128,28 @@ public class S3FileStorageService implements FileStorageService{
             throw e;
         }
     }
+
+    @Override
+    public void delete(String fullKey) {
+        if (fullKey == null || fullKey.isBlank()) {
+            log.warn("[S3 DELETE] 삭제 요청이 무시됨 - key가 null 또는 빈 문자열입니다.");
+            return;
+        }
+
+        DeleteObjectRequest request = DeleteObjectRequest.builder()
+                .bucket(bucket)
+                .key(fullKey)
+                .build();
+
+        try {
+            s3Client.deleteObject(request);
+            log.debug("[S3 DELETE] 삭제 성공 - key: {}", fullKey);
+        } catch (Exception e) {
+            log.error("[S3 DELETE] 삭제 실패 - key: {}, error: {}", fullKey, e.getMessage(), e);
+            throw e;
+        }
+    }
+
 
     @Override
     public String getUrl(String fileName) {

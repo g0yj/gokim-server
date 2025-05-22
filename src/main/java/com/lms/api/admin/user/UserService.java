@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Slf4j
@@ -34,7 +35,7 @@ public class UserService {
         String originalFileName = null;
 
         if(createUser.getMultipartFile() != null && !createUser.getMultipartFile().isEmpty()){
-            fileName = s3FileStorageService.upload(createUser.getMultipartFile());
+            fileName = s3FileStorageService.upload(createUser.getMultipartFile(), "/user/");
             originalFileName = createUser.getMultipartFile().getOriginalFilename();
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -93,12 +94,16 @@ public class UserService {
             userEntity.setPassword(newPwd);
         }
         // multipart가 들어오면 수정 + userEntity의 fileName를 삭제해야함.
-        if(updateUser.getMultipartFile() != null && !updateUser.getMultipartFile().isEmpty()){
-            String deleteFile = s3FileStorageService.getUrl(userEntity.getFileName());
-            s3FileStorageService.delete(deleteFile);
-            String fileName = s3FileStorageService.upload(updateUser.getMultipartFile());
-            userEntity.setOriginalFileName(updateUser.getMultipartFile().getOriginalFilename());
-            userEntity.setFileName(fileName);
+        MultipartFile newFile = updateUser.getMultipartFile();
+        if (newFile != null && !newFile.isEmpty()) {
+            String existingKey = userEntity.getFileName();
+            if (existingKey != null && !existingKey.isBlank()) {
+                s3FileStorageService.delete(existingKey); // ❗ key로 삭제
+            }
+
+            String newKey = s3FileStorageService.upload(newFile, "/user/"); // ❗ "user"만 넘김 (슬래시 없이)
+            userEntity.setOriginalFileName(newFile.getOriginalFilename());
+            userEntity.setFileName(newKey); // ❗ S3 key 저장
         }
         userRepository.save(userEntity);
     }
