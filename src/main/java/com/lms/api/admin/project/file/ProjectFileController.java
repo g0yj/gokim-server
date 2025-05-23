@@ -49,4 +49,12 @@ public class ProjectFileController {
         projectFileService.updateSortFile(userEntity.getId(), projectFunctionId, updateSortFileRequest);
         return ResponseEntity.ok("ok");
     }
+
+    @DeleteMapping("/{projectFunctionId}")
+    @Operation(summary = "파일 삭제")
+    public ResponseEntity<?> deleteProjectFile(@Parameter(description = "프로젝트 기능 식별키")@PathVariable String projectFunctionId,
+                                        @Valid @RequestBody DeleteProjectFileRequest deleteProjectFileRequest){
+        projectFileService.deleteProjectFile(projectFunctionId, deleteProjectFileRequest);
+        return ResponseEntity.ok("ok");
+    }
 }

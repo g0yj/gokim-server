@@ -140,7 +140,19 @@ public class ProjectFileService {
 
         projectFileRepository.saveAll(updated);
     }
-
+    @Transactional
+    public void deleteProjectFile(String projectFunctionId, DeleteProjectFileRequest deleteProjectFileRequest) {
+        List<ProjectFileEntity> projectFileEntities =
+                projectFileRepository.findAllById(deleteProjectFileRequest.getDeleteFileIds());
+        // S3 삭제
+        projectFileEntities.stream().forEach( entity -> {
+            if(entity.getFileName() != null && !entity.getFileName().isEmpty()){
+                s3FileStorageService.delete(entity.getFileName());
+            }
+        });
+        // DB 삭제
+        projectFileRepository.deleteAll(projectFileEntities);
+    }
 }
 
 

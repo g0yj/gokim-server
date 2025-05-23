@@ -433,6 +433,7 @@ public class TaskService {
 
         taskRepository.save(taskEntity);
     }
+
     @Transactional
     public void deleteTask(String userId, String taskId){
         TaskEntity taskEntity = taskRepository.findById(taskId)
