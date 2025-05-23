@@ -142,4 +142,11 @@ public class S3FileStorageService {
         }
         delete(fileMeta.getS3Key());
     }
+
+    public String getFileExtension(String fileName) {
+        if (fileName == null || !fileName.contains(".")) {
+            return "";
+        }
+        return fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
+    }
 }
