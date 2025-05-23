@@ -38,13 +38,11 @@ public class AuthService {
                 .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
         if(!passwordEncoder.matches(request.getPassword(), userEntity.getPassword())){
-            log.warn("⚠️ 로그인 실패 - 비밀번호 불일치");
             throw new ApiException(ApiErrorCode.CHANGEPW1_SERVER_ERROR);
         }
         UserRole userRole = userEntity.getRole();
         String accessToken = jwtTokenProvider.generateAccessToken(userEntity.getId(), userRole);
         String refreshToken = jwtTokenProvider.generateRefreshToken(userEntity.getId());
-
 
         refreshTokenRepository.save(userEntity.getId(),refreshToken, LoginType.NORMAL);
         log.debug("✅ 로그인 성공 userId={}, accessToken={}, refreshToken={}", userEntity.getId(), accessToken, refreshToken);

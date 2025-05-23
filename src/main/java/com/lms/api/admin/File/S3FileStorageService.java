@@ -104,6 +104,7 @@ public class S3FileStorageService {
         return files.stream()
                 .filter(file -> file != null && !file.isEmpty())
                 .map(file -> upload(file, subDir))
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

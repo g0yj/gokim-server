@@ -302,6 +302,7 @@ public class ProjectService {
                 .projectEntity(projectEntity)
                 .build();
         projectFunctionRepository.save(projectFunction);
+
         // todo 기능 추가할 때마다 추가 필요
         switch (createProjectFunctionRequest.getProjectFunctionType()){
             case TASK -> {
