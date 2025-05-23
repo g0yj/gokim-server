@@ -56,14 +56,14 @@ public class TaskService {
 
         List<CreateTaskStatusResponse> responses = new ArrayList<>();
         // 만약 projectId가 없다면 기본만 추가
-        if(createTaskStatusRequest.getProjectId() == null){
+        if(createTaskStatusRequest.getName() == null){
             log.debug("projectId 없을 때는 자동으로 4개 생성!");
             List<String> names = List.of("Idea","Todo","InProgress","Done");
 
             for (String name : names) {
                 TaskStatusEntity taskStatusEntity = TaskStatusEntity.builder()
                         .name(name)
-                        .projectId(null)
+                        .projectId(createTaskStatusRequest.getProjectId())
                         .projectFunctionId(createTaskStatusRequest.getProjectFunctionId())
                         .build();
                 taskStatusEntity = taskStatusRepository.save(taskStatusEntity);
