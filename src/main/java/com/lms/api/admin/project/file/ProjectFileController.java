@@ -1,10 +1,7 @@
 package com.lms.api.admin.project.file;
 
 import com.lms.api.admin.auth.LoginUser;
-import com.lms.api.admin.project.file.dto.CreateProjectFileRequest;
-import com.lms.api.admin.project.file.dto.CreateProjectFile;
-import com.lms.api.admin.project.file.dto.ListProjectFileRequest;
-import com.lms.api.admin.project.file.dto.ListProjectFileResponse;
+import com.lms.api.admin.project.file.dto.*;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,6 +39,14 @@ public class ProjectFileController {
                                                           @Parameter(description = "프로젝트 기능 식별키")@PathVariable String projectFunctionId,
                                                           @Valid @RequestBody(required = false) ListProjectFileRequest listProjectFileRequest){
         return projectFileService.listProjectFile(userEntity.getId(), projectFunctionId, listProjectFileRequest);
+    }
 
+    @PutMapping("/{projectFunctionId}")
+    @Operation(summary = "파일 변경", description = "파일 순서 변경 시에만 사용됩니다. 파일 자체 수정은 불가하도록 되어 있습니다.")
+    public ResponseEntity<?> updateSortFile(@LoginUser UserEntity userEntity, @Parameter(description = "프로젝트 기능 식별키") @PathVariable String projectFunctionId,
+                                            @Valid @RequestBody UpdateSortFileRequest updateSortFileRequest){
+
+        projectFileService.updateSortFile(userEntity.getId(), projectFunctionId, updateSortFileRequest);
+        return ResponseEntity.ok("ok");
     }
 }

@@ -22,6 +22,9 @@ public class ListProjectFileResponse {
     @Schema(description = "확장자")
     String extension;
 
+    @Schema(description = "파일 정렬 순서")
+    int sortOrder;
+
     @Schema(description = "작성자(멤버) 식별키")
     String projectMemberId;
     @Schema(description = "작성자(멤버) 이름")

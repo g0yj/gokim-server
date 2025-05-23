@@ -2,10 +2,7 @@ package com.lms.api.admin.project.file;
 
 
 import com.lms.api.admin.File.S3FileStorageService;
-import com.lms.api.admin.project.file.dto.CreateProjectFile;
-import com.lms.api.admin.project.file.dto.FileMeta;
-import com.lms.api.admin.project.file.dto.ListProjectFileRequest;
-import com.lms.api.admin.project.file.dto.ListProjectFileResponse;
+import com.lms.api.admin.project.file.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.project.ProjectFunctionEntity;
@@ -26,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -72,7 +70,6 @@ public class ProjectFileService {
     public List<ListProjectFileResponse> listProjectFile(String loginId, String projectFunctionId, ListProjectFileRequest listProjectFileRequest) {
         QProjectFileEntity qProjectFileEntity = QProjectFileEntity.projectFileEntity;
 
-
         ProjectFunctionEntity projectFunctionEntity = projectFunctionRepository.findById(projectFunctionId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_FUNCTION_NOT_FOUND));
 
@@ -88,7 +85,6 @@ public class ProjectFileService {
             where = where.and(qProjectFileEntity.originalFileName.endsWithIgnoreCase("."+ listProjectFileRequest.getExtension()));
         }
 
-        //연결된 file 전체
         List<ProjectFileEntity> projectFileEntities = jpaConfig.queryFactory()
                 .selectFrom(qProjectFileEntity)
                 .where(where)
@@ -103,6 +99,7 @@ public class ProjectFileService {
                     return ListProjectFileResponse.builder()
                             .projectFileId(entity.getId())
                             .fileUrl(s3FileStorageService.getUrl(entity.getFileName()))
+                            .sortOrder(entity.getSortOrder())
                             .originalFileName(entity.getOriginalFileName())
                             .extension(s3FileStorageService.getFileExtension(entity.getOriginalFileName()))
                             .projectMemberId(entity.getModifiedBy())
@@ -113,6 +110,37 @@ public class ProjectFileService {
 
         return files;
     }
+
+    @Transactional
+    public void updateSortFile(String loginId, String projectFunctionId, UpdateSortFileRequest request) {
+        projectFunctionRepository.findById(projectFunctionId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.PROJECT_FUNCTION_NOT_FOUND));
+
+        List<ProjectFileEntity> entities = jpaConfig.queryFactory()
+                .selectFrom(QProjectFileEntity.projectFileEntity)
+                .where(QProjectFileEntity.projectFileEntity.projectFunctionEntity.id.eq(projectFunctionId))
+                .fetch();
+
+        // ID → Entity 매핑 . Function는 자바가 제공
+        Map<String, ProjectFileEntity> entityMap = entities.stream()
+                .collect(Collectors.toMap(ProjectFileEntity::getId, Function.identity()));
+
+        List<ProjectFileEntity> updated = new ArrayList<>();
+
+        for (UpdateSortFileRequest.Change change : request.getSortOrders()) {
+            ProjectFileEntity entity = entityMap.get(change.getProjectFileId());
+            if (entity == null) {
+                throw new ApiException(ApiErrorCode.PROJECT_NOT_FOUND);
+            }
+
+            entity.setSortOrder(change.getSortOrder());
+            entity.setModifiedBy(loginId);
+            updated.add(entity);
+        }
+
+        projectFileRepository.saveAll(updated);
+    }
+
 }
 
 
