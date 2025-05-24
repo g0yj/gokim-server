@@ -230,6 +230,21 @@ public class NoticeService {
 
         noticeRepository.save(noticeEntity);
     }
+
+    @Transactional
+    public void deleteNotice(String loginId, String noticeId) {
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.NOTICE_NOT_FOUND));
+
+        List<NoticeFileEntity> noticeFileEntities = noticeFileRepository.findAllByNoticeEntity(noticeEntity);
+        for (NoticeFileEntity file : noticeEntity.getNoticeFileEntities()) {
+            s3FileStorageService.delete(file.getFileName());
+        }
+
+        noticeEntity.getNoticeFileEntities().clear();
+        noticeRepository.deleteById(noticeId);
+
+    }
 }
 
 

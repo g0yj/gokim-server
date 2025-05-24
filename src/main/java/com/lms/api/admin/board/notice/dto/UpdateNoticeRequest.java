@@ -15,7 +15,7 @@ public class UpdateNoticeRequest {
     String title;
     @Schema(description = "공지사항 본문")
     String content;
-    @Schema(description = "상단 고정 여부")
+    @Schema(description = "상단 고정 여부", requiredMode = Schema.RequiredMode.REQUIRED)
     boolean pinned;
 
     @Schema(description = "추가할 파일")

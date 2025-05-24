@@ -35,7 +35,7 @@ public class NoticeController {
         return noticeService.createNotice(userEntity.getId(), createNotice);
     }
 
-    @GetMapping
+    @GetMapping("/page")
     @Operation(summary = "공지사항 목록", description = "필터링을 포함합니다")
     public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid @ParameterObject @RequestBody ListPageNoticeRequest listPageNoticeRequest){
         SearchNotice searchNotice = noticeControllerMapper.toSearchNotice(userEntity.getId(), listPageNoticeRequest);
@@ -57,4 +57,12 @@ public class NoticeController {
         noticeService.updateNotice(userEntity.getId(), id, updateNoticeRequest);
         return ResponseEntity.ok("ok");
     }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "공지사항 삭제")
+    public ResponseEntity<?> deleteNotice(@LoginUser UserEntity userEntity, @Parameter(description = "공지사항 식별키") @PathVariable String id){
+        noticeService.deleteNotice(userEntity.getId(), id);
+        return ResponseEntity.ok("ok");
+    }
+
 }
