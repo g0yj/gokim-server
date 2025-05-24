@@ -3,7 +3,9 @@ package com.lms.api.admin.board.notice;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.board.dto.CreateNotice;
+import com.lms.api.admin.board.notice.dto.GetNoticeResponse;
 import com.lms.api.admin.board.notice.dto.ListPageNoticeResponse;
+import com.lms.api.admin.board.notice.dto.NoticeFile;
 import com.lms.api.admin.board.notice.dto.SearchNotice;
 import com.lms.api.admin.project.file.dto.FileMeta;
 import com.lms.api.admin.user.enums.UserRole;
@@ -45,7 +47,7 @@ public class NoticeService {
     @Transactional
     public String createNotice(String loginId, CreateNotice createNotice) {
 
-        UserEntity admin1 = userRepository.findByIdAndRole(createNotice.getCreatedBy(), UserRole.ADMIN)
+        UserEntity admin = userRepository.findByIdAndRole(createNotice.getCreatedBy(), UserRole.ADMIN)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.ACCESS_DENIED));
 
         String noticeId = "BN" + System.nanoTime();
@@ -141,6 +143,38 @@ public class NoticeService {
                     .fileCount(notice.getNoticeFileEntities() != null ? notice.getNoticeFileEntities().size() : 0)
                     .build();
         });
+    }
+
+    @Transactional
+    public GetNoticeResponse getNotice(String loginId, String noticeId) {
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.NOTICE_NOT_FOUND));
+        UserEntity userEntity = userRepository.findById(loginId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+        int view = noticeEntity.getView() + 1;
+
+        noticeEntity.setView(view);
+
+        List<NoticeFile> noticeFiles = noticeEntity.getNoticeFileEntities()
+                .stream()
+                .map(file -> NoticeFile.builder()
+                        .noticeFileId(file.getId())
+                        .originalFileName(file.getOriginalFileName())
+                        .url(s3FileStorageService.getUrl(file.getFileName()))
+                        .build()
+                )
+                .collect(Collectors.toList());
+
+        return GetNoticeResponse.builder()
+                .id(noticeId)
+                .title(noticeEntity.getTitle())
+                .content(noticeEntity.getContent())
+                .view(view)
+                .userRole(userEntity.getRole())
+                .pinned(noticeEntity.isPinned())
+                .files(noticeFiles)
+                .build();
     }
 }
 

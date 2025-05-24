@@ -24,5 +24,7 @@ public class ListPageNoticeResponse extends PageResponseData {
     String writerId;
     @Schema(description = "첨부파일 갯수")
     int fileCount;
+    @Schema(description = "조회수")
+    int view;
 
 }

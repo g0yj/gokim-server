@@ -4,11 +4,13 @@ package com.lms.api.admin.board.notice;
 import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.board.dto.CreateNotice;
 import com.lms.api.admin.board.dto.CreateNoticeRequest;
+import com.lms.api.admin.board.notice.dto.GetNoticeResponse;
 import com.lms.api.admin.board.notice.dto.ListPageNoticeRequest;
 import com.lms.api.admin.board.notice.dto.ListPageNoticeResponse;
 import com.lms.api.admin.board.notice.dto.SearchNotice;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +42,12 @@ public class NoticeController {
     public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid @ParameterObject @RequestBody ListPageNoticeRequest listPageNoticeRequest){
         SearchNotice searchNotice = noticeControllerMapper.toSearchNotice(userEntity.getId(), listPageNoticeRequest);
         return  noticeService.pageListNotice(userEntity.getId(), searchNotice);
+    }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "공지사항 상세 조회")
+    public GetNoticeResponse getNotice( @LoginUser UserEntity userEntity,
+                                        @Parameter(description = "공지사항 식별키") @PathVariable String id){
+        return noticeService.getNotice(userEntity.getId(), id);
     }
 }
