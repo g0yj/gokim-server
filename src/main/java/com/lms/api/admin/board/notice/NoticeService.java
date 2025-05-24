@@ -3,10 +3,7 @@ package com.lms.api.admin.board.notice;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.board.dto.CreateNotice;
-import com.lms.api.admin.board.notice.dto.GetNoticeResponse;
-import com.lms.api.admin.board.notice.dto.ListPageNoticeResponse;
-import com.lms.api.admin.board.notice.dto.NoticeFile;
-import com.lms.api.admin.board.notice.dto.SearchNotice;
+import com.lms.api.admin.board.notice.dto.*;
 import com.lms.api.admin.project.file.dto.FileMeta;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.config.JpaConfig;
@@ -19,6 +16,7 @@ import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.board.NoticeFileRepository;
 import com.lms.api.common.repository.board.NoticeRepository;
+import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
@@ -175,6 +173,62 @@ public class NoticeService {
                 .pinned(noticeEntity.isPinned())
                 .files(noticeFiles)
                 .build();
+    }
+    @Transactional
+    public void updateNotice(String loginId, String noticeId, UpdateNoticeRequest updateNoticeRequest) {
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.NOTICE_NOT_FOUND));
+        // 조건 : 관리자만 삭제 가능
+        boolean isAdmin = userRepository.existsByIdAndRole(loginId, UserRole.ADMIN);
+        if(!isAdmin){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+        if(ObjectUtils.isNotEmpty(updateNoticeRequest.getDeleteFileIds())){
+            updateNoticeRequest.getDeleteFileIds().forEach( fileId -> {
+                noticeEntity.getNoticeFileEntities().stream()
+                        .filter( noticeFileEntity -> noticeFileEntity.getId().equals(fileId))
+                        .findFirst()// 컬렉션 안에 fileEntity는 하나만 존재한다는 가정 하에 첫번째 하나만 처리
+                        .ifPresent(noticeFileEntity -> {
+                            String s3Key = noticeFileEntity.getFileName();
+                            if(s3Key != null && !s3Key.isBlank()){
+                                s3FileStorageService.delete(s3Key);
+                            }
+                        });
+
+            });
+        }
+        // 새로 업로드 된 파일을 S3에 업로드
+        List<FileMeta> uploadedFiles = s3FileStorageService.upload(updateNoticeRequest.getFiles(),"board/notice");
+
+        // DB 제거
+        List<NoticeFileEntity> noticeFileEntities = noticeEntity.getNoticeFileEntities().stream()
+                .filter(file -> updateNoticeRequest.getDeleteFileIds() == null // 삭제할 파일 리스트가 없을때 -> 아무것도 삭제하지 않음
+                                || !updateNoticeRequest.getDeleteFileIds().contains(file.getId())) // 삭제할 파일 리스트에 현재 파일의 식별키가 없으면 유지
+                .toList();
+
+        // 업로드된 파일들을 NoticeFileEntity로 변환해 추가
+        List<NoticeFileEntity> newFileEntities = uploadedFiles.stream()
+                .map(fileMeta -> NoticeFileEntity.builder()
+                        .fileName(fileMeta.getS3Key())
+                        .originalFileName(fileMeta.getOriginalFileName())
+                        .modifiedBy(loginId)
+                        .noticeEntity(noticeEntity)
+                        .build()
+                )
+                .collect(Collectors.toList());
+
+        // 컬렉션 재구성 ( 기존 + 추가 파일)
+        noticeEntity.getNoticeFileEntities().clear(); // 기존 연결 끊기
+        noticeEntity.getNoticeFileEntities().addAll(noticeFileEntities); // 기존 파일 추가
+        noticeEntity.getNoticeFileEntities().addAll(newFileEntities); // 새로운 파일 추가
+
+        // 공지사항 내용 수정
+        noticeEntity.setTitle(updateNoticeRequest.getTitle());
+        noticeEntity.setContent(updateNoticeRequest.getContent());
+        noticeEntity.setPinned(updateNoticeRequest.isPinned());
+        noticeEntity.setModifiedBy(loginId);
+
+        noticeRepository.save(noticeEntity);
     }
 }
 

@@ -416,7 +416,7 @@ public class TaskService {
                 .filter(file -> updateTask.getDeleteFiles() == null || !updateTask.getDeleteFiles().contains(file.getId()))
                 .collect(Collectors.toList());
 
-        // 업로드된 파일들을 TaskFileEntity로 변환하여 추가
+        // 새로 업로드된 파일들을 TaskFileEntity로 변환하여 추가
         uploadedFiles.forEach(fileMeta -> {
             TaskFileEntity newFileEntity = TaskFileEntity.builder()
                     .originalFileName(fileMeta.getOriginalFileName())
@@ -428,7 +428,7 @@ public class TaskService {
         });
 
         // 컬렉션 재구성
-        taskEntity.getTaskFileEntities().clear();
+        taskEntity.getTaskFileEntities().clear(); // 기존 연결 끊기
         taskEntity.getTaskFileEntities().addAll(newFileList);
 
         taskRepository.save(taskEntity);

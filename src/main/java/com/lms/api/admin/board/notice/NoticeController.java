@@ -4,10 +4,7 @@ package com.lms.api.admin.board.notice;
 import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.board.dto.CreateNotice;
 import com.lms.api.admin.board.dto.CreateNoticeRequest;
-import com.lms.api.admin.board.notice.dto.GetNoticeResponse;
-import com.lms.api.admin.board.notice.dto.ListPageNoticeRequest;
-import com.lms.api.admin.board.notice.dto.ListPageNoticeResponse;
-import com.lms.api.admin.board.notice.dto.SearchNotice;
+import com.lms.api.admin.board.notice.dto.*;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -49,5 +47,14 @@ public class NoticeController {
     public GetNoticeResponse getNotice( @LoginUser UserEntity userEntity,
                                         @Parameter(description = "공지사항 식별키") @PathVariable String id){
         return noticeService.getNotice(userEntity.getId(), id);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "공지사항 수정")
+    public ResponseEntity<?> updateNotice(@LoginUser UserEntity userEntity,
+                                          @Parameter(description = "공지사항 식별키")@PathVariable String id,
+                                          @Valid @ParameterObject @ModelAttribute UpdateNoticeRequest updateNoticeRequest){
+        noticeService.updateNotice(userEntity.getId(), id, updateNoticeRequest);
+        return ResponseEntity.ok("ok");
     }
 }
