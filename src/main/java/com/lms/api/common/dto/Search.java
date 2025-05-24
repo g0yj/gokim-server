@@ -18,7 +18,7 @@ public class Search {
   int page = 1;
 
   @Builder.Default
-  int limit = 10;
+  int limit = 5;
 
   @Builder.Default
   int pageSize = 10;
@@ -29,8 +29,11 @@ public class Search {
   @Builder.Default
   String direction = "desc"; // asc, desc
 
-  String search;
-  String keyword;
+  @Builder.Default
+  String search = null;
+
+  @Builder.Default
+  String keyword = null;
 
   public PageRequest toPageRequest() {
     return PageRequest.of(page - 1, limit, Sort.Direction.valueOf(direction.toUpperCase()), order);

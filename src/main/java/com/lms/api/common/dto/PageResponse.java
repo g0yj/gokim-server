@@ -2,6 +2,8 @@ package com.lms.api.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +12,18 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Schema(name = "PageResponse", description = "페이징 처리 정보")
 public class PageResponse<T> {
 
+  @Schema(description = "페이징 처리에 따른 no 값")
   List<T> list;
+  @Schema(description = "총 게시물 수")
   long totalCount;
+  @Schema(description = "현재 페이지")
   int page;
+  @Schema(description = "한 페이지에서 보여줄 게시글 수")
   int limit;
+  @Schema(description = "페이지 바 갯수")
   int pageSize;
 
   public List<T> getList() {

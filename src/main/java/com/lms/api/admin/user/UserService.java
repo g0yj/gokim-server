@@ -39,8 +39,8 @@ public class UserService {
         if (profileFile != null && !profileFile.isEmpty()) {
             fileMeta = s3FileStorageService.upload(profileFile, "user");
         }
-
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 
         UserEntity user = UserEntity.builder()
                 .id(createUser.getId())
@@ -55,12 +55,12 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
-
         return CreateUserResponse.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .build();
     }
+
     @Transactional
     public GetUser getUser(String userId) {
         log.debug("로그인 된 아이디 확인 : {}", userId);
