@@ -1,6 +1,7 @@
 package com.lms.api.admin.project.file;
 
 
+import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.project.file.dto.*;
 import com.lms.api.common.config.JpaConfig;

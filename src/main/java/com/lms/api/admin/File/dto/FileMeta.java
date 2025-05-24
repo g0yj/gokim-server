@@ -1,4 +1,4 @@
-package com.lms.api.admin.project.file.dto;
+package com.lms.api.admin.File.dto;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

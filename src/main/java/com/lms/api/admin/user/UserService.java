@@ -2,7 +2,7 @@ package com.lms.api.admin.user;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.auth.enums.LoginType;
-import com.lms.api.admin.project.file.dto.FileMeta;
+import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.user.dto.*;
 import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
@@ -52,6 +52,7 @@ public class UserService {
                 .originalFileName(fileMeta != null ? fileMeta.getOriginalFileName() : null)
                 .role(UserRole.USER)
                 .loginType(LoginType.NORMAL)
+                .createdBy(createUser.getId())
                 .build();
 
         userRepository.save(user);

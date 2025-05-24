@@ -1,6 +1,6 @@
 package com.lms.api.admin.File;
 
-import com.lms.api.admin.project.file.dto.FileMeta;
+import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.common.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,9 +13,16 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.time.Duration;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -29,6 +36,7 @@ public class S3FileStorageService {
 
     private final Environment env;
     private final S3Client s3Client;
+    private final S3Presigner s3Presigner;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -142,6 +150,46 @@ public class S3FileStorageService {
             return;
         }
         delete(fileMeta.getS3Key());
+    }
+
+    // =============================
+    // S3 버킷에서 파일 다운로드
+    // =============================
+    public byte[] downloadFile(String s3Key) {
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(s3Key)
+                .build();
+
+        try (InputStream inputStream = s3Client.getObject(getObjectRequest);
+             ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = inputStream.read(buffer)) != -1) {
+                baos.write(buffer, 0, bytesRead);
+            }
+
+            return baos.toByteArray();
+
+        } catch (Exception e) {
+            log.error("❌ S3 파일 다운로드 실패: key={}, message={}", s3Key, e.getMessage(), e);
+            throw new RuntimeException("S3 파일 다운로드 실패", e);
+        }
+    }
+    public String generatePresignedUrl(String s3Key, Duration expiration) {
+        GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+                .bucket(bucket)
+                .key(s3Key)
+                .build();
+
+        GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+                .signatureDuration(expiration)
+                .getObjectRequest(getObjectRequest)
+                .build();
+
+        PresignedGetObjectRequest presignedRequest = s3Presigner.presignGetObject(presignRequest);
+        return presignedRequest.url().toString();
     }
 
     public String getFileExtension(String fileName) {

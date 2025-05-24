@@ -2,7 +2,7 @@ package com.lms.api.admin.project.task;
 
 
 import com.lms.api.admin.File.S3FileStorageService;
-import com.lms.api.admin.project.file.dto.FileMeta;
+import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.project.task.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.QUserEntity;
@@ -421,6 +421,7 @@ public class TaskService {
             TaskFileEntity newFileEntity = TaskFileEntity.builder()
                     .originalFileName(fileMeta.getOriginalFileName())
                     .fileName(fileMeta.getS3Key())
+                    .createdBy(updateTask.getModifiedBy())
                     .modifiedBy(updateTask.getModifiedBy())
                     .taskEntity(taskEntity)
                     .build();
