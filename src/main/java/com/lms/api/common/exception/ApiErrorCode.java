@@ -35,7 +35,7 @@ public enum ApiErrorCode implements ApiError {
       HttpStatus.INTERNAL_SERVER_ERROR, "1404", "비밀번호는 6~14자리의 영문과 숫자를 포함해야 하며 공백을 포함할 수 없습니다."),
 
   //file error
-  FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "1500", "파일 크기가 {}를 초과합니다: {}"),
+  FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "1500", "파일 크기가 %s를 초과합니다:  %s"),
   FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1501", "{}"),
 
   //project error
