@@ -2,8 +2,8 @@ package com.lms.api.admin.board.notice;
 
 
 import com.lms.api.admin.auth.LoginUser;
-import com.lms.api.admin.board.dto.CreateNotice;
-import com.lms.api.admin.board.dto.CreateNoticeRequest;
+import com.lms.api.admin.board.notice.dto.CreateNotice;
+import com.lms.api.admin.board.notice.dto.CreateNoticeRequest;
 import com.lms.api.admin.board.notice.dto.*;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;

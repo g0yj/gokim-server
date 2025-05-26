@@ -1,8 +1,8 @@
 package com.lms.api.admin.board.notice;
 
 
-import com.lms.api.admin.board.dto.CreateNotice;
-import com.lms.api.admin.board.dto.CreateNoticeRequest;
+import com.lms.api.admin.board.notice.dto.CreateNotice;
+import com.lms.api.admin.board.notice.dto.CreateNoticeRequest;
 import com.lms.api.admin.board.notice.dto.ListPageNoticeRequest;
 import com.lms.api.admin.board.notice.dto.ListPageNoticeResponse;
 import com.lms.api.admin.board.notice.dto.SearchNotice;

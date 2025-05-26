@@ -8,7 +8,7 @@ import com.lms.api.admin.user.enums.UserRole;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
-import com.lms.api.common.repository.RefreshTokenRepository;
+import com.lms.api.common.repository.redis.RefreshTokenRepository;
 import com.lms.api.common.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

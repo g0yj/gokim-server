@@ -2,7 +2,7 @@ package com.lms.api.admin.board.notice;
 
 
 import com.lms.api.admin.File.S3FileStorageService;
-import com.lms.api.admin.board.dto.CreateNotice;
+import com.lms.api.admin.board.notice.dto.CreateNotice;
 import com.lms.api.admin.board.notice.dto.*;
 import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.user.enums.UserRole;

@@ -1,4 +1,4 @@
-package com.lms.api.admin.board.dto;
+package com.lms.api.admin.board.notice.dto;
 
 
 import lombok.*;

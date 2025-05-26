@@ -1,4 +1,4 @@
-package com.lms.api.common.repository;
+package com.lms.api.common.repository.redis;
 
 import com.lms.api.admin.auth.enums.LoginType;
 import jakarta.annotation.PostConstruct;

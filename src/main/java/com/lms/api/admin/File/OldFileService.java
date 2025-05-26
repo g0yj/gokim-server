@@ -1,25 +1,24 @@
 package com.lms.api.admin.File;
 
 import com.lms.api.admin.File.dto.OldFileInfo;
+import com.lms.api.admin.File.enums.FileTableType;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.board.QNoticeFileEntity;
 import com.lms.api.common.entity.project.file.QProjectFileEntity;
 import com.lms.api.common.entity.project.task.QTaskFileEntity;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+
 
 /**
  * 오래된 파일 배치로 제거 하기 위해 사용하는 서비스 로직
@@ -43,46 +42,8 @@ public class OldFileService {
         allFiles.addAll(findOldNoticeFiles(threshold));
 
         return allFiles.stream()
-                .collect(Collectors.groupingBy(OldFileInfo::getUserId));
+                .collect(Collectors.groupingBy(OldFileInfo::getUserId)); // .groupingBy는 stream API임!!
     }
-
-    /**
-     * 2. 파일 다운로드  : S3 서비스 로직에 downloadFile 메서드 사용
-     */
-
-
-    /**
-     * 3. 유저별로 zip 파일 압축
-     * @param filesByUser Map<userId, List<OldFileInfo>>
-     * @return Map<userId, 압축된 zip 바이트 배열>
-     */
-    public Map<String, byte[]> compressFilesGroupedByUser (Map<String, List<OldFileInfo>> filesByUser) {
-        Map<String, byte[]> zipMap = new HashMap<>();
-
-        for (Map.Entry<String, List<OldFileInfo>> entry : filesByUser.entrySet()){
-            String userId = entry.getKey();
-            List<OldFileInfo> files = entry.getValue();
-
-            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                 ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
-
-                for (OldFileInfo file : files) {
-                    byte[] content = s3FileStorageService.downloadFile(file.getS3Key());
-                    ZipEntry zipEntry = new ZipEntry(file.getOriginalFileName());
-                    zipOutputStream.putNextEntry(zipEntry);
-                    zipOutputStream.write(content);
-                    zipOutputStream.closeEntry();
-                }
-                zipOutputStream.finish();
-                zipMap.put(userId, byteArrayOutputStream.toByteArray());
-            } catch (IOException e){
-                throw new RuntimeException(" 압축 실패 - userId : " + userId, e);
-            }
-
-        }
-        return zipMap;
-    }
-
 
 
     //================================================================================================
@@ -94,7 +55,9 @@ public class OldFileService {
                 .select(Projections.constructor(OldFileInfo.class,
                         qProjectFileEntity.createdBy,
                         qProjectFileEntity.fileName,
-                        qProjectFileEntity.originalFileName))
+                        qProjectFileEntity.originalFileName,
+                        Expressions.constant(FileTableType.PROJECT)
+                ))
                 .from(qProjectFileEntity)
                 .where(qProjectFileEntity.createdOn.goe(threshold))
                 .fetch();
@@ -106,7 +69,9 @@ public class OldFileService {
                 .select(Projections.constructor(OldFileInfo.class,
                         qTaskFileEntity.createdBy,
                         qTaskFileEntity.fileName,
-                        qTaskFileEntity.originalFileName))
+                        qTaskFileEntity.originalFileName,
+                        Expressions.constant(FileTableType.TASK)
+                ))
                 .from(qTaskFileEntity)
                 .where(qTaskFileEntity.createdOn.goe(threshold))
                 .fetch();
@@ -119,7 +84,8 @@ public class OldFileService {
                 .select(Projections.constructor(OldFileInfo.class,
                         qNoticeFileEntity.createdBy,
                         qNoticeFileEntity.fileName,
-                        qNoticeFileEntity.originalFileName))
+                        qNoticeFileEntity.originalFileName,
+                        Expressions.constant(FileTableType.NOTICE)))
                 .from(qNoticeFileEntity)
                 .where(qNoticeFileEntity.createdOn.goe(threshold))
                 .fetch();

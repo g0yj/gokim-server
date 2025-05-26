@@ -13,5 +13,5 @@ public class OldFileInfo {
     String userId;
     String s3Key;
     String originalFileName;
-
+    String tableName; // 실제 삭제할 DB 식별키
 }

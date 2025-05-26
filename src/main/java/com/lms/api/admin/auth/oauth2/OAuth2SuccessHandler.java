@@ -5,7 +5,7 @@ import com.lms.api.admin.auth.dto.LoginResponse;
 import com.lms.api.admin.auth.JwtTokenProvider;
 import com.lms.api.admin.auth.enums.LoginType;
 import com.lms.api.common.entity.UserEntity;
-import com.lms.api.common.repository.RefreshTokenRepository;
+import com.lms.api.common.repository.redis.RefreshTokenRepository;
 import com.lms.api.common.repository.UserRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
