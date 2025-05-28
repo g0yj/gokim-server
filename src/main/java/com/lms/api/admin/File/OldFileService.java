@@ -36,6 +36,7 @@ public class OldFileService {
      * @return 유저 별 파일 목록
      */
     public Map<String, List<OldFileInfo>> findOldFilesGroupedByUser(LocalDateTime threshold) {
+        log.info("✅ 기준 시간에 따라 파일 조회 메서드 진입 -> 시간 : {}" , threshold);
         List<OldFileInfo> allFiles = new ArrayList<>();
         allFiles.addAll(findOldProjectFiles(threshold));
         allFiles.addAll(findOldTaskFiles(threshold));
@@ -48,9 +49,12 @@ public class OldFileService {
 
     //================================================================================================
     public List<OldFileInfo> findOldProjectFiles(LocalDateTime threshold){
+        log.info("✅ 오래된 프로젝트 파일 찾기 메서드 진입");
         QProjectFileEntity qProjectFileEntity = QProjectFileEntity.projectFileEntity;
 
-        return jpaConfig.queryFactory()
+        LocalDateTime now = LocalDateTime.now();
+
+        List<OldFileInfo> result = jpaConfig.queryFactory()
                 // Projections.constructor(): QueryDSL에서 제공하는 DTO 매핑 도우미 클래스의 메서드
                 .select(Projections.constructor(OldFileInfo.class,
                         qProjectFileEntity.createdBy,
@@ -59,13 +63,16 @@ public class OldFileService {
                         Expressions.constant(FileTableType.PROJECT)
                 ))
                 .from(qProjectFileEntity)
-                .where(qProjectFileEntity.createdOn.goe(threshold))
+                .where(qProjectFileEntity.createdOn.between(threshold, now))
                 .fetch();
+        log.info("📦 조회된 프로젝트 파일 파일 수: {}", result.size());
+        return result;
     }
     public List<OldFileInfo> findOldTaskFiles(LocalDateTime threshold) {
         QTaskFileEntity qTaskFileEntity = QTaskFileEntity.taskFileEntity;
+        log.info("✅ 오래된 Task 파일 찾기 메서드 진입");
 
-        return jpaConfig.queryFactory()
+        List<OldFileInfo> result = jpaConfig.queryFactory()
                 .select(Projections.constructor(OldFileInfo.class,
                         qTaskFileEntity.createdBy,
                         qTaskFileEntity.fileName,
@@ -75,12 +82,15 @@ public class OldFileService {
                 .from(qTaskFileEntity)
                 .where(qTaskFileEntity.createdOn.goe(threshold))
                 .fetch();
+
+        log.info("📦 조회된 Task 파일 수: {}", result.size());
+        return result;
     }
 
     public List<OldFileInfo> findOldNoticeFiles(LocalDateTime threshold) {
+        log.info("✅ 오래된 Notice 파일 찾기 메서드 진입");
         QNoticeFileEntity qNoticeFileEntity = QNoticeFileEntity.noticeFileEntity;
-
-        return jpaConfig.queryFactory()
+        List<OldFileInfo> result = jpaConfig.queryFactory()
                 .select(Projections.constructor(OldFileInfo.class,
                         qNoticeFileEntity.createdBy,
                         qNoticeFileEntity.fileName,
@@ -89,6 +99,8 @@ public class OldFileService {
                 .from(qNoticeFileEntity)
                 .where(qNoticeFileEntity.createdOn.goe(threshold))
                 .fetch();
+        log.info("📦 조회된 Notice 파일 수: {}", result.size());
+        return result;
     }
 
 }

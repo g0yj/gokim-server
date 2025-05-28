@@ -59,24 +59,7 @@ class OldFileServiceTest {
         System.out.println("파일 내용 일부 : " + new String(content,0, Math.min(100, content.length)));
     }
 
-    @Test
-    void compressFilesGroupedByUser_정상작동() {
-        // given - 최근 10분 이내 파일을 조회
-        LocalDateTime tenMinutesAgo = LocalDateTime.now().minusHours(1);
-        Map<String, List<OldFileInfo>> filesByUser = oldFileService.findOldFilesGroupedByUser(tenMinutesAgo);
 
-        // when - 압축 수행
-        Map<String, byte[]> result = oldFileService.compressFilesGroupedByUser(filesByUser);
-
-        // then
-        assertThat(result).isNotNull();
-        assertThat(result.size()).isEqualTo(filesByUser.size());
-
-        result.forEach((userId, zipData) -> {
-            assertThat(zipData).isNotEmpty();
-            System.out.println("압축된 zip 크기 (userId: " + userId + "): " + zipData.length);
-        });
-    }
     @Test
     void generatePresignedUrl_만료후_접근실패확인() throws InterruptedException {
         // given

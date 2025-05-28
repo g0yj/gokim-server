@@ -74,10 +74,10 @@ public class TestDataInitializer implements CommandLineRunner {
         ProjectMemberEntity member2 = createProjectMemberIfNotExists(project, user3, ProjectRole.MEMBER);
         ProjectMemberEntity member3 = createProjectMemberIfNotExists(project, user4, ProjectRole.MEMBER);
         // 프로젝트 기능 (board ,task, calendar)
-        ProjectFunctionEntity board = createProjectFunctionIfNotExists("PF01", "게시판11", functionBoard.getProjectFunctionType(), 1, project);
-        ProjectFunctionEntity task = createProjectFunctionIfNotExists("PF02", "보드11", functionTask.getProjectFunctionType(), 2, project);
-        ProjectFunctionEntity calendar = createProjectFunctionIfNotExists("PF03", "캘린더11", functionCalendar.getProjectFunctionType(), 3, project);
-        ProjectFunctionEntity file = createProjectFunctionIfNotExists("PF04", "파일모음", functionFile.getProjectFunctionType(), 4, project);
+        ProjectFunctionEntity board = createProjectFunctionIfNotExists("PF01", project);
+        ProjectFunctionEntity task = createProjectFunctionIfNotExists("PF02", project);
+        ProjectFunctionEntity calendar = createProjectFunctionIfNotExists("PF03", project);
+        ProjectFunctionEntity file = createProjectFunctionIfNotExists("PF04", project);
         // task 상태(task) : 기본값 먼저 있으면 실행
         TaskStatusEntity idea = createTaskStatusIfNotExists("Idea", project , task.getId());
         TaskStatusEntity todo = createTaskStatusIfNotExists("Todo", project , task.getId());
@@ -181,23 +181,17 @@ public class TestDataInitializer implements CommandLineRunner {
 
     @Transactional
     private ProjectFunctionEntity createProjectFunctionIfNotExists(
-            String id, String functionName, ProjectFunctionType functionType, int sort, ProjectEntity project) {
-
+            String id, ProjectEntity project
+    ) {
         return projectFunctionRepository.findById(id)
-                .stream()
-                .findFirst()
                 .orElseGet(() -> {
                     ProjectFunctionEntity projectFunction = ProjectFunctionEntity.builder()
                             .id(id)
-                            .projectFunctionName(functionName)
-                            .projectFunctionSort(sort)
-                            .projectFunctionType(functionType)
                             .projectEntity(project)
                             .build();
                     return projectFunctionRepository.save(projectFunction);
                 });
     }
-
 
 
 

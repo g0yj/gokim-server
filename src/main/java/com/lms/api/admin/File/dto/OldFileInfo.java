@@ -1,5 +1,6 @@
 package com.lms.api.admin.File.dto;
 
+import com.lms.api.admin.File.enums.FileTableType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +14,5 @@ public class OldFileInfo {
     String userId;
     String s3Key;
     String originalFileName;
-    String tableName; // 실제 삭제할 DB 식별키
+    FileTableType fileTableType; // 실제 삭제할 DB 식별키
 }

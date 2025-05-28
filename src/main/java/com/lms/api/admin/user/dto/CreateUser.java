@@ -6,7 +6,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
 
-@Getter@Setter
+@Getter@Setter@Builder
 @AllArgsConstructor@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(name = "CreateUser", description = "회원가입")
