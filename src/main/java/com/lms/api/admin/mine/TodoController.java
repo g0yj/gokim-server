@@ -2,6 +2,7 @@ package com.lms.api.admin.mine;
 
 import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.mine.dto.CreateTodoRequest;
+import com.lms.api.admin.mine.dto.ListTodoResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,5 +30,10 @@ public class TodoController {
         return todoService.createTodo(userEntity.getId(), createTodoRequest);
     }
 
+    @GetMapping
+    @Operation(summary = "TODO 목록 조회" , description = "목록 조회로 상태 별로 그룹핑 해서 반환했습니다")
+    public List<ListTodoResponse> listTodo(@LoginUser UserEntity userEntity) {
+        return todoService.listTodo(userEntity.getId());
+    }
 
 }

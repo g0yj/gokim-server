@@ -51,8 +51,6 @@ public class TaskService {
 
     @Transactional
     public List<CreateTaskStatusResponse> createTaskStatus(String loginId, CreateTaskStatusRequest createTaskStatusRequest){
-        log.debug("createTaskStatus 메서드 진입 확인!! 프로젝트 ID 여부: {} ", createTaskStatusRequest.getProjectId());
-        log.debug("createTaskStatus 메서드 진입 확인!! 프로젝트 기능 ID: {} ", createTaskStatusRequest.getProjectFunctionId());
 
         List<CreateTaskStatusResponse> responses = new ArrayList<>();
         // 만약 projectId가 없다면 기본만 추가
@@ -76,7 +74,6 @@ public class TaskService {
             }
             return responses;
         } else{
-            log.debug("프로젝트 id 있을 때 진입하는 거 확인 projectId: {}", createTaskStatusRequest.getProjectId());
             TaskStatusEntity taskStatusEntity = TaskStatusEntity.builder()
                     .name(createTaskStatusRequest.getName())
                     .projectFunctionId(createTaskStatusRequest.getProjectFunctionId())
