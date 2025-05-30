@@ -2,6 +2,7 @@ package com.lms.api.common.entity;
 
 import com.lms.api.admin.auth.enums.LoginType;
 import com.lms.api.admin.user.enums.UserRole;
+import com.lms.api.common.entity.mine.TodoEntity;
 import com.lms.api.common.entity.project.ProjectEntity;
 import com.lms.api.common.entity.project.ProjectMemberEntity;
 import jakarta.persistence.*;
@@ -48,5 +49,11 @@ public class UserEntity extends BaseEntity {
   @Builder.Default
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<ProjectMemberEntity> projectMemberEntities = new ArrayList<>();
+
+  @ToString.Exclude
+  @Builder.Default
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<TodoEntity> todoEntities = new ArrayList<>();
+
 
 }
