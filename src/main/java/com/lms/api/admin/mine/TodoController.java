@@ -3,6 +3,7 @@ package com.lms.api.admin.mine;
 import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.mine.dto.ChangeTodoRequest;
 import com.lms.api.admin.mine.dto.CreateTodoRequest;
+import com.lms.api.admin.mine.dto.GetTodoResponse;
 import com.lms.api.admin.mine.dto.ListTodoResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,4 +44,11 @@ public class TodoController {
         todoService.changeTodo(userEntity.getId(), changeTodoRequest);
         return ResponseEntity.ok("ok");
     }
+
+    @GetMapping("/{id}")
+    @Operation(summary = "TODO 상세 조회")
+    public GetTodoResponse getTodo(@LoginUser UserEntity userEntity, @PathVariable Long id){
+        return todoService.getTodo(userEntity.getId(), id);
+    }
+
 }

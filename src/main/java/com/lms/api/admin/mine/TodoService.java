@@ -3,6 +3,7 @@ package com.lms.api.admin.mine;
 
 import com.lms.api.admin.mine.dto.ChangeTodoRequest;
 import com.lms.api.admin.mine.dto.CreateTodoRequest;
+import com.lms.api.admin.mine.dto.GetTodoResponse;
 import com.lms.api.admin.mine.dto.ListTodoResponse;
 import com.lms.api.admin.mine.enums.TodoStatus;
 import com.lms.api.common.config.JpaConfig;
@@ -148,6 +149,13 @@ public class TodoService {
                 sortValue += increment;
             }
         }
+    }
+
+    public GetTodoResponse getTodo(String userId, Long todoId) {
+        TodoEntity todoEntity = todoRepository.findById(todoId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.TODO_NOT_FOUND));
+
+        return todoServiceMapper.toGetTodoResponse(todoEntity);
     }
 }
 
