@@ -1,6 +1,7 @@
 package com.lms.api.admin.mine;
 
 import com.lms.api.admin.auth.LoginUser;
+import com.lms.api.admin.mine.dto.ChangeTodoRequest;
 import com.lms.api.admin.mine.dto.CreateTodoRequest;
 import com.lms.api.admin.mine.dto.ListTodoResponse;
 import com.lms.api.common.entity.UserEntity;
@@ -36,4 +37,10 @@ public class TodoController {
         return todoService.listTodo(userEntity.getId());
     }
 
+    @PatchMapping("/change")
+    @Operation(summary = "TODO 목록 변경", description = "목록의 상태/순서 변경 시 사용합니다")
+    public ResponseEntity<?> changeTodo(@LoginUser UserEntity userEntity , @Valid @RequestBody ChangeTodoRequest changeTodoRequest) {
+        todoService.changeTodo(userEntity.getId(), changeTodoRequest);
+        return ResponseEntity.ok("ok");
+    }
 }

@@ -53,6 +53,10 @@ public enum ApiErrorCode implements ApiError {
 
   //notice error
   NOTICE_NOT_FOUND(HttpStatus.BAD_REQUEST,"0400", "찾을 수 없는 공지사항 입니다."),
+
+  // tod o error
+  TODO_NOT_FOUND(HttpStatus.BAD_REQUEST, "0500", "찾을 수 없는 TODO 입니다."),
+
   ;
   HttpStatusCode httpStatusCode;
   String code;
