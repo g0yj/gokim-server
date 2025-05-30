@@ -1,10 +1,7 @@
 package com.lms.api.admin.mine;
 
 
-import com.lms.api.admin.mine.dto.ChangeTodoRequest;
-import com.lms.api.admin.mine.dto.CreateTodoRequest;
-import com.lms.api.admin.mine.dto.GetTodoResponse;
-import com.lms.api.admin.mine.dto.ListTodoResponse;
+import com.lms.api.admin.mine.dto.*;
 import com.lms.api.admin.mine.enums.TodoStatus;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.entity.UserEntity;
@@ -38,6 +35,11 @@ public class TodoService {
 
     @Transactional
     public Long createTodo(String userId, CreateTodoRequest createTodoRequest) {
+
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+
         LocalDate now = LocalDate.now();
 
         LocalDate startDate = createTodoRequest.getStartDate() != null ? createTodoRequest.getStartDate() : now;
@@ -49,8 +51,15 @@ public class TodoService {
             endDate = temp;
         }
 
-        UserEntity userEntity = userRepository.findById(userId)
-                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+        Integer sort = createTodoRequest.getSort();
+
+        if (sort == null) {
+            Integer maxSort = todoRepository.findMaxSortByUserEntity_Id(userId);
+            if (maxSort == null) {
+                maxSort = 0;
+            }
+            sort = maxSort + 1;
+        }
 
         TodoEntity todoEntity = TodoEntity.builder()
                 .title(createTodoRequest.getTitle())
@@ -59,6 +68,7 @@ public class TodoService {
                 .memo(createTodoRequest.getMemo())
                 .startDate(startDate)
                 .endDate(endDate)
+                .sort(sort)
                 .color(null)
                 .createdBy(userId)
                 .modifiedBy(userId)
@@ -156,6 +166,15 @@ public class TodoService {
                 .orElseThrow(()-> new ApiException(ApiErrorCode.TODO_NOT_FOUND));
 
         return todoServiceMapper.toGetTodoResponse(todoEntity);
+    }
+
+    @Transactional
+    public void updateTodo(String userId, Long todoId, UpdateTodoRequest updateTodoRequest) {
+        TodoEntity todoEntity = todoRepository.findById(todoId)
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.TODO_NOT_FOUND));
+
+        todoServiceMapper.mapTodoEntity(updateTodoRequest, todoEntity);
+
     }
 }
 
