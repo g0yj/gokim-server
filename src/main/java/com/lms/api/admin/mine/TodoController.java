@@ -56,4 +56,11 @@ public class TodoController {
         return ResponseEntity.ok("ok");
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "TODO 삭제")
+    public ResponseEntity<?> deleteTodo (@LoginUser UserEntity userEntity, @PathVariable Long id){
+        todoService.deleteTodo(userEntity.getId(), id);
+        return ResponseEntity.ok("ok");
+    }
+
 }

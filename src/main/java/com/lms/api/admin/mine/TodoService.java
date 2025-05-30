@@ -176,6 +176,17 @@ public class TodoService {
         todoServiceMapper.mapTodoEntity(updateTodoRequest, todoEntity);
 
     }
+
+    public void deleteTodo(String userId, Long todoId) {
+        TodoEntity todoEntity = todoRepository.findById(todoId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.TODO_NOT_FOUND));
+
+        if(!todoEntity.getUserEntity().getId().equals(userId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        todoRepository.deleteById(todoId);
+    }
 }
 
 
