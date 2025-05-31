@@ -26,6 +26,8 @@ import java.util.List;
  * - Cors 관련 설정
  *  -> 시큐리티 사용할거면 SecurityFilterChain 사용하고 아니면,
  *      CorsConfig 클래스 만들어서 corsConfigurationSource 메서드 사용
+ *
+ * -> Spring Security는 context-path를 포함한 경로 기준으로 requestMatchers를 평가
  */
 @Configuration
 @EnableWebSecurity
@@ -42,6 +44,13 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin(AbstractHttpConfigurer::disable) // 시큐리티가 기본적으로 제공하는 엔드포인트를 사용하지 않을 때 사용
+                .exceptionHandling(e -> e
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            response.setContentType("application/json");
+                            response.getWriter().write("{\"error\": \"Unauthorized\"}");
+                        })
+                )
                 .authorizeHttpRequests(auth -> auth
                       .requestMatchers(
                               "/v3/api-docs/**",
