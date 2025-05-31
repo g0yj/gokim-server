@@ -62,8 +62,8 @@ public class SecurityConfig {
                               "/oauth2/authorization/**",
                               "/logout",
                               "/user",
-                              "/test/**",
-                              "/api/test/**"
+                              "/test/**"
+                              //"/api/test/**" 스프링시큐리티6버전부터는 기본 값 제외하고 매칭함!
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
                         .anyRequest().authenticated() // 그 외는 인증 필요
