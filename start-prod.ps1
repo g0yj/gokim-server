@@ -29,7 +29,9 @@ $deployJar = Join-Path (Join-Path $base "..\target") "gokim-api-1.0.0.jar"
 
 # 최신 빌드된 JAR 복사 (기존 파일 덮어씀)
 Copy-Item -Path $jenkinsJar -Destination $deployJar -Force
-
+# 최신 스크립트 복사
+Copy-Item "C:\ProgramData\Jenkins\.jenkins\workspace\deploy-backend\start-prod.ps1" `
+          -Destination "C:\app\backend\deploy\start-prod.ps1" -Force
 # -------------------------------------
 # ✅ Step 1: 환경 설정 및 로그 경로 지정
 # -------------------------------------
