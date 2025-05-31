@@ -68,3 +68,4 @@ src/main/resources/application-prod.yml
 
 # 배포테스트33
 .env
+server-*.log
