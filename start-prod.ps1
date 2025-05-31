@@ -5,17 +5,33 @@
 # Base path (script directory)
 $base = Split-Path -Parent $MyInvocation.MyCommand.Path
 
-# Paths
+# -------------------------------------
+# ✅ Step 0: Jenkins에서 빌드된 최신 JAR 복사
+# -------------------------------------
+# Jenkins 빌드 아티팩트 위치 (실제 경로로 수정)
+$jenkinsJar = "C:\jenkins\workspace\gokim-api\build\libs\gokim-api-1.0.0.jar"
+
+# 실행 대상 위치 (현재 배포 스크립트 경로 기준)
+$deployJar = Join-Path (Join-Path $base "..\target") "gokim-api-1.0.0.jar"
+
+# 최신 빌드된 JAR 복사 (기존 파일 덮어씀)
+Copy-Item -Path $jenkinsJar -Destination $deployJar -Force
+
+# -------------------------------------
+# ✅ Step 1: 환경 설정 및 로그 경로 지정
+# -------------------------------------
 $envPath = Join-Path $base ".env"
 $logDir = Join-Path $base "..\logs"
-$jarPath = Join-Path (Join-Path $base "..\target") "gokim-api-1.0.0.jar"
+$jarPath = $deployJar  # 바로 위에서 복사한 경로 그대로 사용
 
 # Create logs directory if not exists
 if (-Not (Test-Path $logDir)) {
     New-Item -ItemType Directory -Path $logDir | Out-Null
 }
 
-# Load environment variables from .env
+# -------------------------------------
+# ✅ Step 2: .env 파일에서 환경 변수 로드
+# -------------------------------------
 if (Test-Path $envPath) {
     Get-Content $envPath | ForEach-Object {
         if ($_ -match "^\s*#") { return }
@@ -33,13 +49,17 @@ if (Test-Path $envPath) {
     exit 1
 }
 
-# Check Spring profile
+# -------------------------------------
+# ✅ Step 3: 프로파일 확인
+# -------------------------------------
 $profile = [System.Environment]::GetEnvironmentVariable("SPRING_PROFILES_ACTIVE", "Process")
 if (-not $profile) {
     Write-Error "ERROR: SPRING_PROFILES_ACTIVE not set in .env"
     exit 1
 }
 
-# Run Spring Boot application
+# -------------------------------------
+# ✅ Step 4: Spring Boot 실행
+# -------------------------------------
 Write-Host "Starting application with profile: $profile"
 & java "-Dspring.profiles.active=$profile" -jar $jarPath *> "$logDir\application.log"
