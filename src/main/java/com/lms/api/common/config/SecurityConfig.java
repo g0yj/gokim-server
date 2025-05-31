@@ -53,7 +53,7 @@ public class SecurityConfig {
                               "/oauth2/authorization/**",
                               "/logout",
                               "/user",
-                              "/test/**"
+                              "/api/test/**"
                         ).permitAll()
                         .requestMatchers("/admin/**").hasRole(UserRole.ADMIN.name())
                         .anyRequest().authenticated() // 그 외는 인증 필요
