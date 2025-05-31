@@ -1,4 +1,17 @@
 # -------------------------------------
+# ✅ Step -1: Kill running Java process
+# -------------------------------------
+Write-Host "Killing existing Java process (if any)..."
+Get-Process java -ErrorAction SilentlyContinue | ForEach-Object {
+    try {
+        $_ | Stop-Process -Force
+        Write-Host "Java process stopped (PID: $($_.Id))"
+    } catch {
+        Write-Warning "Failed to stop Java process: $_"
+    }
+}
+
+# -------------------------------------
 # ✅ PowerShell script for production Spring Boot app
 # -------------------------------------
 
