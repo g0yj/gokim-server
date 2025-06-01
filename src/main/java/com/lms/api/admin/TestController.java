@@ -21,7 +21,11 @@ public class TestController {
     }
     @GetMapping("/3")
     public String test3(){
-        return "자동 배포 테스트";
+        return "자동 배포 테스트3";
+    }
+    @GetMapping("/4")
+    public String test4(){
+        return "자동 배포 테스트4";
     }
 
 }
