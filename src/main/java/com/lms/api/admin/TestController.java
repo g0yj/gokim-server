@@ -28,4 +28,9 @@ public class TestController {
         return "자동 배포 테스트4";
     }
 
+    @GetMapping("/5")
+    public String test5(){
+        return "자동 배포 테스트5";
+    }
+
 }
