@@ -100,6 +100,8 @@ public class SecurityConfig {
                 "http://localhost:8081",
                 "http://localhost:5173",
                 "http://54.180.116.0",
+                "http://54.180.116.0:8080",
+                "http://54.180.116.0:80",
                 "http://localhost:8084")); // ✅ 특정 Origin 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
