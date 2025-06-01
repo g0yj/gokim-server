@@ -19,5 +19,9 @@ public class TestController {
     public String test2(){
         return "자동 배포 테스트2";
     }
+    @GetMapping("/3")
+    public String test3(){
+        return "자동 배포 테스트";
+    }
 
 }
