@@ -22,10 +22,10 @@ $base = Split-Path -Parent $MyInvocation.MyCommand.Path
 # ✅ Step 0: Jenkins에서 빌드된 최신 JAR 복사
 # -------------------------------------
 # Jenkins 빌드 아티팩트 위치 (실제 경로로 수정)
-$jenkinsJar = "C:\jenkins\workspace\gokim-api\build\libs\gokim-api-1.0.0.jar"
+$jenkinsJar = "C:\ProgramData\Jenkins\.jenkins\workspace\deploy-backend\target\gokim-api-1.0.0.jar"
 
-# 실행 대상 위치 (현재 배포 스크립트 경로 기준)
-$deployJar = Join-Path (Join-Path $base "..\target") "gokim-api-1.0.0.jar"
+# 복사할 위치 (운영 디렉토리 target)
+$deployJar = "C:\app\backend\target\gokim-api-1.0.0.jar"
 
 # 최신 빌드된 JAR 복사 (기존 파일 덮어씀)
 Copy-Item -Path $jenkinsJar -Destination $deployJar -Force
