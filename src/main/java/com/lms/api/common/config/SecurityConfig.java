@@ -100,7 +100,6 @@ public class SecurityConfig {
                 "http://localhost:8081",
                 "http://localhost:5173",
                 "http://54.180.116.0:8080",
-                "https://*.ngrok-free.app",
                 "http://localhost:8084")); // ✅ 특정 Origin 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
