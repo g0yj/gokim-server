@@ -20,7 +20,6 @@ try {
 # Step 2: Define base path
 # -------------------------------------
 Write-Output "[STEP 2] Resolving base path..."
-
 $base = Split-Path -Parent $MyInvocation.MyCommand.Path
 
 # -------------------------------------
@@ -29,13 +28,26 @@ $base = Split-Path -Parent $MyInvocation.MyCommand.Path
 Write-Output "[STEP 3] Copying JAR file..."
 
 $jenkinsJar = "C:\ProgramData\Jenkins\.jenkins\workspace\deploy-backend\target\gokim-api-1.0.0.jar"
-$deployJar = "C:\app\backend\target\gokim-api-1.0.0.jar"
+$deployDir = "C:\app\backend\target"
+$deployJar = Join-Path $deployDir "gokim-api-1.0.0.jar"
 
-try {
-    Copy-Item -Path $jenkinsJar -Destination $deployJar -Force
-    Write-Output "[STEP 3] JAR copied to $deployJar"
-} catch {
-    Write-Output "[STEP 3] Failed to copy JAR file: $_"
+# 대상 디렉토리 없으면 생성
+if (-Not (Test-Path $deployDir)) {
+    Write-Output "[STEP 3] Target directory does not exist. Creating: $deployDir"
+    New-Item -ItemType Directory -Path $deployDir | Out-Null
+}
+
+# JAR 복사
+if (Test-Path $jenkinsJar) {
+    try {
+        Copy-Item -Path $jenkinsJar -Destination $deployJar -Force
+        Write-Output "[STEP 3] JAR copied to $deployJar"
+    } catch {
+        Write-Output "[STEP 3] ERROR: Failed to copy JAR file: $_"
+        exit 1
+    }
+} else {
+    Write-Output "[STEP 3] ERROR: Source JAR not found at $jenkinsJar"
     exit 1
 }
 
