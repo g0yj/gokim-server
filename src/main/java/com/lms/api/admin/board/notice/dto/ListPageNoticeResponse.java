@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter@Setter@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(name = "ListPageNoticeResponse", description = "공지사항 목록입니다. 필터링 페이징 처리포함")
-public class ListPageNoticeResponse extends PageResponseData {
+public class ListPageNoticeResponse  {
 
     @Schema(description = "공지사항 식별키")
     String id;
@@ -26,5 +26,7 @@ public class ListPageNoticeResponse extends PageResponseData {
     int fileCount;
     @Schema(description = "조회수")
     int view;
+    @Schema(description = "no")
+    long listNumber;
 
 }

@@ -22,12 +22,15 @@ import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 @Slf4j
@@ -93,54 +96,65 @@ public class NoticeService {
                     );
                     break;
                 case "writerId":
-                    where = where.and(
-                            qNoticeEntity.modifiedBy.contains(searchNotice.getKeyword())
-                    );
+                    where = where.and(qNoticeEntity.modifiedBy.contains(searchNotice.getKeyword()));
                     break;
                 case "title":
-                    where = where.and(
-                            qNoticeEntity.title.contains(searchNotice.getKeyword())
-                    );
+                    where = where.and(qNoticeEntity.title.contains(searchNotice.getKeyword()));
                     break;
                 default:
                     break;
             }
         }
 
-        // 페이징 관련 데이터 정의
+        // 정렬 방향 설정
         Sort.Direction sortDirection;
         try {
             sortDirection = Sort.Direction.valueOf(searchNotice.getDirection().toUpperCase());
         } catch (IllegalArgumentException | NullPointerException e) {
             sortDirection = Sort.Direction.DESC;
         }
-        // 조건이 있기 때문에 스프링 jpa가 제공하는 객체로 새롭게 조건 만듦.
-        org.springframework.data.domain.PageRequest pageRequest = org.springframework.data.domain.PageRequest.of(
+
+        // PageRequest 정의
+        PageRequest pageRequest = PageRequest.of(
                 searchNotice.getPage() - 1,
                 searchNotice.getLimit(),
                 Sort.by(
-                        Sort.Order.desc("pinned"), // true 일때 상단 위치 (desc)
+                        Sort.Order.desc("pinned"),
                         Sort.Order.desc("createdBy")
                 )
         );
-        // 페이징 처리를 포함한 데이터 만들기
-        Page<NoticeEntity> noticePage = noticeRepository.findAll(where, pageRequest);
 
-        // 프론트가 원하는 리스트 만듦
-        return noticePage.map( notice -> {
-            String writerId = notice.getModifiedBy();
-            String writerName = userRepository.findById(writerId)
-                    .map(UserEntity ::getName)
-                    .orElse("-");
-            return ListPageNoticeResponse.builder()
-                    .id(notice.getId())
-                    .title(notice.getTitle())
-                    .createDate(notice.getCreatedOn().toLocalDate())
-                    .writerId(writerId)
-                    .writerName(writerName)
-                    .fileCount(notice.getNoticeFileEntities() != null ? notice.getNoticeFileEntities().size() : 0)
-                    .build();
-        });
+        // 데이터 조회
+        Page<NoticeEntity> noticePage = noticeRepository.findAll(where, pageRequest);
+        long totalCount = noticePage.getTotalElements();
+        int currentPage = pageRequest.getPageNumber();
+        int pageSize = pageRequest.getPageSize();
+
+        // content만 변환
+        List<ListPageNoticeResponse> content = IntStream.range(0, noticePage.getContent().size())
+                .mapToObj(i -> {
+                    NoticeEntity notice = noticePage.getContent().get(i);
+                    String writerId = notice.getModifiedBy();
+                    String writerName = userRepository.findById(writerId)
+                            .map(UserEntity::getName)
+                            .orElse("-");
+
+                    long listNumber = totalCount - ((long) currentPage * pageSize) - i;
+
+                    return ListPageNoticeResponse.builder()
+                            .id(notice.getId())
+                            .title(notice.getTitle())
+                            .createDate(notice.getCreatedOn().toLocalDate())
+                            .writerId(writerId)
+                            .writerName(writerName)
+                            .fileCount(notice.getNoticeFileEntities() != null ? notice.getNoticeFileEntities().size() : 0)
+                            .listNumber(listNumber)
+                            .view(notice.getView()) // 기본값 처리
+                            .build();
+                })
+                .toList();
+
+        return new PageImpl<>(content, pageRequest, totalCount);
     }
 
     @Transactional
