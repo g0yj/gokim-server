@@ -37,7 +37,7 @@ public class NoticeController {
 
     @GetMapping("/page")
     @Operation(summary = "공지사항 목록", description = "필터링을 포함합니다")
-    public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid @ParameterObject @RequestBody ListPageNoticeRequest listPageNoticeRequest){
+    public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid ListPageNoticeRequest listPageNoticeRequest){
         SearchNotice searchNotice = noticeControllerMapper.toSearchNotice(userEntity.getId(), listPageNoticeRequest);
         return  noticeService.pageListNotice(userEntity.getId(), searchNotice);
     }
