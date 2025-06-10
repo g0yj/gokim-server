@@ -78,7 +78,11 @@ public class S3FileStorageService {
     // =============================
 
     public FileMeta upload(MultipartFile file, String subDir) {
-        if (file == null || file.isEmpty()) return null;
+        if (file == null) return null;
+
+        if (file.isEmpty()) {
+            log.warn("빈 파일 업로드 요청됨: {}", file.getOriginalFilename());
+        }
 
         if (file.getSize() > getMaxFileSize()) {
             throw new ApiException(FILE_SIZE_EXCEEDED, maxFileSizeStr, file.getOriginalFilename());
@@ -110,7 +114,8 @@ public class S3FileStorageService {
         if (files == null || files.isEmpty()) return Collections.emptyList();
 
         return files.stream()
-                .filter(file -> file != null && !file.isEmpty())
+                .peek(file -> log.debug("파일 확인: {}, size: {}", file.getOriginalFilename(), file.getSize()))
+                .filter(Objects::nonNull) // ⛔ 크기가 0이더라도 허용
                 .map(file -> upload(file, subDir))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
