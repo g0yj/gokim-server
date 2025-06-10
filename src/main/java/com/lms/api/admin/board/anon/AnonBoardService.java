@@ -140,7 +140,7 @@ public class AnonBoardService {
     }
 
     @Transactional
-    public void updateAnonBoardRequest(String anonBoardId, String loginId, UpdateAnonBoardRequest updateAnonBoardRequest) {
+    public void updateAnonBoard(String anonBoardId, String loginId, UpdateAnonBoardRequest updateAnonBoardRequest) {
         AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(anonBoardId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
 
@@ -193,6 +193,25 @@ public class AnonBoardService {
         AnonBoardEntity anonBoard = anonBoardServiceMapper.toAnonBoardEntity(updateAnonBoardRequest, anonBoardEntity);
 
         anonBoardRepository.save(anonBoard);
+    }
+
+    @Transactional
+    public void deleteAnonBoard(String loginId, String anonBoardId) {
+        AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(anonBoardId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
+
+        if(!anonBoardEntity.getCreatedBy().equals(loginId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        List<AnonBoardFileEntity> anonBoardFileEntities = anonBoardFileRepository.findAllByAnonBoardEntity(anonBoardEntity);
+
+        for(AnonBoardFileEntity file : anonBoardFileEntities) {
+            s3FileStorageService.delete(file.getFileName());
+        }
+
+        anonBoardEntity.getAnonBoardFileEntities().clear();
+        anonBoardRepository.deleteById(anonBoardId);
     }
 }
 

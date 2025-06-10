@@ -49,11 +49,20 @@ public class AnonBoardController {
 
     @PutMapping("/{id}")
     @Operation(summary = "익명 게시판 수정")
-    public ResponseEntity<?> updateAnonBoardRequest(
+    public ResponseEntity<?> updateAnonBoard(
             @LoginUser UserEntity userEntity,
             @Parameter(description = "게시글 식별키") @PathVariable String id,
             @ModelAttribute @Valid UpdateAnonBoardRequest updateAnonBoardRequest){
-        anonBoardService.updateAnonBoardRequest(id, userEntity.getId(), updateAnonBoardRequest);
+        anonBoardService.updateAnonBoard(id, userEntity.getId(), updateAnonBoardRequest);
         return ResponseEntity.ok("수정완료");
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "익명 게시글 삭제")
+    public ResponseEntity<?> deleteAnonBoard(
+            @LoginUser UserEntity userEntity,
+            @Parameter(description = "게시글 식별키") @PathVariable String id) {
+        anonBoardService.deleteAnonBoard(userEntity.getId(), id);
+        return ResponseEntity.ok("삭제완료");
     }
 }
