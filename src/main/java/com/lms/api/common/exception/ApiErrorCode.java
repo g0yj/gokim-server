@@ -57,6 +57,9 @@ public enum ApiErrorCode implements ApiError {
   // tod o error
   TODO_NOT_FOUND(HttpStatus.BAD_REQUEST, "0500", "찾을 수 없는 TODO 입니다."),
 
+  // anonBoard error
+  ANONBOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "0600", "찾을 수 없는 익명 게시글 입니다."),
+
   ;
   HttpStatusCode httpStatusCode;
   String code;

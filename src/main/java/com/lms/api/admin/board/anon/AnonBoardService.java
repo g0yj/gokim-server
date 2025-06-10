@@ -4,11 +4,14 @@ package com.lms.api.admin.board.anon;
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.board.anon.dto.CreateAnonBoard;
+import com.lms.api.admin.board.anon.dto.GetAnonBoard;
 import com.lms.api.admin.board.anon.dto.ListAnonBoard;
 import com.lms.api.admin.board.anon.dto.SearchAnonBoard;
 import com.lms.api.common.entity.board.AnonBoardEntity;
 import com.lms.api.common.entity.board.AnonBoardFileEntity;
 import com.lms.api.common.entity.board.QAnonBoardEntity;
+import com.lms.api.common.exception.ApiErrorCode;
+import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.board.AnonBoardFileRepository;
 import com.lms.api.common.repository.board.AnonBoardRepository;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -106,6 +109,33 @@ public class AnonBoardService {
 
         return new PageImpl<>(list, boardPage.getPageable(), boardPage.getTotalElements());
 
+    }
+
+    @Transactional
+    public GetAnonBoard getAnonBoard(String anonBoardId) {
+        AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(anonBoardId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
+
+        int view = anonBoardEntity.getView() +1 ;
+        anonBoardEntity.setView(view);
+
+        List<GetAnonBoard.AnonBoardFile> anonBoardFiles = anonBoardEntity.getAnonBoardFileEntities()
+                .stream()
+                .map(file -> GetAnonBoard.AnonBoardFile.builder()
+                        .anonBoardFileId(file.getId())
+                        .originalFileName(file.getOriginalFileName())
+                        .url(s3FileStorageService.getUrl(file.getFileName()))
+                        .build()
+                )
+                .toList();
+        return GetAnonBoard.builder()
+                .id(anonBoardEntity.getId())
+                .title(anonBoardEntity.getTitle())
+                .content(anonBoardEntity.getContent())
+                .view(view)
+                .createdBy(anonBoardEntity.getCreatedBy())
+                .files(anonBoardFiles)
+                .build();
     }
 }
 

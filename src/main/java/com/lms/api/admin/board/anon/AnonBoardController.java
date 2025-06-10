@@ -37,6 +37,11 @@ public class AnonBoardController {
         SearchAnonBoard searchAnonBoard = anonBoardControllerMapper.toSearchAnonBoard(listAnonBoardRequest);
         Page<ListAnonBoard> page = anonBoardService.listAnonBoard(searchAnonBoard);
         return anonBoardControllerMapper.toListAnonBoardResponse(searchAnonBoard, page);
+    }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "익명 게시판 상세 조회")
+    public GetAnonBoard getAnonBoard(@PathVariable String id){
+        return anonBoardService.getAnonBoard(id);
     }
 }
