@@ -23,8 +23,8 @@ public class GetAnonBoard {
     String content;
     @Schema(description = "조회수")
     int view;
-    @Schema(description = "게시글 작성자 (수정, 삭제 등 로그인한 사람과 작성자와 비교를 위해 사용)")
-    String createdBy;
+    @Schema(description = "작성자인지 아닌지 (수정,삭제버튼 노출을 위해 사용")
+    boolean mine;
     @Schema(description = "파일 정보 ")
     List<AnonBoardFile> files;
 

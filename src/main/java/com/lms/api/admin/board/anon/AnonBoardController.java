@@ -43,8 +43,8 @@ public class AnonBoardController {
 
     @GetMapping("/{id}")
     @Operation(summary = "익명 게시판 상세 조회")
-    public GetAnonBoard getAnonBoard(@PathVariable String id){
-        return anonBoardService.getAnonBoard(id);
+    public GetAnonBoard getAnonBoard(@LoginUser UserEntity userEntity, @PathVariable String id){
+        return anonBoardService.getAnonBoard(userEntity.getId(), id);
     }
 
     @PutMapping("/{id}")

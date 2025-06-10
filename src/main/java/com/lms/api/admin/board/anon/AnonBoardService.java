@@ -111,9 +111,11 @@ public class AnonBoardService {
     }
 
     @Transactional
-    public GetAnonBoard getAnonBoard(String anonBoardId) {
+    public GetAnonBoard getAnonBoard(String loginId, String anonBoardId) {
         AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(anonBoardId)
                 .orElseThrow(()-> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
+
+        boolean isMine = anonBoardEntity.getCreatedBy().equals(loginId);
 
         int view = anonBoardEntity.getView() +1 ;
         anonBoardEntity.setView(view);
@@ -132,7 +134,7 @@ public class AnonBoardService {
                 .title(anonBoardEntity.getTitle())
                 .content(anonBoardEntity.getContent())
                 .view(view)
-                .createdBy(anonBoardEntity.getCreatedBy())
+                .mine(isMine)
                 .files(anonBoardFiles)
                 .build();
     }
