@@ -3,10 +3,7 @@ package com.lms.api.admin.board.anon;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
-import com.lms.api.admin.board.anon.dto.CreateAnonBoard;
-import com.lms.api.admin.board.anon.dto.GetAnonBoard;
-import com.lms.api.admin.board.anon.dto.ListAnonBoard;
-import com.lms.api.admin.board.anon.dto.SearchAnonBoard;
+import com.lms.api.admin.board.anon.dto.*;
 import com.lms.api.common.entity.board.AnonBoardEntity;
 import com.lms.api.common.entity.board.AnonBoardFileEntity;
 import com.lms.api.common.entity.board.QAnonBoardEntity;
@@ -14,6 +11,7 @@ import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.board.AnonBoardFileRepository;
 import com.lms.api.common.repository.board.AnonBoardRepository;
+import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -136,6 +135,62 @@ public class AnonBoardService {
                 .createdBy(anonBoardEntity.getCreatedBy())
                 .files(anonBoardFiles)
                 .build();
+    }
+
+    @Transactional
+    public void updateAnonBoardRequest(String anonBoardId, String loginId, UpdateAnonBoardRequest updateAnonBoardRequest) {
+        AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(anonBoardId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
+
+        if( !anonBoardEntity.getCreatedBy().equals(loginId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        // s3에서 삭제
+        if(ObjectUtils.isNotEmpty(updateAnonBoardRequest.getDeleteFileIds())){
+            updateAnonBoardRequest.getDeleteFileIds()
+                    .forEach( fileId -> {
+                        anonBoardEntity.getAnonBoardFileEntities().stream()
+                                .filter( anonBoardFileEntity -> anonBoardFileEntity.getId().equals(fileId))
+                                .findFirst()
+                                .ifPresent(anonBoardFileEntity -> {
+                                    String s3Key = anonBoardFileEntity.getFileName();
+                                    if(s3Key != null && !s3Key.isBlank()){
+                                        s3FileStorageService.delete(s3Key);
+                                    }
+                                });
+                    });
+        }
+        // 추가된 파일 업로드
+        List<FileMeta> uploadFiles = s3FileStorageService.upload(updateAnonBoardRequest.getFiles(),"/board/anon");
+
+        // 기존 파일들
+        List<AnonBoardFileEntity> anonBoardFileEntities = anonBoardEntity.getAnonBoardFileEntities()
+                .stream()
+                .filter(file -> updateAnonBoardRequest.getDeleteFileIds() == null || // 삭제할 파일 리스트에 없음
+                        !updateAnonBoardRequest.getDeleteFileIds().contains(file.getId())) // 삭제할 파일 리스트에 현재 파일 식별키 없음
+                .toList();
+
+        // 추가된 파일
+        List<AnonBoardFileEntity> newFiles = uploadFiles.stream()
+                .map(file -> AnonBoardFileEntity.builder()
+                        .fileName(file.getS3Key())
+                        .originalFileName(file.getOriginalFileName())
+                        .modifiedBy(loginId)
+                        .createdBy(loginId)
+                        .anonBoardEntity(anonBoardEntity)
+                        .build()
+                ).collect(Collectors.toList());
+
+        // 컬렉션 재구성
+        anonBoardEntity.getAnonBoardFileEntities().clear(); // 연결 끊기
+        anonBoardEntity.getAnonBoardFileEntities().addAll(anonBoardFileEntities);
+        anonBoardEntity.getAnonBoardFileEntities().addAll(newFiles);
+
+        updateAnonBoardRequest.setModifiedBy(loginId);
+        AnonBoardEntity anonBoard = anonBoardServiceMapper.toAnonBoardEntity(updateAnonBoardRequest, anonBoardEntity);
+
+        anonBoardRepository.save(anonBoard);
     }
 }
 

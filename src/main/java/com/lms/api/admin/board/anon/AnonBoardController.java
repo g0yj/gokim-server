@@ -6,11 +6,13 @@ import com.lms.api.admin.board.anon.dto.*;
 import com.lms.api.common.dto.PageResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -43,5 +45,15 @@ public class AnonBoardController {
     @Operation(summary = "익명 게시판 상세 조회")
     public GetAnonBoard getAnonBoard(@PathVariable String id){
         return anonBoardService.getAnonBoard(id);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "익명 게시판 수정")
+    public ResponseEntity<?> updateAnonBoardRequest(
+            @LoginUser UserEntity userEntity,
+            @Parameter(description = "게시글 식별키") @PathVariable String id,
+            @ModelAttribute @Valid UpdateAnonBoardRequest updateAnonBoardRequest){
+        anonBoardService.updateAnonBoardRequest(id, userEntity.getId(), updateAnonBoardRequest);
+        return ResponseEntity.ok("수정완료");
     }
 }
