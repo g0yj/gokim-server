@@ -134,7 +134,7 @@ public class AnonBoardService {
                 .title(anonBoardEntity.getTitle())
                 .content(anonBoardEntity.getContent())
                 .view(view)
-                .mine(isMine)
+                .isMine(isMine)
                 .files(anonBoardFiles)
                 .build();
     }
