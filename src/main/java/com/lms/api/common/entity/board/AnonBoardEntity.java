@@ -28,7 +28,8 @@ public class AnonBoardEntity extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   String content;
 
-  Long view;
+  @Column(nullable = false)
+  Integer view;
 
   @Builder.Default
   @ToString.Exclude

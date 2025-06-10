@@ -1,4 +1,4 @@
-package com.lms.api.admin.anon.dto;
+package com.lms.api.admin.board.anon.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

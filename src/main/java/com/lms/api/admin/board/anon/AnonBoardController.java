@@ -1,15 +1,16 @@
-package com.lms.api.admin.anon;
+package com.lms.api.admin.board.anon;
 
 
-import com.lms.api.admin.anon.dto.CreateAnonBoard;
-import com.lms.api.admin.anon.dto.CreateAnonBoardRequest;
 import com.lms.api.admin.auth.LoginUser;
+import com.lms.api.admin.board.anon.dto.*;
+import com.lms.api.common.dto.PageResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -30,4 +31,12 @@ public class AnonBoardController {
         return anonBoardService.createAnonBoard(userEntity.getId(), createAnonBoard);
     }
 
+    @GetMapping
+    @Operation( summary = "익명 게시판 목록")
+    public PageResponse<ListAnonBoardResponse> listAnonBoard(@Valid ListAnonBoardRequest listAnonBoardRequest) {
+        SearchAnonBoard searchAnonBoard = anonBoardControllerMapper.toSearchAnonBoard(listAnonBoardRequest);
+        Page<ListAnonBoard> page = anonBoardService.listAnonBoard(searchAnonBoard);
+        return anonBoardControllerMapper.toListAnonBoardResponse(searchAnonBoard, page);
+
+    }
 }

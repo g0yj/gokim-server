@@ -26,5 +26,4 @@ public interface NoticeControllerMapper {
 
     SearchNotice toSearchNotice(String id, ListPageNoticeRequest listPageNoticeRequest);
 
-    PageResponse<ListPageNoticeResponse> toPageNoticeResponse(Page<ListPageNoticeResponse> noticePage, SearchNotice searchNotice);
 }
