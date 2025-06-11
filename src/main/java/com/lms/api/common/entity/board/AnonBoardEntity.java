@@ -36,6 +36,11 @@ public class AnonBoardEntity extends BaseEntity {
   @OneToMany(mappedBy = "anonBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<AnonBoardFileEntity> anonBoardFileEntities = new ArrayList<>();
 
+  @Builder.Default
+  @ToString.Exclude
+  @OneToMany(mappedBy = "anonBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<AnonBoardCommentEntity> anonBoardCommentEntities = new ArrayList<>();
+
   public void addFile(AnonBoardFileEntity file) {
     this.anonBoardFileEntities.add(file);
     file.setAnonBoardEntity(this);

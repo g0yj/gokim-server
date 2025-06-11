@@ -65,4 +65,14 @@ public class AnonBoardController {
         anonBoardService.deleteAnonBoard(userEntity.getId(), id);
         return ResponseEntity.ok("삭제완료");
     }
+
+    @PostMapping("/{boardId}/comment")
+    @Operation(summary = "댓글 등록")
+    public ResponseEntity<?> createComment(@LoginUser UserEntity userEntity,
+                                           @Parameter(description = "익명 게시글 식별키")@PathVariable String boardId,
+                                           @Valid @RequestBody CreateBoardCommentRequest createBoardCommentRequest) {
+        anonBoardService.createComment(userEntity.getId(), boardId, createBoardCommentRequest);
+        return ResponseEntity.ok("댓글 등록 성공");
+    }
+
 }

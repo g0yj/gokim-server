@@ -4,11 +4,13 @@ package com.lms.api.admin.board.anon;
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.board.anon.dto.*;
+import com.lms.api.common.entity.board.AnonBoardCommentEntity;
 import com.lms.api.common.entity.board.AnonBoardEntity;
 import com.lms.api.common.entity.board.AnonBoardFileEntity;
 import com.lms.api.common.entity.board.QAnonBoardEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
+import com.lms.api.common.repository.board.AnonBoardCommentRepository;
 import com.lms.api.common.repository.board.AnonBoardFileRepository;
 import com.lms.api.common.repository.board.AnonBoardRepository;
 import com.lms.api.common.util.ObjectUtils;
@@ -34,6 +36,7 @@ public class AnonBoardService {
     private final AnonBoardRepository anonBoardRepository;
     private final AnonBoardFileRepository anonBoardFileRepository;
     private final AnonBoardServiceMapper anonBoardServiceMapper;
+    private final AnonBoardCommentRepository anonBoardCommentRepository;
 
     @Transactional
     public String createAnonBoard(String loginId, CreateAnonBoard createAnonBoard) {
@@ -212,6 +215,20 @@ public class AnonBoardService {
 
         anonBoardEntity.getAnonBoardFileEntities().clear();
         anonBoardRepository.deleteById(anonBoardId);
+    }
+    @Transactional
+    public void createComment(String loginId, String boardId, CreateBoardCommentRequest createBoardCommentRequest) {
+        AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(boardId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
+
+        AnonBoardCommentEntity anonBoardCommentEntity = AnonBoardCommentEntity.builder()
+                .comment(createBoardCommentRequest.getComment())
+                .createdBy(loginId)
+                .modifiedBy(loginId)
+                .anonBoardEntity(anonBoardEntity)
+                .build();
+
+        anonBoardCommentRepository.save(anonBoardCommentEntity);
     }
 }
 
