@@ -11,31 +11,30 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "community")
+@Table(name = "community_board")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommunityEntity extends BaseEntity {
+public class CommunityBoardEntity extends BaseEntity {
 
   @Id
   @Column(updatable = false)
   String id;
 
   String title;
-  String description;
+  @Column(columnDefinition = "TEXT")
+  String content;
 
-  // 커버 이미지 정보
-  String fileName;
-  String originalFileName;
-
-  // 프로젝트화 여부
-  Boolean hasProject;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "community_id", nullable = false)
+  @ToString.Exclude // 순환 참조 방지
+  CommunityEntity communityEntity;
 
   @ToString.Exclude
-  @OneToMany(mappedBy = "communityEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-  List<CommunityEntity> communityEntities = new ArrayList<>();
+  @OneToMany(mappedBy = "communityBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<CommunityBoardFileEntity> communityBoardFileEntities = new ArrayList<>();
 
 }

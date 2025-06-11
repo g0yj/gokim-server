@@ -6,36 +6,28 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Entity
-@Table(name = "community")
+@Table(name = "community_board_file")
 @Getter
 @Setter
 @SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @ToString(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CommunityEntity extends BaseEntity {
+public class CommunityBoardFileEntity extends BaseEntity {
 
   @Id
   @Column(updatable = false)
-  String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-  String title;
-  String description;
-
-  // 커버 이미지 정보
   String fileName;
   String originalFileName;
 
-  // 프로젝트화 여부
-  Boolean hasProject;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "community_board_id", nullable = false)
+  CommunityBoardEntity communityBoardEntity;
 
-  @ToString.Exclude
-  @OneToMany(mappedBy = "communityEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-  List<CommunityEntity> communityEntities = new ArrayList<>();
 
 }

@@ -45,7 +45,7 @@ public class CommunityService {
             fileMeta = s3FileStorageService.upload(createCommunityRequest.getFile(), "board/community");
         }
 
-        String id = "BC" +System.nanoTime();
+        String id = "C" +System.nanoTime();
 
         CommunityEntity communityEntity = CommunityEntity.builder()
                 .id(id)
