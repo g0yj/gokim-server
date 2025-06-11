@@ -40,7 +40,7 @@ public class PageResponse<T> {
     if (list != null && !list.isEmpty() && list.get(0) instanceof PageResponseData) {
       for (int i = 0; i < list.size(); i++) {
         ((PageResponseData) list.get(i)).setListNumber(
-                totalCount - (long) (currentPage - 1) * limit - i
+                (long) (currentPage - 1) * limit + i + 1
         );
       }
     }
