@@ -78,10 +78,13 @@ public class S3FileStorageService {
     // =============================
 
     public FileMeta upload(MultipartFile file, String subDir) {
-        if (file == null) return null;
+        if (file == null) {
+            log.warn("업로드 대상이 null입니다.");
+            return null;
+        }
 
-        if (file.isEmpty()) {
-            log.warn("빈 파일 업로드 요청됨: {}", file.getOriginalFilename());
+        if (file.getSize() == 0) {
+            log.warn("파일 사이즈가 0입니다. name: {}", file.getOriginalFilename());
         }
 
         if (file.getSize() > getMaxFileSize()) {

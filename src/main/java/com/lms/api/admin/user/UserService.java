@@ -36,7 +36,7 @@ public class UserService {
         FileMeta fileMeta = null;
 
         MultipartFile profileFile = createUser.getMultipartFile();
-        if (profileFile != null && !profileFile.isEmpty()) {
+        if (profileFile != null) {
             fileMeta = s3FileStorageService.upload(profileFile, "user");
         }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
