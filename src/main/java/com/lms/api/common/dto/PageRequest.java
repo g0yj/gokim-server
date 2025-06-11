@@ -22,8 +22,8 @@ public class PageRequest {
   String order;
   @Schema(description = "정렬 방법 (내림 desc, 오름 asc)")
   String direction; // asc, desc
-  @Schema(description = "검색 조건")
-  String search;
   @Schema(description = "검색 조건에 해당 하는 키워드")
   String keyword;
+
+  // search는 하위 클래스에서 생성하기로 함!!
 }

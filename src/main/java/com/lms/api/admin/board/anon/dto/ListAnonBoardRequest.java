@@ -8,16 +8,12 @@ import lombok.experimental.FieldDefaults;
 
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(name = "ListAnonBoardRequest", description = "필터링 조건을 데이터 ", requiredMode = Schema.RequiredMode.REQUIRED)
+@Schema(name = "ListAnonBoardRequest", description = "필터링 조건을 데이터 ", allOf = {PageRequest.class})
 public class ListAnonBoardRequest extends PageRequest {
+    @Schema(description = " 익명 게시판 검색 조건 ( all : 전체 , title : 제목, content : 내용)")
+    String search;
 
-    @Override
-    @Schema(description = "공지 사항 검색 조건 ( all : 전체 , title : 제목, content : 내용)")
-    public String getSearch() {
-        return super.getSearch();
+    public ListAnonBoardRequest(Integer page, Integer limit, Integer pageSize, String order, String direction, String keyword) {
+        super(page, limit, pageSize, order, direction, keyword);
     }
-    public ListAnonBoardRequest(Integer page, Integer limit, Integer pageSize, String order, String direction, String search, String keyword) {
-        super(page, limit, pageSize, order, direction, search, keyword);
-    }
-
 }

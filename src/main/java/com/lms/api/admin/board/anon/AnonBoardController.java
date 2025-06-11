@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +37,7 @@ public class AnonBoardController {
 
     @GetMapping
     @Operation( summary = "익명 게시판 목록")
-    public PageResponse<ListAnonBoardResponse> listAnonBoard(@Valid ListAnonBoardRequest listAnonBoardRequest) {
+    public PageResponse<ListAnonBoardResponse> listAnonBoard(@Valid @ParameterObject ListAnonBoardRequest listAnonBoardRequest) {
         SearchAnonBoard searchAnonBoard = anonBoardControllerMapper.toSearchAnonBoard(listAnonBoardRequest);
         Page<ListAnonBoard> page = anonBoardService.listAnonBoard(searchAnonBoard);
         return anonBoardControllerMapper.toListAnonBoardResponse(searchAnonBoard, page);

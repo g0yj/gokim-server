@@ -37,7 +37,7 @@ public class NoticeController {
 
     @GetMapping
     @Operation(summary = "공지사항 목록", description = "필터링을 포함합니다")
-    public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid ListPageNoticeRequest listPageNoticeRequest){
+    public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid @ParameterObject ListPageNoticeRequest listPageNoticeRequest){
         SearchNotice searchNotice = noticeControllerMapper.toSearchNotice(userEntity.getId(), listPageNoticeRequest);
         return  noticeService.pageListNotice(userEntity.getId(), searchNotice);
     }
@@ -53,7 +53,7 @@ public class NoticeController {
     @Operation(summary = "공지사항 수정")
     public ResponseEntity<?> updateNotice(@LoginUser UserEntity userEntity,
                                           @Parameter(description = "공지사항 식별키")@PathVariable String id,
-                                          @Valid @ParameterObject @ModelAttribute UpdateNoticeRequest updateNoticeRequest){
+                                          @Valid  @ModelAttribute UpdateNoticeRequest updateNoticeRequest){
         noticeService.updateNotice(userEntity.getId(), id, updateNoticeRequest);
         return ResponseEntity.ok("ok");
     }
