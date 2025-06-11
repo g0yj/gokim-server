@@ -86,10 +86,17 @@ public class AnonBoardController {
     @PutMapping("/comment/{commentId}")
     @Operation(summary = "댓글 수정")
     public ResponseEntity<?> updateComment(@LoginUser UserEntity userEntity,
-                                           @Parameter(description = "익명 게시글 식별키") @PathVariable Long commentId,
+                                           @Parameter(description = "댓글 식별키") @PathVariable Long commentId,
                                            @Valid @RequestBody UpdateBoardCommentRequest updateBoardCommentRequest){
         anonBoardService.updateComment(userEntity.getId(), commentId, updateBoardCommentRequest);
         return ResponseEntity.ok("수정완료");
+    }
+
+    @DeleteMapping("/comment/{commentId}")
+    @Operation(summary = "댓글 삭제")
+    public ResponseEntity<?> deleteComment(@LoginUser UserEntity userEntity, @Parameter(description = "댓글 식별키") @PathVariable Long commentId){
+        anonBoardService.deleteComment(userEntity.getId(), commentId);
+        return ResponseEntity.ok("삭제 완료");
     }
 
 }

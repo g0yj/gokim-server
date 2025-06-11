@@ -264,6 +264,17 @@ public class AnonBoardService {
         anonBoardCommentRepository.save(anonBoardCommentEntity);
 
     }
+
+    @Transactional
+    public void deleteComment(String loginId, Long commentId) {
+        AnonBoardCommentEntity anonBoardCommentEntity = anonBoardCommentRepository.findById(commentId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.ANONBOARD_COMMENT_NOT_FOUND));
+
+        if(!anonBoardCommentEntity.getCreatedBy().equals(loginId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+        anonBoardCommentRepository.deleteById(commentId);
+    }
 }
 
 
