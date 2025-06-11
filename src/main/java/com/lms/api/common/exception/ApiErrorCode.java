@@ -36,7 +36,8 @@ public enum ApiErrorCode implements ApiError {
 
   //file error
   FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "1500", "파일 크기가 %s를 초과합니다:  %s"),
-  FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1501", "{}"),
+  FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1501", "파일 업로드 실패"),
+  UNSUPPORTED_FORMAT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1502", "지원하지 않은 확장자입니다"),
 
   //project error
   PROJECT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0200", "찾을 수 없는 프로젝트입니다."),
@@ -60,7 +61,6 @@ public enum ApiErrorCode implements ApiError {
   // anonBoard error
   ANONBOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "0600", "찾을 수 없는 익명 게시글 입니다."),
   ANONBOARD_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0601", "찾을 수 없는 댓글 입니다"),
-
 
   ;
   HttpStatusCode httpStatusCode;

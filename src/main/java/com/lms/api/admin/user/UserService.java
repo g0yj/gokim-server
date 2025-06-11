@@ -9,6 +9,7 @@ import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
+import com.lms.api.common.util.FileUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -28,6 +29,11 @@ public class UserService {
 
     @Transactional
     public CreateUserResponse createUser(CreateUser createUser) {
+
+        String ext = FileUtil.getFileExtension(createUser.getMultipartFile().getOriginalFilename());
+        if (!FileUtil.isAllowedImageExtension(ext)) {
+            throw new ApiException(ApiErrorCode.UNSUPPORTED_FORMAT_ERROR);
+        }
 
         if (userRepository.existsById(createUser.getId())) {
             throw new ApiException(ApiErrorCode.LOGIN_SERVER_ERROR);
@@ -83,6 +89,12 @@ public class UserService {
 
     @Transactional
     public void updateUser(String userId, UpdateUser updateUser) {
+
+        String ext = FileUtil.getFileExtension(updateUser.getMultipartFile().getOriginalFilename());
+        if (!FileUtil.isAllowedImageExtension(ext)) {
+            throw new ApiException(ApiErrorCode.UNSUPPORTED_FORMAT_ERROR);
+        }
+
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
 
