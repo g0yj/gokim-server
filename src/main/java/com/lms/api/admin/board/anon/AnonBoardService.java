@@ -250,6 +250,20 @@ public class AnonBoardService {
                 )
                 .toList();
     }
+
+    @Transactional
+    public void updateComment(String loginId, Long commentId, UpdateBoardCommentRequest updateBoardCommentRequest) {
+        AnonBoardCommentEntity anonBoardCommentEntity = anonBoardCommentRepository.findById(commentId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.ANONBOARD_COMMENT_NOT_FOUND));
+
+        if(!anonBoardCommentEntity.getCreatedBy().equals(loginId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+
+        anonBoardCommentEntity.setComment(updateBoardCommentRequest.getComment());
+        anonBoardCommentRepository.save(anonBoardCommentEntity);
+
+    }
 }
 
 

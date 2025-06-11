@@ -81,7 +81,15 @@ public class AnonBoardController {
     public List<ListCommentResponse> listComment(@LoginUser UserEntity userEntity,
                                                  @Parameter(description = "익명 게시글 식별키") @PathVariable String boardId){
         return anonBoardService.listComment(userEntity.getId(),boardId);
+    }
 
+    @PutMapping("/comment/{commentId}")
+    @Operation(summary = "댓글 수정")
+    public ResponseEntity<?> updateComment(@LoginUser UserEntity userEntity,
+                                           @Parameter(description = "익명 게시글 식별키") @PathVariable Long commentId,
+                                           @Valid @RequestBody UpdateBoardCommentRequest updateBoardCommentRequest){
+        anonBoardService.updateComment(userEntity.getId(), commentId, updateBoardCommentRequest);
+        return ResponseEntity.ok("수정완료");
     }
 
 }
