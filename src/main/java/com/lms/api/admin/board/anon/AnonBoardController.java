@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -73,6 +74,14 @@ public class AnonBoardController {
                                            @Valid @RequestBody CreateBoardCommentRequest createBoardCommentRequest) {
         anonBoardService.createComment(userEntity.getId(), boardId, createBoardCommentRequest);
         return ResponseEntity.ok("댓글 등록 성공");
+    }
+
+    @GetMapping("/{boardId}/comment")
+    @Operation(summary = "댓글 목록")
+    public List<ListCommentResponse> listComment(@LoginUser UserEntity userEntity,
+                                                 @Parameter(description = "익명 게시글 식별키") @PathVariable String boardId){
+        return anonBoardService.listComment(userEntity.getId(),boardId);
+
     }
 
 }

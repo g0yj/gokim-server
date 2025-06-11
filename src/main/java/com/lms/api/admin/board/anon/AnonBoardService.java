@@ -13,6 +13,7 @@ import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.board.AnonBoardCommentRepository;
 import com.lms.api.common.repository.board.AnonBoardFileRepository;
 import com.lms.api.common.repository.board.AnonBoardRepository;
+import com.lms.api.common.util.DateTimeUtil;
 import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -229,6 +231,24 @@ public class AnonBoardService {
                 .build();
 
         anonBoardCommentRepository.save(anonBoardCommentEntity);
+    }
+
+    @Transactional
+    public List<ListCommentResponse> listComment(String loginId, String boardId) {
+        AnonBoardEntity anonBoardEntity = anonBoardRepository.findById(boardId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.ANONBOARD_NOT_FOUND));
+
+        List<AnonBoardCommentEntity> anonBoardCommentEntities = anonBoardCommentRepository.findAllByAnonBoardEntity(anonBoardEntity);
+
+        return anonBoardCommentEntities.stream()
+                .map(comment -> ListCommentResponse.builder()
+                        .id(comment.getId())
+                        .comment(comment.getComment())
+                        .modifiedOn(DateTimeUtil.formatConditionalDateTime(comment.getModifiedOn()))
+                        .isMine(Objects.equals(comment.getCreatedBy(), loginId)) // if-else 대체
+                        .build()
+                )
+                .toList();
     }
 }
 
