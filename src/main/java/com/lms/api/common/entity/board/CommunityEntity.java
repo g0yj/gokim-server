@@ -36,6 +36,6 @@ public class CommunityEntity extends BaseEntity {
 
   @ToString.Exclude
   @OneToMany(mappedBy = "communityEntity", cascade = CascadeType.ALL, orphanRemoval = true)
-  List<CommunityEntity> communityEntities = new ArrayList<>();
+  List<CommunityBoardEntity> communityBoardEntities = new ArrayList<>();
 
 }

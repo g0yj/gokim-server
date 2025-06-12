@@ -62,6 +62,9 @@ public enum ApiErrorCode implements ApiError {
   ANONBOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "0600", "찾을 수 없는 익명 게시글 입니다."),
   ANONBOARD_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0601", "찾을 수 없는 댓글 입니다"),
 
+  // community error
+  COMMUNITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "0700", "찾을 수 없는 커뮤니티입니다"),
+
   ;
   HttpStatusCode httpStatusCode;
   String code;

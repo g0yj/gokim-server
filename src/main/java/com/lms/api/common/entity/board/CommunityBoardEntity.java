@@ -28,6 +28,10 @@ public class CommunityBoardEntity extends BaseEntity {
   @Column(columnDefinition = "TEXT")
   String content;
 
+  int view;
+
+  boolean pinned;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "community_id", nullable = false)
   @ToString.Exclude // 순환 참조 방지
@@ -36,5 +40,10 @@ public class CommunityBoardEntity extends BaseEntity {
   @ToString.Exclude
   @OneToMany(mappedBy = "communityBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<CommunityBoardFileEntity> communityBoardFileEntities = new ArrayList<>();
+
+  public void addFile(CommunityBoardFileEntity file) {
+    communityBoardFileEntities.add(file);
+    file.setCommunityBoardEntity(this);
+  }
 
 }

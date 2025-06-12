@@ -7,6 +7,7 @@ import com.lms.api.admin.board.community.dto.*;
 import com.lms.api.common.dto.PageResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,14 @@ public class CommunityController {
         SearchCommunity searchCommunity = communityControllerMapper.toSearchCommunity(listCommunityRequest);
         Page<ListCommunity> page = communityService.listCommunity(searchCommunity);
         return communityControllerMapper.toListCommunityResponse(searchCommunity, page);
+    }
+
+    @PostMapping("/{communityId}/board")
+    @Operation(summary = "커뮤니티 게시글 등록", description = "커뮤니티 상세 조회시 나오는 게시판")
+    public String createBoard(@LoginUser UserEntity userEntity,
+                                         @Parameter(description = "커뮤니티 식별키") @PathVariable String communityId,
+                                         @Valid @ModelAttribute CreateCommunityBoardRequest createCommunityBoardRequest){
+        return communityService.createBoard(userEntity.getId(), createCommunityBoardRequest, communityId);
     }
 
 }

@@ -3,12 +3,15 @@ package com.lms.api.admin.board.community;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
+import com.lms.api.admin.board.community.dto.CreateCommunityBoardRequest;
 import com.lms.api.admin.board.community.dto.CreateCommunityRequest;
 import com.lms.api.admin.board.community.dto.ListCommunity;
 import com.lms.api.admin.board.community.dto.SearchCommunity;
 import com.lms.api.common.entity.board.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
+import com.lms.api.common.repository.board.CommunityBoardFileRepository;
+import com.lms.api.common.repository.board.CommunityBoardRepository;
 import com.lms.api.common.repository.board.CommunityRepository;
 import com.lms.api.common.util.FileUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -20,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,6 +35,8 @@ public class CommunityService {
     private final S3FileStorageService s3FileStorageService;
     private final CommunityServiceMapper communityServiceMapper;
     private final CommunityRepository communityRepository;
+    private final CommunityBoardRepository communityBoardRepository;
+    private final CommunityBoardFileRepository communityBoardFileRepository;
     @Transactional
     public String createCommunity(String loginId, CreateCommunityRequest createCommunityRequest) {
 
@@ -105,7 +111,100 @@ public class CommunityService {
 
         return new PageImpl<>(list, communityPage.getPageable(), communityPage.getTotalElements());
     }
+
+    @Transactional
+    public String createBoard(String loginId, CreateCommunityBoardRequest createCommunityBoardRequest, String communityId) {
+        CommunityEntity communityEntity = communityRepository.findById(communityId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
+
+        boolean pinned = communityEntity.getCreatedBy().equals(loginId) // 커뮤니티 작성자와 지금 로그인한 사용자가 같은가?
+                && createCommunityBoardRequest.isPinned(); // 사용자가 게시글을 조정으로 하고 싶다고 설정했는가?
+
+        // 작성자가 false로 유지 되는 이유 >> 위에는 && 연산자로 둘 중 하나라도 false면 false임.
+
+        String id = "CB" + System.nanoTime();
+        CommunityBoardEntity communityBoardEntity = communityServiceMapper.toCommunityBoardEntity(
+                loginId, createCommunityBoardRequest, id, pinned, communityEntity
+        );
+
+        // 업로드 파일 추적용 리스트
+        List<FileMeta> uploadedFiles = new ArrayList<>();
+
+        try {
+            // S3 업로드
+            uploadedFiles = s3FileStorageService.upload(createCommunityBoardRequest.getFiles(), "community/board");
+
+            // DB 저장
+            communityBoardRepository.save(communityBoardEntity);
+
+            for (FileMeta file : uploadedFiles) {
+                CommunityBoardFileEntity communityBoardFileEntity =
+                        communityServiceMapper.toCommunityBoardFileEntity(
+                                file.getS3Key(),
+                                file.getOriginalFileName(),
+                                loginId,
+                                communityBoardEntity
+                        );
+                communityBoardFileRepository.save(communityBoardFileEntity);
+            }
+            return id;
+        } catch (Exception e) {
+            // 예외 발생 시 업로드한 파일 삭제 (보상 로직)
+            for (FileMeta file : uploadedFiles) {
+                try {
+                    s3FileStorageService.delete(file.getS3Key());
+                } catch (Exception ex) {
+                    // 삭제 실패는 로그만 남기고 무시
+                    log.warn("S3 삭제 실패: {}", file.getS3Key(), ex);
+                }
+            }
+            throw e; // 예외 다시 던짐 → 트랜잭션 롤백됨
+        }
+    }
 }
 
 
-
+/**
+ * -->>> 권장 방식
+ * @Transactional
+ * public String createBoard(String loginId, CreateCommunityBoardRequest createCommunityBoardRequest, String communityId) {
+ *     CommunityEntity communityEntity = communityRepository.findById(communityId)
+ *             .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
+ *
+ *     boolean pinned = communityEntity.getCreatedBy().equals(loginId) && createCommunityBoardRequest.isPinned();
+ *
+ *     String id = "CB" + System.nanoTime();
+ *
+ *     CommunityBoardEntity communityBoardEntity = communityServiceMapper.toCommunityBoardEntity(
+ *             loginId, createCommunityBoardRequest, id, pinned, communityEntity
+ *     );
+ *
+ *     List<FileMeta> uploadedFiles = new ArrayList<>();
+ *
+ *     try {
+ *         uploadedFiles = s3FileStorageService.upload(createCommunityBoardRequest.getFiles(), "community/board");
+ *
+ *         for (FileMeta file : uploadedFiles) {
+ *             CommunityBoardFileEntity fileEntity = communityServiceMapper.toCommunityBoardFileEntity(
+ *                     file.getS3Key(),
+ *                     file.getOriginalFileName(),
+ *                     loginId
+ *             );
+ *             communityBoardEntity.addFile(fileEntity); // ✅ 연관관계 설정
+ *         }
+ *
+ *         communityBoardRepository.save(communityBoardEntity);
+ *
+ *         return id;
+ *     } catch (Exception e) {
+ *         for (FileMeta file : uploadedFiles) {
+ *             try {
+ *                 s3FileStorageService.delete(file.getS3Key());
+ *             } catch (Exception ex) {
+ *                 log.warn("S3 삭제 실패: {}", file.getS3Key(), ex);
+ *             }
+ *         }
+ *         throw e;
+ *     }
+ * }
+ */
