@@ -60,4 +60,13 @@ public class CommunityController {
         return communityControllerMapper.toListCommunityBoardResponse(searchCommunityBoard, page);
     }
 
+    @PostMapping("{boardId}/comment")
+    @Operation(summary = "게시글 댓글", description = "커뮤니티 게시글의 댓글")
+    public Long createComment(@LoginUser UserEntity userEntity,
+                                           @Parameter(description = "게시글 식별키") @PathVariable String boardId,
+                                           @RequestBody @Valid CreateCommunityCommentRequest createCommunityCommentRequest){
+        return communityService.createComment(userEntity.getId(), boardId, createCommunityCommentRequest);
+
+    }
+
 }

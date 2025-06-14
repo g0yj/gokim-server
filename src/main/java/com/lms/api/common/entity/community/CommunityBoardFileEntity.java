@@ -1,4 +1,4 @@
-package com.lms.api.common.entity.board;
+package com.lms.api.common.entity.community;
 
 import com.lms.api.common.entity.BaseEntity;
 import jakarta.persistence.*;

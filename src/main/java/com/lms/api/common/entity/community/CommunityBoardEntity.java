@@ -1,4 +1,4 @@
-package com.lms.api.common.entity.board;
+package com.lms.api.common.entity.community;
 
 import com.lms.api.common.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -40,6 +40,10 @@ public class CommunityBoardEntity extends BaseEntity {
   @ToString.Exclude
   @OneToMany(mappedBy = "communityBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<CommunityBoardFileEntity> communityBoardFileEntities = new ArrayList<>();
+
+  @ToString.Exclude
+  @OneToMany(mappedBy = "communityBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<CommunityBoardCommentEntity> communityBoardCommentEntities = new ArrayList<>();
 
   public void addFile(CommunityBoardFileEntity file) {
     communityBoardFileEntities.add(file);

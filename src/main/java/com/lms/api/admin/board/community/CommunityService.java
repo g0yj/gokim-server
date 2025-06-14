@@ -4,12 +4,10 @@ package com.lms.api.admin.board.community;
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.board.community.dto.*;
-import com.lms.api.common.entity.board.*;
+import com.lms.api.common.entity.community.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
-import com.lms.api.common.repository.board.CommunityBoardFileRepository;
-import com.lms.api.common.repository.board.CommunityBoardRepository;
-import com.lms.api.common.repository.board.CommunityRepository;
+import com.lms.api.common.repository.community.*;
 import com.lms.api.common.util.DateTimeUtil;
 import com.lms.api.common.util.FileUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -18,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +34,8 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final CommunityBoardRepository communityBoardRepository;
     private final CommunityBoardFileRepository communityBoardFileRepository;
+    private final CommunityBoardCommentCommentRepository communityBoardCommentCommentRepository;
+    private final CommunityBoardCommentReplyRepository communityBoardCommentReplyRepository;
     @Transactional
     public String createCommunity(String loginId, CreateCommunityRequest createCommunityRequest) {
 
@@ -160,6 +161,7 @@ public class CommunityService {
         }
     }
 
+    @Transactional
     public Page<ListCommunityBoard> listBoard(String communityId, SearchCommunityBoard searchCommunityBoard) {
         CommunityEntity communityEntity = communityRepository.findById(communityId)
                 .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
@@ -205,6 +207,21 @@ public class CommunityService {
 
         return new PageImpl<>(list, boardPage.getPageable(), boardPage.getTotalElements());
 
+    }
+
+    @Transactional
+    public Long createComment(String loginId, String boardId, CreateCommunityCommentRequest createCommunityCommentRequest) {
+        CommunityBoardEntity communityBoardEntity = communityBoardRepository.findById(boardId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
+        CommunityBoardCommentEntity communityBoardCommentEntity = CommunityBoardCommentEntity.builder()
+                .comment(createCommunityCommentRequest.getComment())
+                .createdBy(loginId)
+                .modifiedBy(loginId)
+                .communityBoardEntity(communityBoardEntity)
+                .build();
+
+        communityBoardCommentCommentRepository.save(communityBoardCommentEntity);
+        return communityBoardCommentEntity.getId();
     }
 }
 

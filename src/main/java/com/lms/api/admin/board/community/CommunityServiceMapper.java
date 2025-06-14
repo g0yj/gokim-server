@@ -2,9 +2,9 @@ package com.lms.api.admin.board.community;
 
 
 import com.lms.api.admin.board.community.dto.CreateCommunityBoardRequest;
-import com.lms.api.common.entity.board.CommunityBoardEntity;
-import com.lms.api.common.entity.board.CommunityBoardFileEntity;
-import com.lms.api.common.entity.board.CommunityEntity;
+import com.lms.api.common.entity.community.CommunityBoardEntity;
+import com.lms.api.common.entity.community.CommunityBoardFileEntity;
+import com.lms.api.common.entity.community.CommunityEntity;
 import com.lms.api.common.mapper.ServiceMapper;
 import com.lms.api.common.mapper.ServiceMapperConfig;
 import org.mapstruct.Mapper;
