@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,8 +33,8 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final CommunityBoardRepository communityBoardRepository;
     private final CommunityBoardFileRepository communityBoardFileRepository;
-    private final CommunityBoardCommentCommentRepository communityBoardCommentCommentRepository;
-    private final CommunityBoardCommentReplyRepository communityBoardCommentReplyRepository;
+    private final CommunityBoardCommentRepository communityBoardCommentRepository;
+    private final CommunityBoardReplyRepository communityBoardReplyRepository;
     @Transactional
     public String createCommunity(String loginId, CreateCommunityRequest createCommunityRequest) {
 
@@ -220,8 +219,22 @@ public class CommunityService {
                 .communityBoardEntity(communityBoardEntity)
                 .build();
 
-        communityBoardCommentCommentRepository.save(communityBoardCommentEntity);
+        communityBoardCommentRepository.save(communityBoardCommentEntity);
         return communityBoardCommentEntity.getId();
+    }
+    @Transactional
+    public Long createReply(String loginId, Long commentId, CreateCommunityReply createCommunityReply) {
+        CommunityBoardCommentEntity communityBoardCommentEntity = communityBoardCommentRepository.findById(commentId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
+        CommunityBoardReplyEntity communityBoardReplyEntity = CommunityBoardReplyEntity.builder()
+                .reply(createCommunityReply.getReply())
+                .modifiedBy(loginId)
+                .createdBy(loginId)
+                .communityBoardCommentEntity(communityBoardCommentEntity)
+                .build();
+
+        communityBoardReplyRepository.save(communityBoardReplyEntity);
+        return communityBoardReplyEntity.getId();
     }
 }
 

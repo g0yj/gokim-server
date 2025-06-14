@@ -61,12 +61,19 @@ public class CommunityController {
     }
 
     @PostMapping("{boardId}/comment")
-    @Operation(summary = "게시글 댓글", description = "커뮤니티 게시글의 댓글")
+    @Operation(summary = "게시글 댓글 등록", description = "커뮤니티 게시글의 댓글")
     public Long createComment(@LoginUser UserEntity userEntity,
                                            @Parameter(description = "게시글 식별키") @PathVariable String boardId,
                                            @RequestBody @Valid CreateCommunityCommentRequest createCommunityCommentRequest){
         return communityService.createComment(userEntity.getId(), boardId, createCommunityCommentRequest);
+    }
 
+    @PostMapping("{commentId}/reply")
+    @Operation(summary = "대댓 등록" , description = "댓글에 대한 답글 등록")
+    public Long createReply(@LoginUser UserEntity userEntity,
+                              @Parameter(description = "댓글 식별키") @PathVariable Long commentId,
+                              @RequestBody @Valid CreateCommunityReply createCommunityReply){
+        return communityService.createReply(userEntity.getId(), commentId, createCommunityReply);
     }
 
 }
