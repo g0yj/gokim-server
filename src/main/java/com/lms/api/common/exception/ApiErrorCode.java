@@ -64,7 +64,8 @@ public enum ApiErrorCode implements ApiError {
 
   // community error
   COMMUNITY_NOT_FOUND(HttpStatus.BAD_REQUEST, "0700", "찾을 수 없는 커뮤니티입니다"),
-  COMMUNITY_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0701", "찾을 수 없는 커뮤니티 게시글입니다"),
+  COMMUNITY_COMMENT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0701", "찾을 수 없는 커뮤니티 댓글입니다"),
+  COMMUNITY_BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "0702", "찾을 수 없는 커뮤니티 게시글입니다"),
 
   ;
   HttpStatusCode httpStatusCode;

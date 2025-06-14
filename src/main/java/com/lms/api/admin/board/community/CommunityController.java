@@ -76,4 +76,11 @@ public class CommunityController {
         return communityService.createReply(userEntity.getId(), commentId, createCommunityReply);
     }
 
+    @GetMapping("/board/{boardId}")
+    @Operation(summary = "게시글 상세조회")
+    public GetBoard getBoard(@LoginUser UserEntity userEntity,
+                             @Parameter(description = "게시글 식별키")@PathVariable String boardId){
+       return communityService.getBoard(userEntity.getId(), boardId);
+    }
+
 }

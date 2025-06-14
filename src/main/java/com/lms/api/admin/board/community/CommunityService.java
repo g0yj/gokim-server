@@ -236,6 +236,30 @@ public class CommunityService {
         communityBoardReplyRepository.save(communityBoardReplyEntity);
         return communityBoardReplyEntity.getId();
     }
+
+    public GetBoard getBoard(String loginId, String boardId) {
+        CommunityBoardEntity communityBoardEntity = communityBoardRepository.findById(boardId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_BOARD_NOT_FOUND));
+
+        List<CommunityBoardFileEntity> fileEntities = communityBoardFileRepository.findByCommunityBoardEntity(communityBoardEntity);
+        List<GetBoard.FileMeta> files =  fileEntities.stream()
+                .map(file -> GetBoard.FileMeta.builder()
+                        .boardFileId(file.getId())
+                        .originalFileName(file.getOriginalFileName())
+                        .url(s3FileStorageService.getUrl(file.getFileName()))
+                        .build())
+                .toList();
+        return GetBoard.builder()
+                .id(communityBoardEntity.getId())
+                .title(communityBoardEntity.getTitle())
+                .content(communityBoardEntity.getContent())
+                .createdOn(communityBoardEntity.getCreatedOn().toLocalDate())
+                .createdBy(communityBoardEntity.getCreatedBy())
+                .files(files)
+                .view(communityBoardEntity.getView())
+                .isMine(communityBoardEntity.getCreatedBy().equals(loginId))
+                .build();
+    }
 }
 
 
