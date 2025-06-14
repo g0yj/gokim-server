@@ -11,7 +11,15 @@ import java.util.function.Function;
 
 @Mapper(componentModel = "spring", config = ControllerMapperConfig.class)
 public interface ControllerMapper {
-    // ✅ 공통 Page → PageResponse 변환 로직
+
+    /**
+     * Page<D> -> PageResponse<R> 공통 변환 템플릿
+     *
+     * @param entityPage 변환 전 Page 객체
+     * @param converter D -> R으로 매핑하는 함수
+     * @param pageSize 페이지 네비게이션 바에 몇 개씩 보여줄지
+     * @return PageResponse<R>
+     */
     default <D extends PageResponseData, R> PageResponse<R> toPageResponse(
             Page<D> entityPage,
             Function<D, R> converter,

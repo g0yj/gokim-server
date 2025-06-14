@@ -1,9 +1,6 @@
 package com.lms.api.admin.board.community;
 
-import com.lms.api.admin.board.community.dto.ListCommunity;
-import com.lms.api.admin.board.community.dto.ListCommunityRequest;
-import com.lms.api.admin.board.community.dto.ListCommunityResponse;
-import com.lms.api.admin.board.community.dto.SearchCommunity;
+import com.lms.api.admin.board.community.dto.*;
 import com.lms.api.common.dto.PageResponse;
 import com.lms.api.common.mapper.ControllerMapper;
 import com.lms.api.common.mapper.ControllerMapperConfig;
@@ -22,4 +19,12 @@ public interface CommunityControllerMapper extends ControllerMapper{
     default PageResponse<ListCommunityResponse> toListCommunityResponse(SearchCommunity searchCommunity, Page<ListCommunity> page){
         return toPageResponse(page, this::toListCommunityResponse, searchCommunity.getPageSize());
     }
+
+    SearchCommunityBoard toSearchCommunityBoard(String communityId, ListCommunityBoardRequest listCommunityBoardRequest);
+
+
+    default PageResponse<ListCommunityBoardResponse> toListCommunityBoardResponse(SearchCommunityBoard searchCommunityBoard, Page<ListCommunityBoard> page){
+        return toPageResponse(page, this::toListCommunityBoardResponse, searchCommunityBoard.getPageSize());
+    };
+    ListCommunityBoardResponse toListCommunityBoardResponse(ListCommunityBoard listCommunityBoard);
 }

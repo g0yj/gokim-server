@@ -12,7 +12,7 @@ import java.time.LocalDate;
 
 @Getter@Setter@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(name = "ListAnonBoardResponse", description = "익명 게시판 목록입니다. 필터링 페이징 처리포함")
+@Schema(name = "ListAnonBoardResponse", description = "익명 게시판 목록입니다. 필터링 페이징 처리포함", allOf = {PageResponseData.class})
 public class ListAnonBoardResponse extends PageResponseData  {
 
     @Schema(description = "게시글 식별키")
@@ -25,7 +25,7 @@ public class ListAnonBoardResponse extends PageResponseData  {
     int fileCount;
     @Schema(description = "조회수")
     int view;
-    @Schema(description = "no")
-    long listNumber;
+/*    @Schema(description = "no")
+    long listNumber;*/
 
 }

@@ -3,16 +3,14 @@ package com.lms.api.admin.board.community;
 
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
-import com.lms.api.admin.board.community.dto.CreateCommunityBoardRequest;
-import com.lms.api.admin.board.community.dto.CreateCommunityRequest;
-import com.lms.api.admin.board.community.dto.ListCommunity;
-import com.lms.api.admin.board.community.dto.SearchCommunity;
+import com.lms.api.admin.board.community.dto.*;
 import com.lms.api.common.entity.board.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.board.CommunityBoardFileRepository;
 import com.lms.api.common.repository.board.CommunityBoardRepository;
 import com.lms.api.common.repository.board.CommunityRepository;
+import com.lms.api.common.util.DateTimeUtil;
 import com.lms.api.common.util.FileUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -160,6 +158,53 @@ public class CommunityService {
             }
             throw e; // 예외 다시 던짐 → 트랜잭션 롤백됨
         }
+    }
+
+    public Page<ListCommunityBoard> listBoard(String communityId, SearchCommunityBoard searchCommunityBoard) {
+        CommunityEntity communityEntity = communityRepository.findById(communityId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
+
+        QCommunityBoardEntity qCommunityBoardEntity = QCommunityBoardEntity.communityBoardEntity;
+        BooleanExpression where = Expressions.TRUE;
+
+        if(searchCommunityBoard.hasSearch()){
+            switch (searchCommunityBoard.getSearch()){
+                case "all" :
+                    where = where.and(
+                            qCommunityBoardEntity.title.contains(searchCommunityBoard.getKeyword())
+                                    .or(qCommunityBoardEntity.content.contains(searchCommunityBoard.getKeyword()))
+                    );
+                    break;
+                case "title" :
+                    where = where.and(
+                            qCommunityBoardEntity.title.contains(searchCommunityBoard.getKeyword())
+                    );
+                    break;
+                case "content" :
+                    where = where.and(
+                            qCommunityBoardEntity.content.contains(searchCommunityBoard.getKeyword())
+                    );
+                    break;
+                default:
+                    break;
+            }
+        }
+        Page<CommunityBoardEntity> boardPage = communityBoardRepository.findAll(where, searchCommunityBoard.toPageRequest());
+
+        List<ListCommunityBoard> list = boardPage.getContent().stream()
+                .map(board -> ListCommunityBoard.builder()
+                        .id(board.getId())
+                        .title(board.getTitle())
+                        .view(board.getView())
+                        .createdOn(DateTimeUtil.formatConditionalDateTime(board.getCreatedOn()))
+                        .createdBy(board.getCreatedBy())
+                        .commentCount(board.getCommunityBoardFileEntities().size())
+                        .commentCount(1) // TODO 수정 필요
+                        .build()
+                ).toList();
+
+        return new PageImpl<>(list, boardPage.getPageable(), boardPage.getTotalElements());
+
     }
 }
 

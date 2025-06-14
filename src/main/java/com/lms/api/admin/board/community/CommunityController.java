@@ -44,11 +44,20 @@ public class CommunityController {
     }
 
     @PostMapping("/{communityId}/board")
-    @Operation(summary = "커뮤니티 게시글 등록", description = "커뮤니티 상세 조회시 나오는 게시판")
+    @Operation(summary = "커뮤니티 게시글 등록", description = "커뮤니티 상세 조회시 나오는 게시판 글 등록")
     public String createBoard(@LoginUser UserEntity userEntity,
                                          @Parameter(description = "커뮤니티 식별키") @PathVariable String communityId,
                                          @Valid @ModelAttribute CreateCommunityBoardRequest createCommunityBoardRequest){
         return communityService.createBoard(userEntity.getId(), createCommunityBoardRequest, communityId);
+    }
+
+    @GetMapping("/{communityId}/board")
+    @Operation(summary = "커뮤니티 게시글 목록", description = "커뮤니티 상세 조회시 나오는 게시물 목록")
+    public PageResponse<ListCommunityBoardResponse> listBoard(@Parameter(description = "커뮤니티 식별키")@PathVariable String communityId,
+                                                              @ParameterObject ListCommunityBoardRequest listCommunityBoardRequest){
+        SearchCommunityBoard searchCommunityBoard = communityControllerMapper.toSearchCommunityBoard(communityId,listCommunityBoardRequest);
+        Page<ListCommunityBoard> page = communityService.listBoard(communityId,searchCommunityBoard);
+        return communityControllerMapper.toListCommunityBoardResponse(searchCommunityBoard, page);
     }
 
 }

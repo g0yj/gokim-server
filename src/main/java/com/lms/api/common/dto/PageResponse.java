@@ -20,20 +20,19 @@ public class PageResponse<T> {
   @Schema(description = "총 게시물 수")
   long totalCount;
 
-  @Schema(description = "현재 페이지 번호")
-  int page;
+  @Schema(description = "현재 페이지 번호 (1부터 시작)")
+  int currentPage;
 
-  @Schema(description = "한 페이지당 게시물 수")
+  @Schema(description = "한 페이지당 게시물 수 (limit)")
   int limit;
 
-  @Schema(description = "페이지 바 크기")
+  @Schema(description = "페이지 바에 보여줄 페이지 수 (pageSize)")
   int pageSize;
 
   public PageResponse(Page<T> page, int pageSize) {
     this.list = page.getContent();
     this.totalCount = page.getTotalElements();
-    int currentPage = page.getNumber() + 1;
-    this.page = currentPage;
+    this.currentPage = page.getNumber() + 1;
     this.limit = page.getSize();
     this.pageSize = pageSize;
 
@@ -51,7 +50,7 @@ public class PageResponse<T> {
   }
 
   public int getStartPage() {
-    return ((page - 1) / pageSize) * pageSize + 1;
+    return ((currentPage - 1) / pageSize) * pageSize + 1;
   }
 
   public int getEndPage() {
