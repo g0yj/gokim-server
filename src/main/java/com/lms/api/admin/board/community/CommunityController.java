@@ -17,6 +17,7 @@ import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -43,7 +44,7 @@ public class CommunityController {
         return communityControllerMapper.toListCommunityResponse(searchCommunity, page);
     }
 
-    @PostMapping("/{communityId}/board")
+    @PostMapping("/board/{communityId}")
     @Operation(summary = "커뮤니티 게시글 등록", description = "커뮤니티 상세 조회시 나오는 게시판 글 등록")
     public String createBoard(@LoginUser UserEntity userEntity,
                                          @Parameter(description = "커뮤니티 식별키") @PathVariable String communityId,
@@ -60,7 +61,7 @@ public class CommunityController {
         return communityControllerMapper.toListCommunityBoardResponse(searchCommunityBoard, page);
     }
 
-    @PostMapping("{boardId}/comment")
+    @PostMapping("/comment/{boardId}")
     @Operation(summary = "게시글 댓글 등록", description = "커뮤니티 게시글의 댓글")
     public Long createComment(@LoginUser UserEntity userEntity,
                                            @Parameter(description = "게시글 식별키") @PathVariable String boardId,
@@ -68,7 +69,7 @@ public class CommunityController {
         return communityService.createComment(userEntity.getId(), boardId, createCommunityCommentRequest);
     }
 
-    @PostMapping("{commentId}/reply")
+    @PostMapping("/reply/{commentId}")
     @Operation(summary = "대댓 등록" , description = "댓글에 대한 답글 등록")
     public Long createReply(@LoginUser UserEntity userEntity,
                               @Parameter(description = "댓글 식별키") @PathVariable Long commentId,
@@ -81,6 +82,13 @@ public class CommunityController {
     public GetBoard getBoard(@LoginUser UserEntity userEntity,
                              @Parameter(description = "게시글 식별키")@PathVariable String boardId){
        return communityService.getBoard(userEntity.getId(), boardId);
+    }
+
+    @GetMapping("/comment/{boardId}")
+    @Operation(summary = "댓글 목록", description = "대댓을 포함해 전달")
+    public List<ListCommunityBoardComment> listComment(@LoginUser UserEntity userEntity,
+                                                       @Parameter(description = "게시글 식별키") @PathVariable  String boardId){
+        return communityService.listComment(userEntity.getId(), boardId);
     }
 
 }

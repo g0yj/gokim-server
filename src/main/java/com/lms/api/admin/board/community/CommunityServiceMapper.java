@@ -2,13 +2,14 @@ package com.lms.api.admin.board.community;
 
 
 import com.lms.api.admin.board.community.dto.CreateCommunityBoardRequest;
-import com.lms.api.common.entity.community.CommunityBoardEntity;
-import com.lms.api.common.entity.community.CommunityBoardFileEntity;
-import com.lms.api.common.entity.community.CommunityEntity;
+import com.lms.api.admin.board.community.dto.ListCommunityBoardComment;
+import com.lms.api.common.entity.community.*;
 import com.lms.api.common.mapper.ServiceMapper;
 import com.lms.api.common.mapper.ServiceMapperConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 
 @Mapper(componentModel = "spring", config = ServiceMapperConfig.class, uses = {ServiceMapper.class})
@@ -38,4 +39,14 @@ public interface CommunityServiceMapper {
     @Mapping(target = "createdBy", source = "loginId")
     @Mapping(target = "modifiedBy", source = "loginId")
     CommunityBoardFileEntity toCommunityBoardFileEntity(String fileName, String originalFileName, String loginId);
+
+    @Mapping(target = "commentMine", source = "commentMine" )
+    @Mapping(target = "modifiedOn", source = "modifiedOn" )
+    @Mapping(target = "boardId", source = "boardId" )
+    ListCommunityBoardComment toListCommunityBoardComment(CommunityBoardCommentEntity communityBoardCommentEntity, boolean commentMine, String modifiedOn, String boardId);
+    @Mapping(target = "replyId", source = "reply.id")
+    @Mapping(target = "replyMine", source = "replyMine")
+    @Mapping(target = "modifiedOn", source = "replyDate")
+    ListCommunityBoardComment.Reply toReply(CommunityBoardReplyEntity reply, boolean replyMine, String replyDate);
+
 }

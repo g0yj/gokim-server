@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -259,6 +260,32 @@ public class CommunityService {
                 .view(communityBoardEntity.getView())
                 .isMine(communityBoardEntity.getCreatedBy().equals(loginId))
                 .build();
+    }
+
+    @Transactional
+    public List<ListCommunityBoardComment> listComment(String loginId, String boardId) {
+        CommunityBoardEntity communityBoardEntity = communityBoardRepository.findById(boardId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_BOARD_NOT_FOUND));
+
+        List<CommunityBoardCommentEntity> communityBoardCommentEntities = communityBoardCommentRepository.findByCommunityBoardEntity(communityBoardEntity);
+        return communityBoardCommentEntities.stream()
+                .map( commentEntity -> {
+                    boolean commentMine = commentEntity.getCreatedBy().equals(loginId);
+                    String modifiedOn = DateTimeUtil.formatConditionalDateTime(commentEntity.getModifiedOn());
+                    ListCommunityBoardComment comment = communityServiceMapper.toListCommunityBoardComment(commentEntity, commentMine, modifiedOn, boardId);
+
+                    List<CommunityBoardReplyEntity> replyEntities = communityBoardReplyRepository.findByCommunityBoardCommentEntity(commentEntity);
+                    List<ListCommunityBoardComment.Reply> replies = replyEntities.stream()
+                            .map( entity -> {
+                                boolean replyMine = entity.getCreatedBy().equals(loginId);
+                                String replyDate = DateTimeUtil.formatConditionalDateTime(entity.getModifiedOn());
+                                return communityServiceMapper.toReply(entity,replyMine, replyDate);
+                            }).toList();
+                    comment.setReplies(replies);
+                    return comment;
+                })
+                .collect(Collectors.toList());
+
     }
 }
 
