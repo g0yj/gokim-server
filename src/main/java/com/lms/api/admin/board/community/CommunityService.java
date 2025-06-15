@@ -9,8 +9,9 @@ import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.community.*;
 import com.lms.api.common.util.AuthUtils;
-import com.lms.api.common.util.DateTimeUtil;
-import com.lms.api.common.util.FileUtil;
+import com.lms.api.common.util.DateTimeUtils;
+import com.lms.api.common.util.FileUploadUtils;
+import com.lms.api.common.util.FileUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,33 +41,44 @@ public class CommunityService {
     private final CommunityBoardCommentRepository communityBoardCommentRepository;
     private final CommunityBoardReplyRepository communityBoardReplyRepository;
     @Transactional
-    public String createCommunity(String loginId, CreateCommunityRequest createCommunityRequest) {
+    public String createCommunity(String loginId, CreateCommunityRequest request) {
+        MultipartFile file = request.getFile();
 
-        FileMeta fileMeta = null;
+        //  파일 개수 제한 : 이미 MultipartFile로 넘어와서 필요 없긴한데 ..
+        FileUtils.validateSingleFileField(
+                FileUtils.wrapToListIfNotNull(file),
+                1
+        );
 
-        if (createCommunityRequest.getFile() != null ) {
-            String ext = FileUtil.getFileExtension(createCommunityRequest.getFile().getOriginalFilename());
-            if (!FileUtil.isAllowedImageExtension(ext)) {
+        //  확장자 검증
+        if (file != null) {
+            String ext = FileUtils.getFileExtension(file.getOriginalFilename());
+            if (!FileUtils.isAllowedImageExtension(ext)) {
                 throw new ApiException(ApiErrorCode.UNSUPPORTED_FORMAT_ERROR);
             }
-
-            fileMeta = s3FileStorageService.upload(createCommunityRequest.getFile(), "board/community");
         }
 
-        String id = "C" +System.nanoTime();
+        //  파일 업로드 + 보상 로직
+        FileMeta fileMeta = FileUploadUtils.uploadOneWithRollback(
+                file,
+                "/community",
+                s3FileStorageService
+        );
 
-        CommunityEntity communityEntity = CommunityEntity.builder()
+        //  커뮤니티 엔티티 생성 및 저장
+        String id = "C" + System.nanoTime();
+
+        CommunityEntity community = CommunityEntity.builder()
                 .id(id)
-                .title(createCommunityRequest.getTitle())
-                .description(createCommunityRequest.getDescription())
-                .hasProject(false)
+                .title(request.getTitle())
+                .description(request.getDescription())
                 .createdBy(loginId)
                 .modifiedBy(loginId)
                 .originalFileName(fileMeta != null ? fileMeta.getOriginalFileName() : null)
                 .fileName(fileMeta != null ? fileMeta.getS3Key() : null)
                 .build();
 
-        communityRepository.save(communityEntity);
+        communityRepository.save(community);
         return id;
     }
 
@@ -200,7 +213,7 @@ public class CommunityService {
                         .id(board.getId())
                         .title(board.getTitle())
                         .view(board.getView())
-                        .createdOn(DateTimeUtil.formatConditionalDateTime(board.getCreatedOn()))
+                        .createdOn(DateTimeUtils.formatConditionalDateTime(board.getCreatedOn()))
                         .createdBy(board.getCreatedBy())
                         .commentCount(board.getCommunityBoardFileEntities().size())
                         .commentCount(board.getCommunityBoardCommentEntities().size())
@@ -275,14 +288,14 @@ public class CommunityService {
         return communityBoardCommentEntities.stream()
                 .map( commentEntity -> {
                     boolean commentMine = commentEntity.getCreatedBy().equals(loginId);
-                    String modifiedOn = DateTimeUtil.formatConditionalDateTime(commentEntity.getModifiedOn());
+                    String modifiedOn = DateTimeUtils.formatConditionalDateTime(commentEntity.getModifiedOn());
                     ListCommunityBoardComment comment = communityServiceMapper.toListCommunityBoardComment(commentEntity, commentMine, modifiedOn, boardId);
 
                     List<CommunityBoardReplyEntity> replyEntities = communityBoardReplyRepository.findByCommunityBoardCommentEntity(commentEntity);
                     List<ListCommunityBoardComment.Reply> replies = replyEntities.stream()
                             .map( entity -> {
                                 boolean replyMine = entity.getCreatedBy().equals(loginId);
-                                String replyDate = DateTimeUtil.formatConditionalDateTime(entity.getModifiedOn());
+                                String replyDate = DateTimeUtils.formatConditionalDateTime(entity.getModifiedOn());
                                 return communityServiceMapper.toReply(entity,replyMine, replyDate);
                             }).toList();
                     comment.setReplies(replies);

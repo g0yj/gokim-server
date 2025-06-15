@@ -38,6 +38,7 @@ public enum ApiErrorCode implements ApiError {
   FILE_SIZE_EXCEEDED(HttpStatus.BAD_REQUEST, "1500", "파일 크기가 %s를 초과합니다:  %s"),
   FILE_UPLOAD_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1501", "파일 업로드 실패"),
   UNSUPPORTED_FORMAT_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "1502", "지원하지 않은 확장자입니다"),
+  TOO_MANY_FILES(HttpStatus.INTERNAL_SERVER_ERROR, "1503", "하나의 파일만 사용해주세요"),
 
   //project error
   PROJECT_NOT_FOUND(HttpStatus.BAD_REQUEST, "0200", "찾을 수 없는 프로젝트입니다."),

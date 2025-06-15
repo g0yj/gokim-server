@@ -13,7 +13,7 @@ import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.board.AnonBoardCommentRepository;
 import com.lms.api.common.repository.board.AnonBoardFileRepository;
 import com.lms.api.common.repository.board.AnonBoardRepository;
-import com.lms.api.common.util.DateTimeUtil;
+import com.lms.api.common.util.DateTimeUtils;
 import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -244,7 +244,7 @@ public class AnonBoardService {
                 .map(comment -> ListCommentResponse.builder()
                         .id(comment.getId())
                         .comment(comment.getComment())
-                        .modifiedOn(DateTimeUtil.formatConditionalDateTime(comment.getModifiedOn()))
+                        .modifiedOn(DateTimeUtils.formatConditionalDateTime(comment.getModifiedOn()))
                         .isMine(Objects.equals(comment.getCreatedBy(), loginId)) // if-else 대체
                         .build()
                 )

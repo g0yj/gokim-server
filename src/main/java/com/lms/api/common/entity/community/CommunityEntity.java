@@ -31,8 +31,6 @@ public class CommunityEntity extends BaseEntity {
   String fileName;
   String originalFileName;
 
-  // 프로젝트화 여부
-  Boolean hasProject;
 
   @ToString.Exclude
   @OneToMany(mappedBy = "communityEntity", cascade = CascadeType.ALL, orphanRemoval = true)

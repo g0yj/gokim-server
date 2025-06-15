@@ -128,5 +128,13 @@ public class CommunityController {
         return ResponseEntity.ok("댓글 수정 성공");
     }
 
+    @PutMapping("/board/{boardId}")
+    @Operation(summary = "게시글 수정")
+    public ResponseEntity<?> updateBoard(@LoginUser UserEntity userEntity,
+                                         @Parameter(description = "게시글 식별키")@PathVariable String boardId,
+                                         @Valid @ModelAttribute UpdateCommunityBoard updateCommunityBoard){
+        return ResponseEntity.ok("게시글 수정 성공");
+    }
+
 
 }
