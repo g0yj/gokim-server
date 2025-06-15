@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -89,6 +90,16 @@ public class CommunityController {
     public List<ListCommunityBoardComment> listComment(@LoginUser UserEntity userEntity,
                                                        @Parameter(description = "게시글 식별키") @PathVariable  String boardId){
         return communityService.listComment(userEntity.getId(), boardId);
+    }
+
+    @PutMapping("/{commentId}/reply/{replyId}")
+    @Operation(summary = "대댓 수정")
+    public ResponseEntity<?> updateReply(@LoginUser UserEntity userEntity,
+                                         @Parameter(description = "댓글 식별키") @PathVariable Long commentId,
+                                         @Parameter(description = "대댓 식별키") @PathVariable Long replyId,
+                                         @Valid @RequestBody UpdateCommunityReply updateCommunityReply){
+        communityService.updateReply(userEntity.getId(), commentId, replyId, updateCommunityReply);
+        return ResponseEntity.ok("대댓 수정 완료");
     }
 
 }

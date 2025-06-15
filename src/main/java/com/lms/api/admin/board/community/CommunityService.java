@@ -289,6 +289,23 @@ public class CommunityService {
                 .collect(Collectors.toList());
 
     }
+
+    @Transactional
+    public void updateReply(String loginId, Long commentId, Long replyId, UpdateCommunityReply updateCommunityReply) {
+        CommunityBoardCommentEntity commentEntity = communityBoardCommentRepository.findById(commentId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
+        CommunityBoardReplyEntity replyEntity = communityBoardReplyRepository.findById(replyId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_REPLY_NOT_FOUND));
+
+        if(!replyEntity.getCreatedBy().equals(loginId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+        replyEntity.setReply(updateCommunityReply.getReply());
+        replyEntity.setSecret(updateCommunityReply.getIsSecret());
+        replyEntity.setModifiedBy(loginId);
+
+        communityBoardReplyRepository.save(replyEntity);
+    }
 }
 
 
