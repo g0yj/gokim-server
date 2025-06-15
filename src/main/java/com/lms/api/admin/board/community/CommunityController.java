@@ -112,11 +112,21 @@ public class CommunityController {
     }
 
     @DeleteMapping("/comment/{commentId}")
-    @Operation(summary = "댓글 삭제")
+    @Operation(summary = "댓글 삭제" , description = "실제 댓글이 삭제되는건 아님. deleted로 업데이트 하는 방식으로 구현")
     public ResponseEntity<?> deleteComment(@LoginUser UserEntity userEntity,
                                            @Parameter(description = "댓글 식별키") @PathVariable Long commentId){
         communityService.deleteComment(userEntity.getId(), commentId);
         return ResponseEntity.ok("댓글삭제완료");
     }
+
+    @PutMapping("/comment/{commentId}")
+    @Operation(summary = "댓글 수정")
+    public ResponseEntity<?> updateComment(@LoginUser UserEntity userEntity,
+                                           @Parameter(description = "댓글 식별키") @PathVariable Long commentId,
+                                           @RequestBody UpdateCommunityComment updateCommunityComment){
+        communityService.updateComment(userEntity.getId(), commentId, updateCommunityComment);
+        return ResponseEntity.ok("댓글 수정 성공");
+    }
+
 
 }

@@ -329,6 +329,21 @@ public class CommunityService {
         // 댓글 실제 삭제는 아님.
         commentEntity.softDelete(loginId);
     }
+
+    @Transactional
+    public void updateComment(String loginId, Long commentId, UpdateCommunityComment updateCommunityComment) {
+        CommunityBoardCommentEntity commentEntity = communityBoardCommentRepository.findById(commentId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
+
+        authUtils.validateOwner(loginId,commentEntity);
+
+        commentEntity.setComment(updateCommunityComment.getComment());
+        commentEntity.setSecret(updateCommunityComment.getIsSecret());
+        commentEntity.setModifiedBy(loginId);
+
+        communityBoardCommentRepository.save(commentEntity);
+
+    }
 }
 
 
