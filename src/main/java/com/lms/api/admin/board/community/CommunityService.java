@@ -201,7 +201,7 @@ public class CommunityService {
                         .createdOn(DateTimeUtil.formatConditionalDateTime(board.getCreatedOn()))
                         .createdBy(board.getCreatedBy())
                         .commentCount(board.getCommunityBoardFileEntities().size())
-                        .commentCount(1) // TODO 수정 필요
+                        .commentCount(board.getCommunityBoardCommentEntities().size())
                         .build()
                 ).toList();
 
@@ -215,6 +215,7 @@ public class CommunityService {
                 .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
         CommunityBoardCommentEntity communityBoardCommentEntity = CommunityBoardCommentEntity.builder()
                 .comment(createCommunityCommentRequest.getComment())
+                .isSecret(createCommunityCommentRequest.getIsSecret())
                 .createdBy(loginId)
                 .modifiedBy(loginId)
                 .communityBoardEntity(communityBoardEntity)
@@ -229,6 +230,7 @@ public class CommunityService {
                 .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
         CommunityBoardReplyEntity communityBoardReplyEntity = CommunityBoardReplyEntity.builder()
                 .reply(createCommunityReply.getReply())
+                .isSecret(createCommunityReply.getIsSecret())
                 .modifiedBy(loginId)
                 .createdBy(loginId)
                 .communityBoardCommentEntity(communityBoardCommentEntity)

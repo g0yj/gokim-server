@@ -52,7 +52,7 @@ public class CommunityController {
         return communityService.createBoard(userEntity.getId(), createCommunityBoardRequest, communityId);
     }
 
-    @GetMapping("/{communityId}/board")
+    @GetMapping("/board/{communityId}")
     @Operation(summary = "커뮤니티 게시글 목록", description = "커뮤니티 상세 조회시 나오는 게시물 목록")
     public PageResponse<ListCommunityBoardResponse> listBoard(@Parameter(description = "커뮤니티 식별키")@PathVariable String communityId,
                                                               @ParameterObject ListCommunityBoardRequest listCommunityBoardRequest){
@@ -77,7 +77,7 @@ public class CommunityController {
         return communityService.createReply(userEntity.getId(), commentId, createCommunityReply);
     }
 
-    @GetMapping("/board/{boardId}")
+    @GetMapping("/board/list/{boardId}")
     @Operation(summary = "게시글 상세조회")
     public GetBoard getBoard(@LoginUser UserEntity userEntity,
                              @Parameter(description = "게시글 식별키")@PathVariable String boardId){

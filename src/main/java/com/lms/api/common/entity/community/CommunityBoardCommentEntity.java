@@ -27,6 +27,8 @@ public class CommunityBoardCommentEntity extends BaseEntity {
 
   String comment;
 
+  boolean isSecret;
+
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "community_board_id", nullable = false)
@@ -37,5 +39,9 @@ public class CommunityBoardCommentEntity extends BaseEntity {
   @OneToMany(mappedBy = "communityBoardCommentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<CommunityBoardReplyEntity> communityBoardReplyEntities = new ArrayList<>();
 
+
+  public boolean getIsSecret() {
+    return isSecret;
+  }
 
 }

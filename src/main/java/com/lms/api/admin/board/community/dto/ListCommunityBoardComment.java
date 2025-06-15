@@ -2,6 +2,7 @@ package com.lms.api.admin.board.community.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -24,6 +25,9 @@ public class ListCommunityBoardComment {
     @Schema(description = "댓글 수정이 가능한지 여부")
     @JsonProperty("commentMine")
     Boolean commentMine;
+    @Schema(description = "댓글 공개 여부")
+    @JsonProperty("isSecret")
+    Boolean isSecret;
     @Schema(description = "대댓글 목록")
     List<Reply> replies;
 
@@ -42,5 +46,8 @@ public class ListCommunityBoardComment {
         @Schema(description = "대댓 수정이 가능한지 여부")
         @JsonProperty("replyMine")
         Boolean replyMine;
+        @Schema(description = "대댓 공개 여부")
+        @JsonProperty("isSecret")
+        Boolean isSecret;
     }
 }
