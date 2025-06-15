@@ -8,6 +8,7 @@ import com.lms.api.common.entity.community.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.community.*;
+import com.lms.api.common.util.AuthUtils;
 import com.lms.api.common.util.DateTimeUtil;
 import com.lms.api.common.util.FileUtil;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommunityService {
     private final S3FileStorageService s3FileStorageService;
+    private final AuthUtils authUtils;
     private final CommunityServiceMapper communityServiceMapper;
     private final CommunityRepository communityRepository;
     private final CommunityBoardRepository communityBoardRepository;
@@ -305,6 +307,16 @@ public class CommunityService {
         replyEntity.setModifiedBy(loginId);
 
         communityBoardReplyRepository.save(replyEntity);
+    }
+
+    @Transactional
+    public void deleteReply(String loginId, Long commentId, Long replyId) {
+        CommunityBoardCommentEntity commentEntity = communityBoardCommentRepository.findById(commentId)
+                        .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
+        CommunityBoardReplyEntity replyEntity = communityBoardReplyRepository.findById(replyId)
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_REPLY_NOT_FOUND));
+        authUtils.validateOwnerOrAdmin(loginId, replyEntity);
+        communityBoardReplyRepository.deleteById(replyId);
     }
 }
 
