@@ -38,6 +38,7 @@ public class CommunityBoardEntity extends BaseEntity {
   CommunityEntity communityEntity;
 
   @ToString.Exclude
+  @Builder.Default // 빌더 사용 시 필드 초기화가 무시됨 ! 반드시 필요
   @OneToMany(mappedBy = "communityBoardEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<CommunityBoardFileEntity> communityBoardFileEntities = new ArrayList<>();
 

@@ -15,44 +15,29 @@ import java.util.stream.Collectors;
 public class FileUploadUtils {
 
     /**
-     * 파일 업로드 후 연관관계 세팅 및 예외 발생 시 보상 로직 포함
+     * S3에 파일을 업로드하고, 업로드 도중 예외 발생 시 업로드된 파일을 삭제하는 보상 로직 포함 메서드.
      *
-     * @param files 업로드할 파일 목록
-     * @param uploadDir S3 업로드 경로 (예: "board/anon", "community/board")
-     * @param s3FileStorageService 실제 파일 업로드 및 삭제를 담당하는 서비스
-     * @param toEntity 업로드된 파일 메타 정보를 파일 엔티티로 변환하는 함수
-     * @param addFileFn 파일 엔티티를 부모(상위) 엔티티에 연관관계로 추가하는 함수 (예: post.addFile(file))
-     * @param <E> 파일 엔티티 타입 (예: AnonBoardFileEntity, CommunityBoardFileEntity 등)
-     * @param <P> 부모 엔티티 타입 (예: AnonBoardEntity, CommunityBoardEntity 등)
-     * @return 업로드된 파일 엔티티 목록
+     * @param files 업로드할 MultipartFile 리스트
+     * @param uploadDir 업로드할 S3 디렉토리 경로 (예: "community/board")
+     * @param s3FileStorageService S3 파일 저장 서비스
+     * @return 업로드된 파일 메타데이터 리스트 (FileMeta)
+     * @throws RuntimeException 업로드 도중 예외가 발생할 경우, 해당 예외를 다시 throw
      */
-    public static <E extends FileIdentifiable, P> List<E> uploadWithRollback(
+    public static List<FileMeta> uploadWithRollback(
             List<MultipartFile> files,
             String uploadDir,
-            S3FileStorageService s3FileStorageService,
-            Function<FileMeta, E> toEntity,
-            BiConsumer<P, E> addFileFn,
-            P parentEntity
+            S3FileStorageService s3FileStorageService
     ) {
         List<FileMeta> uploadedFiles = new ArrayList<>();
         try {
-            // 파일 업로드
             uploadedFiles = s3FileStorageService.upload(files, uploadDir);
-
-            // 업로드된 파일 메타 -> 파일 엔티티로 변환 및 연관관계 설정
-            List<E> fileEntities = uploadedFiles.stream()
-                    .map(toEntity)
-                    .peek(fileEntity -> addFileFn.accept(parentEntity, fileEntity))
-                    .collect(Collectors.toList());
-
-            return fileEntities;
+            return uploadedFiles;
         } catch (Exception e) {
-            // 예외 발생 시 업로드된 파일 삭제 (보상 로직)
-            for (FileMeta fileMeta : uploadedFiles) {
+            for (FileMeta file : uploadedFiles) {
                 try {
-                    s3FileStorageService.delete(fileMeta.getS3Key());
+                    s3FileStorageService.delete(file.getS3Key());
                 } catch (Exception ex) {
-                    log.warn("S3 보상 삭제 실패: {}", fileMeta.getS3Key(), ex);
+                    log.warn("S3 보상 삭제 실패: {}", file.getS3Key(), ex);
                 }
             }
             throw e;

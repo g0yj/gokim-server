@@ -137,43 +137,30 @@ public class CommunityService {
         // 작성자가 false로 유지 되는 이유 >> 위에는 && 연산자로 둘 중 하나라도 false면 false임.
 
         String id = "CB" + System.nanoTime();
+
         CommunityBoardEntity communityBoardEntity = communityServiceMapper.toCommunityBoardEntity(
                 loginId, createCommunityBoardRequest, id, pinned, communityEntity
         );
 
-        // 업로드 파일 추적용 리스트
-        List<FileMeta> uploadedFiles = new ArrayList<>();
+        // 업로드
+        List<FileMeta> uploaded = FileUploadUtils.uploadWithRollback(
+                createCommunityBoardRequest.getFiles(),
+                "community/board",
+                s3FileStorageService
+        );
 
-        try {
-            // S3 업로드
-            uploadedFiles = s3FileStorageService.upload(createCommunityBoardRequest.getFiles(), "community/board");
-
-            // DB 저장
-            communityBoardRepository.save(communityBoardEntity);
-
-            for (FileMeta file : uploadedFiles) {
-                CommunityBoardFileEntity communityBoardFileEntity =
-                        communityServiceMapper.toCommunityBoardFileEntity(
-                                file.getS3Key(),
-                                file.getOriginalFileName(),
-                                loginId,
-                                communityBoardEntity
-                        );
-                communityBoardFileRepository.save(communityBoardFileEntity);
-            }
-            return id;
-        } catch (Exception e) {
-            // 예외 발생 시 업로드한 파일 삭제 (보상 로직)
-            for (FileMeta file : uploadedFiles) {
-                try {
-                    s3FileStorageService.delete(file.getS3Key());
-                } catch (Exception ex) {
-                    // 삭제 실패는 로그만 남기고 무시
-                    log.warn("S3 삭제 실패: {}", file.getS3Key(), ex);
-                }
-            }
-            throw e; // 예외 다시 던짐 → 트랜잭션 롤백됨
+        // 파일 엔티티 생성 및 연관관계 설정
+        for (FileMeta meta : uploaded) {
+            CommunityBoardFileEntity fileEntity = communityServiceMapper.toCommunityBoardFileEntity(
+                    meta.getS3Key(),
+                    meta.getOriginalFileName(),
+                    loginId
+            );
+            communityBoardEntity.addFile(fileEntity); // 연관관계 설정
         }
+
+        communityBoardRepository.save(communityBoardEntity);
+        return id;
     }
 
     @Transactional
