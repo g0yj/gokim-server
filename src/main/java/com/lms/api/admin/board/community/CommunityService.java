@@ -318,6 +318,17 @@ public class CommunityService {
         authUtils.validateOwnerOrAdmin(loginId, replyEntity);
         communityBoardReplyRepository.deleteById(replyId);
     }
+
+    @Transactional
+    public void deleteComment(String loginId, Long commentId) {
+        CommunityBoardCommentEntity commentEntity = communityBoardCommentRepository.findById(commentId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_COMMENT_NOT_FOUND));
+
+        authUtils.validateOwnerOrAdmin(loginId,commentEntity);
+
+        // 댓글 실제 삭제는 아님.
+        commentEntity.softDelete(loginId);
+    }
 }
 
 

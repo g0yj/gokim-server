@@ -111,4 +111,12 @@ public class CommunityController {
         return ResponseEntity.ok("삭제 성공");
     }
 
+    @DeleteMapping("/comment/{commentId}")
+    @Operation(summary = "댓글 삭제")
+    public ResponseEntity<?> deleteComment(@LoginUser UserEntity userEntity,
+                                           @Parameter(description = "댓글 식별키") @PathVariable Long commentId){
+        communityService.deleteComment(userEntity.getId(), commentId);
+        return ResponseEntity.ok("댓글삭제완료");
+    }
+
 }

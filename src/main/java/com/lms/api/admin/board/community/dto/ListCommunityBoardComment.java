@@ -30,6 +30,8 @@ public class ListCommunityBoardComment {
     Boolean isSecret;
     @Schema(description = "대댓글 목록")
     List<Reply> replies;
+    @Schema(description = "댓글 삭제 여부 > true 일때 '삭제된 댓글입니다' 같은 메세지 출력 가능")
+    boolean deleted;
 
     @Getter
     @Builder

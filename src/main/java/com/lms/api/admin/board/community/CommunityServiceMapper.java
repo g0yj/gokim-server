@@ -44,6 +44,7 @@ public interface CommunityServiceMapper {
     @Mapping(target = "modifiedOn", source = "modifiedOn" )
     @Mapping(target = "boardId", source = "boardId" )
     @Mapping(target = "isSecret", source = "communityBoardCommentEntity.isSecret" )
+    @Mapping(target = "deleted", source = "communityBoardCommentEntity.deleted" )
     ListCommunityBoardComment toListCommunityBoardComment(CommunityBoardCommentEntity communityBoardCommentEntity, boolean commentMine, String modifiedOn, String boardId);
     @Mapping(target = "replyId", source = "reply.id")
     @Mapping(target = "replyMine", source = "replyMine")

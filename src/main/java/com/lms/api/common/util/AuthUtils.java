@@ -29,4 +29,16 @@ public class AuthUtils {
             throw new ApiException(ApiErrorCode.ACCESS_DENIED);
         }
     }
+
+    public void validateOwner(String loginId, BaseEntity baseEntity){
+        if(!isOwner(loginId,baseEntity)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+    }
+
+    public void validateAdmin(String loginId){
+        if(!isAdmin(loginId)){
+            throw new ApiException(ApiErrorCode.ACCESS_DENIED);
+        }
+    }
 }

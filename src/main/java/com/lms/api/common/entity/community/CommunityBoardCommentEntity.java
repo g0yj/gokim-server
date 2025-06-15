@@ -29,6 +29,9 @@ public class CommunityBoardCommentEntity extends BaseEntity {
 
   boolean isSecret;
 
+  @Column(nullable = false)
+  boolean deleted = false; // 댓글 삭제 여부
+
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "community_board_id", nullable = false)
@@ -36,9 +39,13 @@ public class CommunityBoardCommentEntity extends BaseEntity {
   CommunityBoardEntity communityBoardEntity;
 
   @ToString.Exclude
-  @OneToMany(mappedBy = "communityBoardCommentEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "communityBoardCommentEntity", cascade = CascadeType.ALL, orphanRemoval = false) // 연쇄 삭제 안함
   List<CommunityBoardReplyEntity> communityBoardReplyEntities = new ArrayList<>();
 
+  public void softDelete(String loginId) {
+    this.deleted = true;
+    this.setModifiedBy(loginId);
+  }
 
   public boolean getIsSecret() {
     return isSecret;
