@@ -145,5 +145,12 @@ public class CommunityController {
         return ResponseEntity.ok("삭제 완료");
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "커뮤니티 상세조회")
+    public GetCommunity getCommunity(@LoginUser UserEntity userEntity,
+                                     @Parameter(description = "커뮤니티 식별키") @PathVariable String id){
+        return communityService.getCommunity(userEntity.getId(), id);
+    }
+
 
 }

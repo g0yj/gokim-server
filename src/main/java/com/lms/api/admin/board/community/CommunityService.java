@@ -413,6 +413,16 @@ public class CommunityService {
         // 게시글 + 연관 파일(DB) 삭제
         communityBoardRepository.deleteById(boardId);
     }
+
+    public GetCommunity getCommunity(String loginId, String id) {
+        CommunityEntity communityEntity = communityRepository.findById(id)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
+
+        boolean isMine = authUtils.isOwner(loginId,communityEntity);
+        String url = s3FileStorageService.getUrl(communityEntity.getFileName());
+        String modifiedOn = DateTimeUtils.formatConditionalDateTime(communityEntity.getModifiedOn());
+        return communityServiceMapper.toGetCommunity(communityEntity,isMine,url, modifiedOn);
+    }
 }
 
 
