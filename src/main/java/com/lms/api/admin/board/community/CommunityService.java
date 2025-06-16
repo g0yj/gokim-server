@@ -395,6 +395,24 @@ public class CommunityService {
         communityBoardRepository.save(boardEntity);
 
     }
+
+    @Transactional
+    public void deleteBoard(String loginId, String boardId) {
+        CommunityBoardEntity boardEntity = communityBoardRepository.findById(boardId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_BOARD_NOT_FOUND));
+
+        authUtils.validateOwnerOrAdmin(loginId, boardEntity);
+
+        // S3 파일 삭제
+        List<CommunityBoardFileEntity> fileEntities = communityBoardFileRepository.findByCommunityBoardEntity(boardEntity);
+        FileUploadUtils.deleteS3Files(
+                fileEntities,
+                CommunityBoardFileEntity::getFileName,
+                s3FileStorageService::delete
+        );
+        // 게시글 + 연관 파일(DB) 삭제
+        communityBoardRepository.deleteById(boardId);
+    }
 }
 
 

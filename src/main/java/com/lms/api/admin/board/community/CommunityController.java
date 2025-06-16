@@ -137,5 +137,13 @@ public class CommunityController {
         return ResponseEntity.ok("게시글 수정 성공");
     }
 
+    @DeleteMapping("/board/{boardId}")
+    @Operation(summary = "게시글 삭제")
+    public ResponseEntity<?> deleteBoard(@LoginUser UserEntity userEntity,
+                                         @Parameter(description = "게시글 식별키") @PathVariable String boardId){
+        communityService.deleteBoard(userEntity.getId(), boardId);
+        return ResponseEntity.ok("삭제 완료");
+    }
+
 
 }

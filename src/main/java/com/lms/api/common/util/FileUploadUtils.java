@@ -116,4 +116,33 @@ public class FileUploadUtils {
 
         return uploadedFiles;
     }
+
+    /**
+     * 주어진 파일 엔티티 리스트에서 S3 키를 추출하여 S3에서 삭제하는 유틸 메서드입니다.
+     *
+     * @param fileEntities 삭제할 파일 엔티티 리스트 (예: CommunityBoardFileEntity 등)
+     * @param s3KeyExtractor 각 엔티티에서 S3 키(String)를 추출하는 함수
+     *                       예: CommunityBoardFileEntity::getFileName
+     * @param deleteFunc S3 키를 받아 실제 S3에서 삭제하는 함수
+     *                   예: s3FileStorageService::delete
+     *
+     * @param <E> 파일 엔티티 타입
+     */
+    public static <E> void deleteS3Files(
+            List<E> fileEntities,
+            Function<E, String> s3KeyExtractor,
+            Consumer<String> deleteFunc
+    ) {
+        for (E file : fileEntities) {
+            String s3Key = s3KeyExtractor.apply(file);
+            if (s3Key != null && !s3Key.isBlank()) {
+                try {
+                    deleteFunc.accept(s3Key);
+                } catch (Exception e) {
+                    log.warn("S3 파일 삭제 실패: {}", s3Key, e);
+                }
+            }
+        }
+    }
+
 }
