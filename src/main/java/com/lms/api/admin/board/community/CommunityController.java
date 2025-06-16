@@ -133,6 +133,7 @@ public class CommunityController {
     public ResponseEntity<?> updateBoard(@LoginUser UserEntity userEntity,
                                          @Parameter(description = "게시글 식별키")@PathVariable String boardId,
                                          @Valid @ModelAttribute UpdateCommunityBoard updateCommunityBoard){
+        communityService.updateBoard(userEntity.getId(), boardId, updateCommunityBoard);
         return ResponseEntity.ok("게시글 수정 성공");
     }
 

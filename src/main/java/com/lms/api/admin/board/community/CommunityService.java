@@ -22,8 +22,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -342,6 +342,57 @@ public class CommunityService {
         commentEntity.setModifiedBy(loginId);
 
         communityBoardCommentRepository.save(commentEntity);
+
+    }
+
+    @Transactional
+    public void updateBoard(String loginId, String boardId, UpdateCommunityBoard updateCommunityBoard) {
+        CommunityBoardEntity boardEntity = communityBoardRepository.findById(boardId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_BOARD_NOT_FOUND));
+        authUtils.validateOwner(loginId, boardEntity);
+
+        // 삭제 대상 ID
+        List<Long> deleteFileIds = Optional.ofNullable(updateCommunityBoard.getDeleteFileIds()).orElse(List.of());
+
+        // 삭제 대상 추출
+        List<CommunityBoardFileEntity> deleteFilesEntity = boardEntity.getCommunityBoardFileEntities().stream()
+                .filter(f -> deleteFileIds.contains(f.getId()))
+                .toList();
+
+        // s3 삭제 + 업로드
+        List<FileMeta> uploadedFiles = FileUploadUtils.updateFilesWithRollback(
+                updateCommunityBoard.getFiles(),
+                deleteFilesEntity,
+                CommunityBoardFileEntity::getFileName,
+                files -> s3FileStorageService.upload(files, "community/board"),
+                s3FileStorageService::delete
+        );
+
+        // 기존 파일 중 삭제 대상 제외한 것 유지
+        List<CommunityBoardFileEntity> remainedFiles = boardEntity.getCommunityBoardFileEntities().stream()
+                .filter(f -> !deleteFileIds.contains(f.getId()))
+                .toList();
+
+        // 컬렉션 재구성
+        boardEntity.getCommunityBoardFileEntities().clear();
+        boardEntity.getCommunityBoardFileEntities().addAll(remainedFiles);
+
+        // 새로 업로드된 파일 DB 저장
+        for (FileMeta meta : uploadedFiles) {
+            CommunityBoardFileEntity fileEntity = CommunityBoardFileEntity.builder()
+                    .fileName(meta.getS3Key())
+                    .originalFileName(meta.getOriginalFileName())
+                    .createdBy(loginId)
+                    .modifiedBy(loginId)
+                    .communityBoardEntity(boardEntity)
+                    .build();
+            boardEntity.addFile(fileEntity); // 연관관계 자동 설정
+        }
+
+        // 본문 수정
+        boardEntity.setModifiedBy(loginId);
+        boardEntity = communityServiceMapper.toCommunityBoardEntity(updateCommunityBoard,boardEntity );
+        communityBoardRepository.save(boardEntity);
 
     }
 }

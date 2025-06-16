@@ -1,13 +1,16 @@
 package com.lms.api.admin.board.community;
 
 
+import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.board.community.dto.CreateCommunityBoardRequest;
 import com.lms.api.admin.board.community.dto.ListCommunityBoardComment;
+import com.lms.api.admin.board.community.dto.UpdateCommunityBoard;
 import com.lms.api.common.entity.community.*;
 import com.lms.api.common.mapper.ServiceMapper;
 import com.lms.api.common.mapper.ServiceMapperConfig;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -52,4 +55,10 @@ public interface CommunityServiceMapper {
     @Mapping(target = "isSecret", source = "reply.isSecret")
     ListCommunityBoardComment.Reply toReply(CommunityBoardReplyEntity reply, boolean replyMine, String replyDate);
 
+    @Mapping(target = "id", ignore = true)
+    CommunityBoardEntity toCommunityBoardEntity (UpdateCommunityBoard updateCommunityBoard, @MappingTarget CommunityBoardEntity communityBoardEntity);
+
+    @Mapping(target = "createdBy", source = "loginId")
+    @Mapping(target = "modifiedBy", source = "loginId")
+    CommunityBoardFileEntity toCommunityBoardFileEntity(FileMeta file, String loginId, CommunityBoardEntity boardEntity);
 }

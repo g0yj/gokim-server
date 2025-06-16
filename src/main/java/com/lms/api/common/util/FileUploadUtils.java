@@ -7,9 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class FileUploadUtils {
@@ -73,4 +72,48 @@ public class FileUploadUtils {
         }
     }
 
+
+    /**
+     * 기존 파일 삭제 → 새 파일 업로드 → 예외 발생 시 업로드 롤백까지 처리하는 공통 메서드
+     *
+     * @param filesToUpload      새로 업로드할 파일 리스트 (MultipartFile)
+     * @param deleteFileEntities 삭제할 엔티티 리스트 (파일 엔티티)
+     * @param s3KeyExtractor     삭제 대상에서 S3 key 추출하는 함수
+     * @param uploadFunc         파일 업로드 함수 (List<MultipartFile> → List<FileMeta>)
+     * @param deleteFunc         S3 key 삭제 함수 (String → void)
+     * @return 업로드 성공한 FileMeta 리스트
+     */
+    public static <E> List<FileMeta> updateFilesWithRollback(
+            List<MultipartFile> filesToUpload,
+            List<E> deleteFileEntities,
+            Function<E, String> s3KeyExtractor,
+            Function<List<MultipartFile>, List<FileMeta>> uploadFunc,
+            Consumer<String> deleteFunc
+    ) {
+        // ✅ S3 삭제는 항상 수행되어야 함
+        deleteFileEntities.forEach(fileEntity -> {
+            String s3Key = s3KeyExtractor.apply(fileEntity);
+            if (s3Key != null && !s3Key.isBlank()) {
+                deleteFunc.accept(s3Key);
+            }
+        });
+
+        // ✅ 업로드 처리 및 예외 시 보상
+        List<FileMeta> uploadedFiles = new ArrayList<>();
+        if (filesToUpload == null || filesToUpload.isEmpty()) return uploadedFiles;
+
+        try {
+            uploadedFiles = uploadFunc.apply(filesToUpload);
+        } catch (Exception e) {
+            // 업로드 실패 시, 업로드된 파일 S3에서 삭제
+            uploadedFiles.forEach(file -> {
+                if (file.getS3Key() != null && !file.getS3Key().isBlank()) {
+                    deleteFunc.accept(file.getS3Key());
+                }
+            });
+            throw e;
+        }
+
+        return uploadedFiles;
+    }
 }
