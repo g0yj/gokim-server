@@ -161,5 +161,13 @@ public class CommunityController {
         return ResponseEntity.ok("수정 완료");
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "커뮤니티 삭제")
+    public ResponseEntity<?> deleteCommunity(@LoginUser UserEntity userEntity,
+                                             @Parameter(description = "커뮤니티 식별키") @PathVariable String id){
+        communityService.deleteCommunity(userEntity.getId(), id);
+        return ResponseEntity.ok("삭제 완료");
+    }
+
 
 }

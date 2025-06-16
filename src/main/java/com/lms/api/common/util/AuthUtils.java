@@ -9,16 +9,19 @@ import com.lms.api.common.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 @RequiredArgsConstructor
 public class AuthUtils {
     private final UserRepository userRepository;
 
     public boolean isOwner(String loginId, BaseEntity baseEntity) {
-        return baseEntity.getCreatedBy().equals(loginId);
+        return Objects.equals(baseEntity.getCreatedBy(), loginId);
     }
 
     public boolean isAdmin(String loginId) {
+        if (loginId == null) return false;
         return userRepository.findById(loginId)
                 .map(user -> user.getRole().equals(UserRole.ADMIN))
                 .orElse(false);

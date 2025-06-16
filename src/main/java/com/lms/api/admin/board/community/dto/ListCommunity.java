@@ -19,5 +19,4 @@ public class ListCommunity extends PageResponseData {
     String description;
     String createdBy;
     Boolean isScrapped;
-    String boardId;
 }

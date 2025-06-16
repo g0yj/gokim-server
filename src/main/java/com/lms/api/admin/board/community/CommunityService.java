@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -61,7 +62,7 @@ public class CommunityService {
         //  파일 업로드 + 보상 로직
         FileMeta fileMeta = FileUploadUtils.uploadOneWithRollback(
                 file,
-                "/community",
+                "community",
                 s3FileStorageService
         );
 
@@ -119,7 +120,6 @@ public class CommunityService {
                         .description(community.getDescription())
                         .createdBy(community.getCreatedBy())
                         .isScrapped(true) //TODO 추후 수정 필요
-                        .boardId(null) // TODO 추후 수정 필요
                         .build()
                 ).toList();
 
@@ -403,15 +403,18 @@ public class CommunityService {
 
         authUtils.validateOwnerOrAdmin(loginId, boardEntity);
 
+        // 연관 파일 엔티티 복사 (영속성 컨텍스트 보호)
+        List<CommunityBoardFileEntity> fileEntities = new ArrayList<>(boardEntity.getCommunityBoardFileEntities());
+
         // S3 파일 삭제
-        List<CommunityBoardFileEntity> fileEntities = communityBoardFileRepository.findByCommunityBoardEntity(boardEntity);
         FileUploadUtils.deleteS3Files(
                 fileEntities,
                 CommunityBoardFileEntity::getFileName,
                 s3FileStorageService::delete
         );
-        // 게시글 + 연관 파일(DB) 삭제
-        communityBoardRepository.deleteById(boardId);
+
+        boardEntity.getCommunityBoardFileEntities().clear(); // 연관관계 끊기 + orphanRemoval 동작
+        communityBoardRepository.delete(boardEntity);
     }
 
     @Transactional
@@ -449,6 +452,39 @@ public class CommunityService {
         communityEntity = communityServiceMapper.toCommunityEntity(updateCommunity, communityEntity);
 
         communityRepository.save(communityEntity);
+
+    }
+
+    @Transactional
+    public void deleteCommunity(String loginId, String communityId) {
+        CommunityEntity communityEntity = communityRepository.findById(communityId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
+
+        authUtils.validateOwnerOrAdmin(loginId, communityEntity);
+
+        s3FileStorageService.delete(communityEntity.getFileName());
+
+        // 커뮤니티 내 게시글 전체 조회
+        List<CommunityBoardEntity> boardEntities = communityEntity.getCommunityBoardEntities();
+        for (CommunityBoardEntity board : boardEntities) {
+            CommunityBoardEntity boardEntity = communityBoardRepository.findById(board.getId())
+                    .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_BOARD_NOT_FOUND));
+
+            // 연관 파일 엔티티 복사 (영속성 컨텍스트 보호)
+            List<CommunityBoardFileEntity> fileEntities = new ArrayList<>(boardEntity.getCommunityBoardFileEntities());
+
+            // S3 파일 삭제
+            FileUploadUtils.deleteS3Files(
+                    fileEntities,
+                    CommunityBoardFileEntity::getFileName,
+                    s3FileStorageService::delete
+            );
+
+            boardEntity.getCommunityBoardFileEntities().clear(); // 연관관계 끊기 + orphanRemoval 동작
+            communityBoardRepository.delete(boardEntity);
+        }
+
+        communityRepository.deleteById(communityId);
 
     }
 }
