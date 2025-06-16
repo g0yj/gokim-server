@@ -152,5 +152,14 @@ public class CommunityController {
         return communityService.getCommunity(userEntity.getId(), id);
     }
 
+    @PutMapping("/{id}")
+    @Operation(summary = "커뮤니티 수정")
+    public ResponseEntity<?> updateCommunity(@LoginUser UserEntity userEntity,
+                                             @Parameter(description = "커뮤니티 식별키") @PathVariable String id,
+                                             @ModelAttribute @Valid UpdateCommunity updateCommunity){
+        communityService.updateCommunity(userEntity.getId(), id, updateCommunity);
+        return ResponseEntity.ok("수정 완료");
+    }
+
 
 }

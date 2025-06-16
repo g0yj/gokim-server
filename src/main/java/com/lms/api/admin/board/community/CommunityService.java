@@ -414,6 +414,7 @@ public class CommunityService {
         communityBoardRepository.deleteById(boardId);
     }
 
+    @Transactional
     public GetCommunity getCommunity(String loginId, String id) {
         CommunityEntity communityEntity = communityRepository.findById(id)
                 .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
@@ -422,6 +423,33 @@ public class CommunityService {
         String url = s3FileStorageService.getUrl(communityEntity.getFileName());
         String modifiedOn = DateTimeUtils.formatConditionalDateTime(communityEntity.getModifiedOn());
         return communityServiceMapper.toGetCommunity(communityEntity,isMine,url, modifiedOn);
+    }
+
+    @Transactional
+    public void updateCommunity(String loginId, String communityId, UpdateCommunity updateCommunity) {
+        CommunityEntity communityEntity = communityRepository.findById(communityId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.COMMUNITY_NOT_FOUND));
+        authUtils.validateOwner(loginId,communityEntity);
+
+        MultipartFile file = updateCommunity.getFile();
+        FileUtils.validateImageFileExtension(file);
+
+        if(file != null && !file.isEmpty()){
+            String oldKey  = communityEntity.getFileName();
+            if(oldKey  != null && !oldKey.isBlank()){
+                s3FileStorageService.delete(oldKey );
+            }
+
+            FileMeta newFile =  s3FileStorageService.upload(file,"community");
+
+            communityEntity.setFileName(newFile.getS3Key());
+            communityEntity.setOriginalFileName(newFile.getOriginalFileName());
+        }
+        communityEntity.setModifiedBy(loginId);
+        communityEntity = communityServiceMapper.toCommunityEntity(updateCommunity, communityEntity);
+
+        communityRepository.save(communityEntity);
+
     }
 }
 

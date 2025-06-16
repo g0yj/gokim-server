@@ -2,10 +2,7 @@ package com.lms.api.admin.board.community;
 
 
 import com.lms.api.admin.File.dto.FileMeta;
-import com.lms.api.admin.board.community.dto.CreateCommunityBoardRequest;
-import com.lms.api.admin.board.community.dto.GetCommunity;
-import com.lms.api.admin.board.community.dto.ListCommunityBoardComment;
-import com.lms.api.admin.board.community.dto.UpdateCommunityBoard;
+import com.lms.api.admin.board.community.dto.*;
 import com.lms.api.common.entity.community.*;
 import com.lms.api.common.mapper.ServiceMapper;
 import com.lms.api.common.mapper.ServiceMapperConfig;
@@ -67,4 +64,6 @@ public interface CommunityServiceMapper {
     @Mapping(target = "isMine", source = "isMine")
     @Mapping(target = "modifiedOn", source = "modifiedOn")
     GetCommunity toGetCommunity(CommunityEntity communityEntity, boolean isMine, String url, String modifiedOn);
+
+    CommunityEntity toCommunityEntity(UpdateCommunity updateCommunity, @MappingTarget CommunityEntity communityEntity);
 }

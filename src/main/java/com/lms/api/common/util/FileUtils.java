@@ -29,6 +29,21 @@ public class FileUtils {
         return ALLOWED_IMAGE_EXTENSIONS.contains(ext.toLowerCase());
     }
 
+    /**
+     * 이미지 파일 확장자 검사
+     *
+     * @param file MultipartFile
+     * @throws ApiException 확장자가 허용되지 않으면 예외 발생
+     */
+    public static void validateImageFileExtension(MultipartFile file) {
+        if (file == null || file.isEmpty()) return;
+
+        String ext = getFileExtension(file.getOriginalFilename());
+        if (!isAllowedImageExtension(ext)) {
+            throw new ApiException(ApiErrorCode.UNSUPPORTED_FORMAT_ERROR);
+        }
+    }
+
 
     /**
      * Multipart 파일 리스트가 허용된 최대 개수를 초과하는지 검증합니다.
