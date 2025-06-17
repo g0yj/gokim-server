@@ -83,6 +83,7 @@ public class CommunityService {
         return id;
     }
 
+    @Transactional
     public Page<ListCommunity> listCommunity(SearchCommunity searchCommunity) {
         QCommunityEntity qCommunityEntity = QCommunityEntity.communityEntity;
 
@@ -242,6 +243,7 @@ public class CommunityService {
         return communityBoardReplyEntity.getId();
     }
 
+    @Transactional
     public GetBoard getBoard(String loginId, String boardId) {
         CommunityBoardEntity communityBoardEntity = communityBoardRepository.findById(boardId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.COMMUNITY_BOARD_NOT_FOUND));

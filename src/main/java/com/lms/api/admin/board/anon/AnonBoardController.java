@@ -7,6 +7,9 @@ import com.lms.api.common.dto.PageResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +39,19 @@ public class AnonBoardController {
     }
 
     @GetMapping
-    @Operation( summary = "익명 게시판 목록")
+    @Operation(
+            summary = "익명 게시판 목록 조회",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "성공",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SwaggerListAnon.class)
+                            )
+                    )
+            }
+    )
     public PageResponse<ListAnonBoardResponse> listAnonBoard(@Valid @ParameterObject ListAnonBoardRequest listAnonBoardRequest) {
         SearchAnonBoard searchAnonBoard = anonBoardControllerMapper.toSearchAnonBoard(listAnonBoardRequest);
         Page<ListAnonBoard> page = anonBoardService.listAnonBoard(searchAnonBoard);

@@ -10,7 +10,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter@Setter@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(name = "ListCommunityBoardResponse", description = "페이징 처리된 커뮤니티 게시판", allOf = {PageResponseData.class})
+@Schema(name = "ListCommunityBoardResponse", description = "페이징 처리된 커뮤니티 게시판")
 public class ListCommunityBoardResponse extends PageResponseData{
     @Schema(description = "게시판 식별키")
     String id;

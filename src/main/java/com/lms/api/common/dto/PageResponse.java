@@ -5,11 +5,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-@Getter
+@Getter@SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(name = "PageResponse", description = "페이징 처리 정보")
 public class PageResponse<T> {

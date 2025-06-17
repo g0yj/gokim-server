@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 
 @Getter@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Schema(name = "ListCommunityResponse", description = "필터링 조건을 데이터 ",  allOf = {PageRequest.class})
+@Schema(name = "ListCommunityResponse", description = "필터링 조건을 데이터 ")
 public class ListCommunityResponse extends PageResponseData {
     @Schema(description = "커뮤니티 식별키")
     String id;
