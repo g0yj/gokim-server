@@ -11,7 +11,8 @@ import lombok.experimental.FieldDefaults;
 import java.time.LocalDate;
 
 @Getter@Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@FieldDefaults
+        (level = AccessLevel.PRIVATE)
 @Schema(name = "ListAnonBoardResponse", description = "익명 게시판 목록입니다. 필터링 페이징 처리포함")
 public class ListAnonBoardResponse   {
 
