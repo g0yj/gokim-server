@@ -27,6 +27,9 @@ public class ListCommunityBoardResponse {
     @Schema(description = "no")
     long listNumber;
 
+    @Schema(description = "게시판 식별키")
+    String boardId;
+
 
 
 }

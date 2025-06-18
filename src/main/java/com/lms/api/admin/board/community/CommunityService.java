@@ -121,6 +121,11 @@ public class CommunityService {
                         .description(community.getDescription())
                         .createdBy(community.getCreatedBy())
                         .isScrapped(true) //TODO 추후 수정 필요
+                        .boardId(
+                                community.getCommunityBoardEntities().isEmpty()
+                                ? null
+                                        : community.getCommunityBoardEntities().get(0).getCommunityEntity().getId()
+                        )
                         .build()
                 ).toList();
 
@@ -205,6 +210,7 @@ public class CommunityService {
                         .createdBy(board.getCreatedBy())
                         .commentCount(board.getCommunityBoardFileEntities().size())
                         .commentCount(board.getCommunityBoardCommentEntities().size())
+                        .boardId(communityEntity.getId())
                         .build()
                 ).toList();
 

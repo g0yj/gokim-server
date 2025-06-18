@@ -15,6 +15,7 @@ public interface CommunityControllerMapper extends ControllerMapper{
 
     SearchCommunity toSearchCommunity(ListCommunityRequest listCommunityRequest);
 
+    @Mapping(target = "boardId", source = "boardId")
     ListCommunityResponse toListCommunityResponse(ListCommunity source);
     default PageResponse<ListCommunityResponse> toListCommunityResponse(SearchCommunity searchCommunity, Page<ListCommunity> page){
         return toPageResponse(page, this::toListCommunityResponse, searchCommunity.getPageSize());

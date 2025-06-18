@@ -17,4 +17,6 @@ public class ListCommunityBoard extends PageResponseData {
     String createdBy;
     int fileCount;
     int commentCount;
+
+    String boardId;
 }
