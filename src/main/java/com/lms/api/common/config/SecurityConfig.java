@@ -99,6 +99,7 @@ public class SecurityConfig {
         config.setAllowedOriginPatterns(List.of(
                 "http://localhost:8081",
                 "http://localhost:5173",// 로컬 테스트
+                "http://localhost:5174",// 로컬 테스트
                 "http://54.180.116.0", // 프론트에서 보이는 Origin (브라우저가 인식함)
                 "http://54.180.116.0:8080", // 직접 API 요청하는 경우도 고려
                 "http://54.180.116.0:80", // 명시적으로 기본 포트도 추가
