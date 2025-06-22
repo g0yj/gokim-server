@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @FieldDefaults
         (level = AccessLevel.PRIVATE)
 @Schema(name = "ListAnonBoardResponse", description = "익명 게시판 목록입니다. 필터링 페이징 처리포함")
-public class ListAnonBoardResponse   {
+public class ListAnonBoardResponse extends PageResponseData  {
 
     @Schema(description = "게시글 식별키")
     String id;
@@ -26,9 +26,5 @@ public class ListAnonBoardResponse   {
     int fileCount;
     @Schema(description = "조회수")
     int view;
-    @Schema(description = "no")
-    long listNumber;
-
-
 
 }
