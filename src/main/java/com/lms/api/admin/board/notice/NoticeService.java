@@ -16,6 +16,7 @@ import com.lms.api.common.exception.ApiException;
 import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.board.NoticeFileRepository;
 import com.lms.api.common.repository.board.NoticeRepository;
+import com.lms.api.common.util.DateTimeUtils;
 import com.lms.api.common.util.ObjectUtils;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
@@ -80,7 +81,7 @@ public class NoticeService {
     }
 
     @Transactional
-    public Page<ListPageNoticeResponse> pageListNotice(String loginId, SearchNotice searchNotice) {
+    public Page<ListPageNotice> pageListNotice(String loginId, SearchNotice searchNotice) {
         QNoticeEntity qNoticeEntity = QNoticeEntity.noticeEntity;
 
         // 조건 만들기
@@ -126,35 +127,18 @@ public class NoticeService {
 
         // 데이터 조회
         Page<NoticeEntity> noticePage = noticeRepository.findAll(where, pageRequest);
-        long totalCount = noticePage.getTotalElements();
-        int currentPage = pageRequest.getPageNumber();
-        int pageSize = pageRequest.getPageSize();
 
-        // content만 변환
-        List<ListPageNoticeResponse> content = IntStream.range(0, noticePage.getContent().size())
-                .mapToObj(i -> {
-                    NoticeEntity notice = noticePage.getContent().get(i);
-                    String writerId = notice.getModifiedBy();
-                    String writerName = userRepository.findById(writerId)
-                            .map(UserEntity::getName)
-                            .orElse("-");
-
-                    long listNumber = totalCount - ((long) currentPage * pageSize) - i;
-
-                    return ListPageNoticeResponse.builder()
-                            .id(notice.getId())
-                            .title(notice.getTitle())
-                            .createDate(notice.getCreatedOn().toLocalDate())
-                            .writerId(writerId)
-                            .writerName(writerName)
-                            .fileCount(notice.getNoticeFileEntities() != null ? notice.getNoticeFileEntities().size() : 0)
-                            .listNumber(listNumber)
-                            .view(notice.getView()) // 기본값 처리
-                            .build();
-                })
+        List<ListPageNotice> list = noticePage.getContent().stream()
+                .map(noticeEntity -> ListPageNotice.builder()
+                        .id(noticeEntity.getId())
+                        .title(noticeEntity.getTitle())
+                        .createdOn(DateTimeUtils.formatConditionalDateTime(noticeEntity.getCreatedOn()))
+                        .createdBy(noticeEntity.getCreatedBy())
+                        .view(noticeEntity.getView())
+                        .build())
                 .toList();
 
-        return new PageImpl<>(content, pageRequest, totalCount);
+        return new PageImpl<>(list, noticePage.getPageable(), noticePage.getTotalElements());
     }
 
     @Transactional

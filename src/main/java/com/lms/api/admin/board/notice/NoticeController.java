@@ -5,9 +5,13 @@ import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.board.notice.dto.CreateNotice;
 import com.lms.api.admin.board.notice.dto.CreateNoticeRequest;
 import com.lms.api.admin.board.notice.dto.*;
+import com.lms.api.common.dto.PageResponse;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -36,10 +40,23 @@ public class NoticeController {
     }
 
     @GetMapping
-    @Operation(summary = "공지사항 목록", description = "필터링을 포함합니다")
-    public Page<ListPageNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid @ParameterObject ListPageNoticeRequest listPageNoticeRequest){
+    @Operation(
+            summary = "공지사항 목록 조회",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "성공",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = SwaggerListNotice.class)
+                            )
+                    )
+            }
+    )
+    public PageResponse<ListNoticeResponse> pageListNotice(@LoginUser UserEntity userEntity, @Valid @ParameterObject ListPageNoticeRequest listPageNoticeRequest){
         SearchNotice searchNotice = noticeControllerMapper.toSearchNotice(userEntity.getId(), listPageNoticeRequest);
-        return  noticeService.pageListNotice(userEntity.getId(), searchNotice);
+        Page<ListPageNotice> page = noticeService.pageListNotice(userEntity.getId(), searchNotice);
+        return noticeControllerMapper.toListNoticeResponse(searchNotice,page);
     }
 
     @GetMapping("/{id}")
