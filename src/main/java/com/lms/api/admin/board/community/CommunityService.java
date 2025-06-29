@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -80,6 +81,17 @@ public class CommunityService {
                 .build();
 
         communityRepository.save(community);
+
+        // boardId
+        CreateCommunityBoardRequest board = new CreateCommunityBoardRequest();
+        board.setTitle("임시 게시글");
+        String boardId = createBoard(loginId, board, id);
+        List<CommunityBoardEntity> boardEntities = communityBoardRepository.findAllById(Collections.singleton(boardId));
+
+        community.setCommunityBoardEntities(null); // ← 연관관계 끊기
+        communityRepository.save(community);       // ← 끊긴 상태로 flush
+        deleteBoard(loginId, boardId);             // ← 이제 안전하게 삭제
+
         return id;
     }
 
@@ -176,6 +188,8 @@ public class CommunityService {
 
         QCommunityBoardEntity qCommunityBoardEntity = QCommunityBoardEntity.communityBoardEntity;
         BooleanExpression where = Expressions.TRUE;
+
+        where = where.and(qCommunityBoardEntity.communityEntity.eq(communityEntity));
 
         if(searchCommunityBoard.hasSearch()){
             switch (searchCommunityBoard.getSearch()){
