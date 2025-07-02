@@ -11,6 +11,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Schema(name = "LoginResponse",description = "로그인 응답")
 public class LoginResponse {
+    @Schema(description = "로그인한 아이디")
+    String id;
 
     @Schema(description = "유저가 사용할 페이지와 관리자 페이지를 분기 처리하기 위해 사용")
     UserRole role;
