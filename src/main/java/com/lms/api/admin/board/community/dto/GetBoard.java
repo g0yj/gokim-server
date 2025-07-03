@@ -29,6 +29,9 @@ public class GetBoard {
     @JsonProperty("isMine")
     Boolean isMine;
 
+    @Schema(description = "커뮤니티 식별키")
+    String communityId;
+
 
     @Getter
     @Builder

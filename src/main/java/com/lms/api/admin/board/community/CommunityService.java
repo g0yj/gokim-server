@@ -224,7 +224,7 @@ public class CommunityService {
                         .createdBy(board.getCreatedBy())
                         .commentCount(board.getCommunityBoardFileEntities().size())
                         .commentCount(board.getCommunityBoardCommentEntities().size())
-                        .boardId(communityEntity.getId())
+                        .communityId(communityEntity.getId())
                         .build()
                 ).toList();
 
@@ -285,6 +285,7 @@ public class CommunityService {
                 .files(files)
                 .view(communityBoardEntity.getView())
                 .isMine(communityBoardEntity.getCreatedBy().equals(loginId))
+                .communityId(communityBoardEntity.getCommunityEntity().getId())
                 .build();
     }
 
