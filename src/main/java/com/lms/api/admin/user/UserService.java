@@ -30,21 +30,22 @@ public class UserService {
     @Transactional
     public CreateUserResponse createUser(CreateUser createUser) {
 
-        String ext = FileUtils.getFileExtension(createUser.getMultipartFile().getOriginalFilename());
-        if (!FileUtils.isAllowedImageExtension(ext)) {
-            throw new ApiException(ApiErrorCode.UNSUPPORTED_FORMAT_ERROR);
+        FileMeta fileMeta = null;
+        MultipartFile profileFile = createUser.getMultipartFile();
+
+        // ✅ 파일이 있을 때만 확장자 검사 및 업로드
+        if (profileFile != null && !profileFile.isEmpty()) {
+            String ext = FileUtils.getFileExtension(profileFile.getOriginalFilename());
+            if (!FileUtils.isAllowedImageExtension(ext)) {
+                throw new ApiException(ApiErrorCode.UNSUPPORTED_FORMAT_ERROR);
+            }
+            fileMeta = s3FileStorageService.upload(profileFile, "user");
         }
 
         if (userRepository.existsById(createUser.getId())) {
             throw new ApiException(ApiErrorCode.LOGIN_SERVER_ERROR);
         }
 
-        FileMeta fileMeta = null;
-
-        MultipartFile profileFile = createUser.getMultipartFile();
-        if (profileFile != null) {
-            fileMeta = s3FileStorageService.upload(profileFile, "user");
-        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 
