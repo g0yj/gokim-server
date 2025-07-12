@@ -196,8 +196,11 @@ public class CommunityController {
 
     @DeleteMapping("/{id}/scrap")
     @Operation(summary = "스크랩 취소")
-    public ResponseEntity<?> cancelScrapped(@LoginUser UserEntity userEntity){
-        return ResponseEntity.ok("스크랩 등록 성공");
+    public ResponseEntity<?> cancelScrapped(@LoginUser UserEntity userEntity,
+                                            @Parameter(description = "커뮤니티 식별키") @PathVariable String id){
+        log.debug("메서드 들어오는지 확인!!!");
+        communityService.cancelScrapped(userEntity.getId(), id);
+        return ResponseEntity.ok("스크랩 취소 성공");
     }
 
 

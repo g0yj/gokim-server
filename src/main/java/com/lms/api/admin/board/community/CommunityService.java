@@ -560,7 +560,7 @@ public class CommunityService {
         communityRepository.deleteById(communityId);
 
     }
-    @Transactional(readOnly = false)
+    @Transactional
     public void addScrapped(String loginId, String communityId) {
         UserEntity userEntity = userRepository.findById(loginId)
                 .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
@@ -572,6 +572,19 @@ public class CommunityService {
                 .build();
 
         scrapRepository.save(scrapEntity);
+    }
+
+    @Transactional
+    public void cancelScrapped(String loginId, String communityId) {
+        UserEntity userEntity = userRepository.findById(loginId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+        ScrapEntity scrapEntity = scrapRepository.findByTargetId(communityId)
+                        .orElseThrow(() -> new ApiException(ApiErrorCode.SCRAP_NOT_FOUND));
+
+        scrapRepository.deleteById(String.valueOf(scrapEntity.getId()));
+
+
     }
 }
 

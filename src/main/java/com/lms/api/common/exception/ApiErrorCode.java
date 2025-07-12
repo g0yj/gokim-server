@@ -69,6 +69,9 @@ public enum ApiErrorCode implements ApiError {
   COMMUNITY_BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST, "0702", "찾을 수 없는 커뮤니티 게시글입니다"),
   COMMUNITY_REPLY_NOT_FOUND(HttpStatus.BAD_REQUEST, "0703", "찾을 수 없는 대댓입니다"),
 
+  // scrap
+  SCRAP_NOT_FOUND(HttpStatus.BAD_REQUEST, "0803", "스크랩 정보를 찾을 수 없습니다"),
+
   ;
   HttpStatusCode httpStatusCode;
   String code;
