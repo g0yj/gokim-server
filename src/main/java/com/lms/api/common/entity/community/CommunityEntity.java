@@ -31,6 +31,7 @@ public class CommunityEntity extends BaseEntity {
   String fileName;
   String originalFileName;
 
+  // 잘못된 생각으로 추가한 필드. 스크랩은 회원마다 관리해야하기 때문에 별도의 테이블로 관리해야함.
   Boolean isScrapped;
 
 

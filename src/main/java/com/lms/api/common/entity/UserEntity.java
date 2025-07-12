@@ -55,5 +55,9 @@ public class UserEntity extends BaseEntity {
   @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
   List<TodoEntity> todoEntities = new ArrayList<>();
 
+  @ToString.Exclude
+  @Builder.Default
+  @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+  List<ScrapEntity> scrapEntities = new ArrayList<>();
 
 }

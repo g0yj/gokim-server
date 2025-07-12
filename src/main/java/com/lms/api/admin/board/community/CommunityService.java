@@ -74,7 +74,6 @@ public class CommunityService {
                 .id(id)
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .isScrapped(false)
                 .createdBy(loginId)
                 .modifiedBy(loginId)
                 .originalFileName(fileMeta != null ? fileMeta.getOriginalFileName() : null)

@@ -19,7 +19,5 @@ public class UpdateCommunity {
     String description;
     @Schema(description = "커버 이미지")
     MultipartFile file;
-    @Schema(description = "스크랩여부")
-    @JsonProperty("isScrapped")
-    Boolean isScrapped;
+
 }
