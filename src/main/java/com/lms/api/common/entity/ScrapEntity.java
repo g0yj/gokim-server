@@ -30,8 +30,8 @@ public class ScrapEntity extends BaseEntity {
   Long id;
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false, length = 30)
-  ScrapTableType targetType;
+  @Column(nullable = false, name = "table_type")
+  ScrapTableType tableType;
 
   @Column(name = "target_id", nullable = false)
   String targetId;

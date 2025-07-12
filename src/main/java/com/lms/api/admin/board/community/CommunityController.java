@@ -43,9 +43,10 @@ public class CommunityController {
 
     @GetMapping
     @Operation(summary = "커뮤니티 목록")
-    public PageResponse<ListCommunityResponse> listCommunity(@Valid @ParameterObject ListCommunityRequest listCommunityRequest){
+    public PageResponse<ListCommunityResponse> listCommunity(@LoginUser UserEntity userEntity,
+                                                             @Valid @ParameterObject ListCommunityRequest listCommunityRequest){
         SearchCommunity searchCommunity = communityControllerMapper.toSearchCommunity(listCommunityRequest);
-        Page<ListCommunity> page = communityService.listCommunity(searchCommunity);
+        Page<ListCommunity> page = communityService.listCommunity(userEntity.getId(), searchCommunity);
         return communityControllerMapper.toListCommunityResponse(searchCommunity, page);
     }
 
@@ -183,6 +184,20 @@ public class CommunityController {
                                              @Parameter(description = "커뮤니티 식별키") @PathVariable String id){
         communityService.deleteCommunity(userEntity.getId(), id);
         return ResponseEntity.ok("삭제 완료");
+    }
+
+    @PostMapping("/{id}/scrap")
+    @Operation(summary = "스크랩 등록")
+    public ResponseEntity<?> addScrapped(@LoginUser UserEntity userEntity,
+                                         @Parameter(description = "커뮤니티 식별키") @PathVariable String id){
+        communityService.addScrapped(userEntity.getId(), id);
+        return ResponseEntity.ok("스크랩 등록 성공");
+    }
+
+    @DeleteMapping("/{id}/scrap")
+    @Operation(summary = "스크랩 취소")
+    public ResponseEntity<?> cancelScrapped(@LoginUser UserEntity userEntity){
+        return ResponseEntity.ok("스크랩 등록 성공");
     }
 
 

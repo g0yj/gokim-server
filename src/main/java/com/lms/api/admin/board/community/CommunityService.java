@@ -7,10 +7,12 @@ import com.lms.api.admin.board.community.dto.*;
 import com.lms.api.common.config.JpaConfig;
 import com.lms.api.common.dto.ScrapTableType;
 import com.lms.api.common.entity.QScrapEntity;
+import com.lms.api.common.entity.ScrapEntity;
 import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.community.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
+import com.lms.api.common.repository.ScrapRepository;
 import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.community.*;
 import com.lms.api.common.util.AuthUtils;
@@ -51,6 +53,7 @@ public class CommunityService {
     private final CommunityBoardCommentRepository communityBoardCommentRepository;
     private final CommunityBoardReplyRepository communityBoardReplyRepository;
     private final UserRepository userRepository;
+    private final ScrapRepository scrapRepository;
     @Transactional
     public String createCommunity(String loginId, CreateCommunityRequest request) {
         MultipartFile file = request.getFile();
@@ -155,7 +158,7 @@ public class CommunityService {
                                 .where(
                                         qScrapEntity.userEntity.eq(userEntity)
                                                 .and(qScrapEntity.targetId.eq(qCommunityEntity.id))
-                                                .and(qScrapEntity.targetType.eq(ScrapTableType.COMMUNITY))
+                                                .and(qScrapEntity.tableType.eq(ScrapTableType.COMMUNITY))
                                 )
                                 .exists(),
                         JPAExpressions.select(qCommunityBoardEntity.id.min())
@@ -556,6 +559,19 @@ public class CommunityService {
 
         communityRepository.deleteById(communityId);
 
+    }
+    @Transactional(readOnly = false)
+    public void addScrapped(String loginId, String communityId) {
+        UserEntity userEntity = userRepository.findById(loginId)
+                .orElseThrow(() -> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+        ScrapEntity scrapEntity = ScrapEntity.builder()
+                .tableType(ScrapTableType.COMMUNITY)
+                .targetId(communityId)
+                .userEntity(userEntity)
+                .build();
+
+        scrapRepository.save(scrapEntity);
     }
 }
 
