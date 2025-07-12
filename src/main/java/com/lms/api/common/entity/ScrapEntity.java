@@ -29,12 +29,17 @@ public class ScrapEntity extends BaseEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   Long id;
 
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 30)
+  ScrapTableType targetType;
+
   @Column(name = "target_id", nullable = false)
-  private ScrapTableType targetId;
+  String targetId;
+
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
-  private UserEntity userEntity;
+  UserEntity userEntity;
 
 
 }

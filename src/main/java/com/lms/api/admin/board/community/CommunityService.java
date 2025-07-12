@@ -4,16 +4,23 @@ package com.lms.api.admin.board.community;
 import com.lms.api.admin.File.S3FileStorageService;
 import com.lms.api.admin.File.dto.FileMeta;
 import com.lms.api.admin.board.community.dto.*;
+import com.lms.api.common.config.JpaConfig;
+import com.lms.api.common.dto.ScrapTableType;
+import com.lms.api.common.entity.QScrapEntity;
+import com.lms.api.common.entity.UserEntity;
 import com.lms.api.common.entity.community.*;
 import com.lms.api.common.exception.ApiErrorCode;
 import com.lms.api.common.exception.ApiException;
+import com.lms.api.common.repository.UserRepository;
 import com.lms.api.common.repository.community.*;
 import com.lms.api.common.util.AuthUtils;
 import com.lms.api.common.util.DateTimeUtils;
 import com.lms.api.common.util.FileUploadUtils;
 import com.lms.api.common.util.FileUtils;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,6 +41,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CommunityService {
+    private final JpaConfig jpaConfig;
     private final S3FileStorageService s3FileStorageService;
     private final AuthUtils authUtils;
     private final CommunityServiceMapper communityServiceMapper;
@@ -42,6 +50,7 @@ public class CommunityService {
     private final CommunityBoardFileRepository communityBoardFileRepository;
     private final CommunityBoardCommentRepository communityBoardCommentRepository;
     private final CommunityBoardReplyRepository communityBoardReplyRepository;
+    private final UserRepository userRepository;
     @Transactional
     public String createCommunity(String loginId, CreateCommunityRequest request) {
         MultipartFile file = request.getFile();
@@ -96,9 +105,16 @@ public class CommunityService {
     }
 
     @Transactional
-    public Page<ListCommunity> listCommunity(SearchCommunity searchCommunity) {
+    public Page<ListCommunity> listCommunity(String loginId, SearchCommunity searchCommunity) {
         QCommunityEntity qCommunityEntity = QCommunityEntity.communityEntity;
+        QScrapEntity qScrapEntity = QScrapEntity.scrapEntity;
+        QCommunityBoardEntity qCommunityBoardEntity = QCommunityBoardEntity.communityBoardEntity;
 
+        UserEntity userEntity = userRepository.findById(loginId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+
+
+        // 1. 검색 조건 동적 구성
         BooleanExpression where = Expressions.TRUE;
 
         if(searchCommunity.hasSearch()) {
@@ -123,25 +139,57 @@ public class CommunityService {
                     break;
             }
         }
-        Page<CommunityEntity> communityPage = communityRepository.findAll(where, searchCommunity.toPageRequest());
 
-        List<ListCommunity> list = communityPage.getContent().stream()
-                .map(community -> ListCommunity.builder()
-                        .id(community.getId())
-                        .url(s3FileStorageService.getUrl(community.getFileName()))
-                        .title(community.getTitle())
-                        .description(community.getDescription())
-                        .createdBy(community.getCreatedBy())
-                        .isScrapped(community.getIsScrapped())
-                        .boardId(
-                                community.getCommunityBoardEntities().isEmpty()
-                                ? null
-                                : community.getCommunityBoardEntities().get(0).getCommunityEntity().getId()
-                        )
-                        .build()
-                ).toList();
+        //2. QueryDSL 쿼리 실행
+        List<Tuple> result = jpaConfig.queryFactory()
+                // 어떤 컬럼을 조회할지 지정. 여러 필드를 지정하게 되면 Tuple 반환임
+                .select(
+                        qCommunityEntity.id,
+                        qCommunityEntity.title,
+                        qCommunityEntity.description,
+                        qCommunityEntity.createdBy,
+                        qCommunityEntity.fileName,
+                        // 로그인 유저의 스크랩 여부를 EXISTS 서브쿼리로 구성
+                        JPAExpressions.selectOne()
+                                .from(qScrapEntity)
+                                .where(
+                                        qScrapEntity.userEntity.eq(userEntity)
+                                                .and(qScrapEntity.targetId.eq(qCommunityEntity.id))
+                                                .and(qScrapEntity.targetType.eq(ScrapTableType.COMMUNITY))
+                                )
+                                .exists(),
+                        JPAExpressions.select(qCommunityBoardEntity.id.min())
+                                        .from(qCommunityBoardEntity)
+                                        .where(qCommunityBoardEntity.communityEntity.eq(qCommunityEntity))
+                )
+                .from(qCommunityEntity)
+                .where(where)
+                .offset(searchCommunity.getOffset()) // 몇 번째 row 부터 시작할지(페이지네이션 시작치)
+                .limit(searchCommunity.getPageSize())
+                .fetch(); // 쿼리 실행하여 List 반환
 
-        return new PageImpl<>(list, communityPage.getPageable(), communityPage.getTotalElements());
+        // 3. 전체 갯수 (페이지네이션에 필요)
+        Long totalCount = jpaConfig.queryFactory()
+                .select(qCommunityEntity.count())
+                .from(qCommunityEntity)
+                .where(where)
+                .fetchOne();
+
+        //4. Tuple 결과를 DTO 매핑
+        List<ListCommunity> list = result.stream()
+                .map(tuple -> ListCommunity.builder()
+                        .id(tuple.get(qCommunityEntity.id))
+                        .title(tuple.get(qCommunityEntity.title))
+                        .description(tuple.get(qCommunityEntity.description))
+                        .createdBy(tuple.get(qCommunityEntity.createdBy))
+                        .url(s3FileStorageService.getUrl(tuple.get(qCommunityEntity.fileName)))
+                        .isScrapped(Boolean.TRUE.equals(tuple.get(5, Boolean.class))) // null 방지
+                        .boardId(tuple.get(6, String.class)) // boardId는 Long으로 추정
+                        .build())
+                .toList();
+
+        // 5. PageImpl로 리턴
+        return new PageImpl<>(list, searchCommunity.toPageRequest(), totalCount);
     }
 
     @Transactional
@@ -229,7 +277,6 @@ public class CommunityService {
                 ).toList();
 
         return new PageImpl<>(list, boardPage.getPageable(), boardPage.getTotalElements());
-
     }
 
     @Transactional
