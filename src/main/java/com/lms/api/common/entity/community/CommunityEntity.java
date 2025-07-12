@@ -31,6 +31,8 @@ public class CommunityEntity extends BaseEntity {
   String fileName;
   String originalFileName;
 
+  Boolean isScrapped;
+
 
   @ToString.Exclude
   @OneToMany(mappedBy = "communityEntity", cascade = CascadeType.ALL, orphanRemoval = true)
