@@ -4,6 +4,7 @@ import com.lms.api.admin.auth.LoginUser;
 import com.lms.api.admin.user.dto.*;
 import com.lms.api.common.entity.UserEntity;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,13 @@ public class UserController {
     public ResponseEntity<?> deleteUser(@LoginUser UserEntity userEntity){
         userService.deleteUser(userEntity.getId());
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "회원 찾기")
+    public String searchUser(@Parameter(description = "회원아이디") @RequestParam String id){
+        userService.searchUser(id);
+        return id;
     }
 
 

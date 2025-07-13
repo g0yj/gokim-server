@@ -139,6 +139,10 @@ public class UserService {
         userRepository.delete(userEntity);
     }
 
+    public void searchUser(String userId) {
+        UserEntity userEntity = userRepository.findById(userId)
+                .orElseThrow(()-> new ApiException(ApiErrorCode.USER_NOT_FOUND));
+    }
 }
 
 
