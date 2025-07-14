@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +38,7 @@ public class ProjectFileController {
     @Operation(summary = "파일 목록" , description = "기능 카테고리에 모여져 있는 파일 목록 (필터링 포함)")
     public List<ListProjectFileResponse> listProjectFile (@LoginUser UserEntity userEntity,
                                                           @Parameter(description = "프로젝트 기능 식별키")@PathVariable String projectFunctionId,
-                                                          @Valid @RequestBody(required = false) ListProjectFileRequest listProjectFileRequest){
+                                                          @ParameterObject @Valid @RequestBody(required = false) ListProjectFileRequest listProjectFileRequest){
         return projectFileService.listProjectFile(userEntity.getId(), projectFunctionId, listProjectFileRequest);
     }
 
